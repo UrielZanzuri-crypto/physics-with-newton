@@ -67,10 +67,19 @@ Factory signature: `PHY.sims.name(canvasEl, controlsEl, opts)` returns `{start, 
 
 ## Components (`PHY.ui`)
 
-- `PredictCard(host, {chapter, id, section, tag, question, options: [{text, correct, why}], onRun(i, opt) -> Promise, explanation, sayRight, sayWrong, onDone})`. Children already inside `host` (the `<figure class="sim">`) become the stage. **The reveal waits for the promise that `onRun` returns.** Put your own data on options (see `F` in the tug-of-war card).
-- `Quiz(host, {chapter, section, questions: [{type: 'mc', q, options, answer, why} | {type: 'num', q, answer, unit, tol, why}]})`. ±3% default tolerance.
+- `PredictCard(host, {chapter, id, section, tag, question, options: [{text, correct, why}], onRun(i, opt) -> Promise, steps, explanation, sayRight, sayWrong, onDone})`. `explanation` stays open under the solution, so keep it to calls to action. Children already inside `host` (the `<figure class="sim">`) become the stage. **The reveal waits for the promise that `onRun` returns.** Put your own data on options (see `F` in the tug-of-war card).
+- `Quiz(host, {chapter, section, questions: [{type: 'mc', q, options, answer, steps} | {type: 'num', q, answer, unit, tol, steps}]})`. Each question has its own check button. ±3% default tolerance.
 - `Problem(host, {chapter, section, tag, text, fields: [{label, answer, unit, tol}], steps: [...]})` wraps `StepSolution`.
-- `StepSolution(host, {steps})`, `StarScore(host, {value, size, animate})`, `Slider(host, {...})`, `Toggle`, `Button(host, text, fn, {primary, ghost})`, `Readouts(host, [{key, label, color}])`, `burst(el, n)`, `h(tag, attrs, children)`.
+- `StepSolution(host, {steps: [{hint, work}], open, startLabel, onDone})`: shows the hint, and the work only after a click. `open` shows the first hint at once. `StarScore(host, {value, size, animate})`, `Slider(host, {...})`, `Toggle`, `Button(host, text, fn, {primary, ghost})`, `Readouts(host, [{key, label, color}])`, `burst(el, n)`, `h(tag, attrs, children)`.
+
+## Staged solutions
+
+Every question has a full solution in `steps: [{hint, work}]`: predict cards, exam problems and quiz questions.
+
+- A hint points to the next move and asks a question. It never contains the result of its own step.
+- `work` is the full calculation of that step, with units. The last step must state the final answer of the question.
+- After a wrong quiz answer, the right one stays hidden until the last step is revealed.
+- Write new solutions in first person plural ("נחשב", "נציב"), which reads the same for every reader.
 
 ## Mascot
 

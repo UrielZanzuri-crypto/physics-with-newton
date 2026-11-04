@@ -273,7 +273,9 @@
       });
       verdict.textContent = right ? 'ניחוש נכון!' : 'לא הפעם. אבל עכשיו זה לא יישכח.';
       verdict.className = 'predict-verdict ' + (right ? 'good' : 'bad');
-      why.innerHTML = (opt.why ? '<p>' + opt.why + '</p>' : '') + (o.explanation || '');
+      why.innerHTML = opt.why ? '<p>' + opt.why + '</p>' : '';
+      if (o.steps) StepSolution(why, { steps: o.steps, open: true });
+      if (o.explanation) why.appendChild(h('div', { class: 'predict-after', html: o.explanation }));
       renderMath(why);
       result.classList.add('is-open');
       if (o.chapter) {
@@ -294,32 +296,69 @@
   }
 
   /* ---------- StepSolution ---------- */
-  /* Reveals one step per click. steps: HTML strings, or {label, html}. The last one is the solution. */
+  /* A ladder for a full worked solution. Each step shows a hint first, and its work only after a click.
+     o: {steps: [{hint, work, label}], open, startLabel, onDone}. The last step must state the final answer.
+     open: show the first hint right away. Otherwise a start button waits, so an exercise stays unspoiled. */
   function StepSolution(host, o) {
     const steps = o.steps;
-    const box = h('div', { class: 'steps' });
-    const row = h('div', { class: 'btn-row' });
+    const total = steps.length;
+    const box = h('div', { class: 'solution' });
+    const list = h('div', { class: 'steps', 'aria-live': 'polite' });
+    const hintLabel = h('span', { class: 'step-label' });
+    const hintText = h('div', { class: 'step-hint' });
+    const nextRow = h('div', { class: 'btn-row' });
+    const prompt = h('div', { class: 'step-next' }, [hintLabel, hintText, nextRow]);
     let shown = 0;
-    const hintBtn = Button(row, 'רמז', function () { showNext(); });
-    const allBtn = Button(row, 'הראה הכל', function () { while (shown < steps.length) showNext(); }, { ghost: true });
-    function label(i) {
-      const s = steps[i];
-      if (s.label) return s.label;
-      return i === steps.length - 1 ? 'הפתרון' : 'רמז ' + (i + 1);
+    let startBtn = null;
+    const revealBtn = Button(nextRow, '', showNext, { primary: true });
+
+    function paintPrompt() {
+      hintLabel.textContent = 'רמז לשלב ' + (shown + 1) + ' מתוך ' + total;
+      hintText.innerHTML = steps[shown].hint;
+      renderMath(hintText);
+      revealBtn.textContent = shown === total - 1 ? 'חשוף את השלב האחרון' : 'חשוף את שלב ' + (shown + 1);
     }
+
+    function open() {
+      if (startBtn) { startBtn.parentNode.remove(); startBtn = null; }
+      if (prompt.parentNode || shown >= total) return;
+      box.appendChild(h('div', { class: 'solution-title', text: 'הפתרון, שלב אחר שלב' }));
+      box.appendChild(list);
+      box.appendChild(prompt);
+      paintPrompt();
+    }
+
     function showNext() {
-      if (shown >= steps.length) return;
+      if (shown >= total) return;
       const s = steps[shown];
-      const node = h('div', { class: 'step' }, [h('span', { class: 'step-label', text: label(shown) }), h('div', { html: s.html || s })]);
-      box.appendChild(node);
+      const node = h('div', { class: 'step', tabindex: '-1' }, [
+        h('span', { class: 'step-label', text: s.label || 'שלב ' + (shown + 1) + ' מתוך ' + total }),
+        h('div', { class: 'step-q', html: s.hint }),
+        h('div', { class: 'step-work', html: s.work }),
+      ]);
+      list.appendChild(node);
       renderMath(node);
       shown++;
-      hintBtn.textContent = shown === steps.length - 1 ? 'הראה פתרון' : 'עוד רמז';
-      if (shown >= steps.length) { hintBtn.remove(); allBtn.remove(); if (o.onDone) o.onDone(); }
+      const behavior = reduced() ? 'auto' : 'smooth';
+      if (shown < total) {
+        paintPrompt();
+        prompt.scrollIntoView({ block: 'nearest', behavior });
+      } else {
+        prompt.remove();
+        node.focus({ preventScroll: true });
+        node.scrollIntoView({ block: 'nearest', behavior });
+        if (o.onDone) o.onDone();
+      }
     }
+
     host.appendChild(box);
-    host.appendChild(row);
-    return { el: box, showNext };
+    if (o.open) open();
+    else {
+      const startRow = h('div', { class: 'btn-row' });
+      box.appendChild(startRow);
+      startBtn = Button(startRow, o.startLabel || 'לפתרון בשלבים, עם רמז לפני כל שלב', open, { ghost: true });
+    }
+    return { el: box, open, showNext };
   }
 
   /* ---------- Numeric checking ---------- */
@@ -398,25 +437,33 @@
   }
 
   /* ---------- Quiz ---------- */
-  /* questions: {type: 'mc', q, options: [...], answer: index, why}
-                {type: 'num', q, answer, unit, tol, why}
+  /* questions: {type: 'mc', q, options: [...], answer: index, steps: [{hint, work}]}
+                {type: 'num', q, answer, unit, tol, steps: [{hint, work}]}
+     Each question is checked on its own, and its worked solution opens right there.
+     After a wrong answer the right one stays hidden until the last step is revealed.
      Fraction correct maps to stars with PHY.progress.quizStars. The best score is saved. */
   function Quiz(host, o) {
     const root = h('div', { class: 'quiz' });
     host.appendChild(root);
     let items = [];
-    let submit, resultBox;
+    let resultBox;
 
     function build() {
       root.innerHTML = '';
       items = o.questions.map(function (qd, i) {
         const box = h('div', { class: 'q' });
         box.appendChild(h('div', { class: 'q-head', html: '<span class="q-num">' + (i + 1) + '.</span>' + qd.q }));
-        const item = { qd, box, choice: -1 };
+        const item = { qd, box, choice: -1, done: false, good: false };
+        const checkRow = h('div', { class: 'btn-row' });
+        item.checkRow = checkRow;
+        item.checkBtn = Button(checkRow, 'בדוק', function () { checkItem(item); }, { primary: true, disabled: true });
         if (qd.type === 'num') {
           const nf = numField('phy-q-' + ++fieldId, '', qd.unit);
           item.input = nf.input;
-          nf.input.addEventListener('input', sync);
+          nf.input.addEventListener('input', function () { item.checkBtn.disabled = nf.input.value.trim() === ''; });
+          nf.input.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter' && nf.input.value.trim() !== '') checkItem(item);
+          });
           box.appendChild(nf.el);
         } else {
           const list = h('div', { class: 'predict-options', role: 'radiogroup' });
@@ -429,69 +476,80 @@
                 x.classList.toggle('is-selected', k === j);
                 x.setAttribute('aria-checked', k === j ? 'true' : 'false');
               });
-              sync();
+              item.checkBtn.disabled = false;
             });
             list.appendChild(b);
             return b;
           });
           box.appendChild(list);
         }
+        box.appendChild(checkRow);
         item.whyBox = h('div', { class: 'q-why', hidden: true });
         box.appendChild(item.whyBox);
         root.appendChild(box);
         return item;
       });
-      const row = h('div', { class: 'btn-row' });
-      submit = Button(row, 'הגש את הבוחן', grade, { primary: true, disabled: true });
-      root.appendChild(row);
       resultBox = h('div', { role: 'status' });
       root.appendChild(resultBox);
       renderMath(root);
     }
 
-    function sync() {
-      const all = items.every(function (it) {
-        return it.qd.type === 'num' ? it.input.value.trim() !== '' : it.choice >= 0;
+    function showAnswer(it) {
+      const qd = it.qd;
+      if (qd.type === 'num') {
+        it.whyBox.appendChild(h('div', { class: 'q-answer', text: 'התשובה: ' + PHY.fmt.unit(qd.answer, qd.unit || '', 2) }));
+        return;
+      }
+      it.opts.forEach(function (b, j) {
+        b.classList.toggle('is-correct', j === qd.answer);
+        b.classList.toggle('is-dim', j !== it.choice && j !== qd.answer);
+        if (j === qd.answer) b.querySelector('.opt-mark').textContent = '✓';
       });
-      submit.disabled = !all;
     }
 
-    function grade() {
-      let right = 0;
-      items.forEach(function (it) {
-        it.done = true;
-        const qd = it.qd;
-        let good;
-        if (qd.type === 'num') {
-          good = numClose(it.input.value, qd.answer, qd.tol);
-          it.input.classList.toggle('is-right', good);
-          it.input.classList.toggle('is-off', !good);
-          it.input.readOnly = true;
-        } else {
-          good = it.choice === qd.answer;
-          it.opts.forEach(function (b, j) {
-            b.disabled = true;
-            b.classList.remove('is-selected');
-            b.classList.toggle('is-correct', j === qd.answer);
-            b.classList.toggle('is-wrong', j === it.choice && j !== qd.answer);
-            b.classList.toggle('is-dim', j !== it.choice && j !== qd.answer);
-            b.querySelector('.opt-mark').textContent = j === qd.answer ? '✓' : j === it.choice ? '✗' : '';
-          });
-        }
-        if (good) right++;
-        it.box.classList.add(good ? 'is-right' : 'is-off');
-        const ans = qd.type === 'num' ? ' התשובה: ' + PHY.fmt.unit(qd.answer, qd.unit || '', 2) + '.' : '';
-        it.whyBox.innerHTML = '<span class="q-verdict ' + (good ? 'good">נכון.' : 'bad">לא מדויק.') + '</span>' + (good ? '' : ans) + ' ' + (qd.why || '');
-        it.whyBox.hidden = false;
-        renderMath(it.whyBox);
+    function checkItem(it) {
+      if (it.done) return;
+      it.done = true;
+      const qd = it.qd;
+      it.checkRow.remove();
+      if (qd.type === 'num') {
+        it.good = numClose(it.input.value, qd.answer, qd.tol);
+        it.input.classList.toggle('is-right', it.good);
+        it.input.classList.toggle('is-off', !it.good);
+        it.input.readOnly = true;
+      } else {
+        it.good = it.choice === qd.answer;
+        it.opts.forEach(function (b, j) {
+          b.disabled = true;
+          b.classList.remove('is-selected');
+          b.classList.toggle('is-correct', it.good && j === qd.answer);
+          b.classList.toggle('is-wrong', j === it.choice && !it.good);
+          b.classList.toggle('is-dim', it.good && j !== qd.answer);
+          b.querySelector('.opt-mark').textContent = j === it.choice ? (it.good ? '✓' : '✗') : '';
+        });
+      }
+      it.box.classList.add(it.good ? 'is-right' : 'is-off');
+      it.whyBox.innerHTML = it.good
+        ? '<span class="q-verdict good">נכון.</span>'
+        : '<span class="q-verdict bad">לא מדויק.</span> התשובה תיחשף בשלב האחרון.';
+      it.whyBox.hidden = false;
+      StepSolution(it.whyBox, {
+        steps: qd.steps,
+        open: !it.good,
+        startLabel: 'רוצה לראות את הדרך המלאה? לפתרון בשלבים',
+        onDone: it.good ? null : function () { showAnswer(it); },
       });
+      if (items.every(function (x) { return x.done; })) finish();
+    }
+
+    function finish() {
+      const right = items.filter(function (x) { return x.good; }).length;
       const score = right / items.length;
       const stars = PHY.progress.quizStars(score);
       if (o.chapter) {
         PHY.progress.setQuiz(o.chapter, score);
         if (o.section) PHY.progress.markSection(o.chapter, o.section);
       }
-      submit.remove();
       resultBox.className = 'quiz-result';
       resultBox.innerHTML = '';
       StarScore(resultBox, { value: stars, size: 34, animate: true });
@@ -501,9 +559,9 @@
         burst(resultBox, 30);
         PHY.mascot.say('שלושה כוכבים! אני שם אותם על הקיר, בכיוון צפון.', 'happy');
       } else if (score >= 0.6) {
-        PHY.mascot.say('יפה מאוד. ההסברים למטה סוגרים את הפינות.', 'happy');
+        PHY.mascot.say('יפה מאוד. הפתרונות בשלבים סוגרים את הפינות.', 'happy');
       } else {
-        PHY.mascot.say('קרא את ההסברים ונסה שוב. אני נפלתי הרבה יותר פעמים ממך.', 'dizzy');
+        PHY.mascot.say('עוברים על הפתרונות בשלבים, ומנסים שוב. אני נפלתי הרבה יותר פעמים.', 'dizzy');
       }
       if (o.onDone) o.onDone(score, stars);
     }
