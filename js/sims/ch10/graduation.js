@@ -59,7 +59,7 @@
     }
     let rained = false;
     if ('IntersectionObserver' in window) {
-      new IntersectionObserver(function (entries, io) {
+      const io = new IntersectionObserver(function (entries) {
         if (rained) return;
         if (entries[entries.length - 1].isIntersecting) {
           rained = true;
@@ -67,7 +67,8 @@
           PHY.mascot.say(opts.say || 'סיימנו. נפלתי, עפתי, נורתי והסתובבתי. ועל הרגליים, כל פעם. תודה על הדרך.', 'happy');
           io.disconnect();
         }
-      }, { threshold: 0.35 }).observe(box);
+      }, { threshold: 0.35 });
+      io.observe(box);
     }
     document.addEventListener('phy:progress', paint);
     paint();
