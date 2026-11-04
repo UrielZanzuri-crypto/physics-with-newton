@@ -25,7 +25,7 @@
     };
 
     const speedSlider = U.Slider(controlsEl, {
-      label: 'מהירות היריה', min: 10, max: 40, step: 1, value: S.v, unit: 'ms', digits: 0, color: 'var(--c-velocity)',
+      label: 'מהירות הירייה', min: 10, max: 40, step: 1, value: S.v, unit: 'ms', digits: 0, color: 'var(--c-velocity)',
       onInput(v) { S.v = v; paramChanged(); },
     });
     const heightSlider = U.Slider(controlsEl, {
@@ -41,8 +41,8 @@
     controlsEl.appendChild(row);
     const out = U.Readouts(controlsEl, [
       { key: 'angle', label: 'זווית הכיוון' },
-      { key: 'tm', label: 'זמן עד הפגישה' },
-      { key: 'y', label: 'גובה הפגישה', color: 'var(--c-displacement)' },
+      { key: 'tm', label: 'זמן מהירייה' },
+      { key: 'y', label: 'גובה המפגש, אם יהיה', color: 'var(--c-displacement)' },
       { key: 'res', label: 'תוצאה' },
     ]);
 

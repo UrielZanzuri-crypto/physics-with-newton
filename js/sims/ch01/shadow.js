@@ -96,8 +96,8 @@
 
       if (S.half) {
         const hx = S.L / 2;
-        view.line(hx, -0.35, hx, 0.45, { color: C.apple, width: 3 });
-        view.text(hx, 0, 'כאן החצי', { color: C.apple, weight: 700, size: 12.5, offset: [0, 34], halo: true });
+        view.line(hx, -0.35, hx, 0.45, { color: C.accent, width: 3 });
+        view.text(hx, 0, 'כאן החצי', { color: C.accent, weight: 700, size: 12.5, offset: [0, 34], halo: true });
       }
 
       /* Lamps */

@@ -1,0 +1,874 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>פרק 9: כבידה | פיזיקה עם ניוטון החתול</title>
+<meta name="description" content="תותח על הר, תפוח וירח, אסטרונאוטים שנופלים כל הזמן, ומסלולים סביב כדור הארץ: מדריך אינטראקטיבי לכבידה.">
+<script>try{var t=localStorage.getItem('phy-theme');document.documentElement.setAttribute('data-theme',t||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'))}catch(e){document.documentElement.setAttribute('data-theme','light')}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700&family=Rubik:wght@500;600;700;800&display=swap">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.11/katex.min.css">
+<link rel="stylesheet" href="../css/style.css">
+<style>
+  /* Chapter 9 only: discovery quests, the 3D view, the table of orbits. */
+  .quest-list { display: grid; gap: 8px; padding-top: 4px; }
+  .quest { display: flex; gap: 10px; align-items: flex-start; font-weight: 500; line-height: 1.5; }
+  .quest-mark { flex: none; width: 24px; height: 24px; border-radius: 50%; border: 2px solid var(--line-strong); display: grid; place-items: center; font-size: 0.82rem; font-weight: 800; color: var(--good); }
+  .quest.is-done { color: var(--ink-soft); }
+  .quest.is-done .quest-mark { background: var(--good-soft); border-color: var(--good); }
+  .c3d-stage { position: relative; width: 100%; min-height: 260px; background: var(--canvas-bg); overflow: hidden; }
+  .c3d-stage canvas { display: block; }
+  .c3d-stage.is-fallback { height: auto !important; min-height: 0; }
+  .c3d-status { position: absolute; inset: 0; display: grid; place-items: center; padding: 16px; text-align: center; color: var(--ink-soft); }
+  .c3d-status[hidden] { display: none; }
+  .c3d-fallback { padding: 18px; }
+  .orbit-table { width: 100%; border-collapse: collapse; font-size: 0.95rem; margin-top: 8px; }
+  .orbit-table th, .orbit-table td { padding: 7px 6px; border-bottom: 1px solid var(--line); text-align: start; }
+  .orbit-table th { font-family: var(--font-head); font-weight: 600; color: var(--ink-soft); font-size: 0.86rem; }
+  @media (max-width: 480px) { .orbit-table { font-size: 0.82rem; } .orbit-table th, .orbit-table td { padding: 6px 3px; } .orbit-table th { font-size: 0.76rem; } }
+  .toggle { min-height: 44px; }
+  .egg-cat { position: fixed; left: 0; top: 0; z-index: 61; width: 84px; height: 84px; pointer-events: none; }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-in">
+    <a class="brand" href="../index.html" aria-label="חזרה לדף הבית"><span data-brand-cat></span><span class="brand-name">ניוטון החתול</span></a>
+    <span class="topbar-spacer"></span>
+    <span class="topbar-title">פרק 9: כבידה</span>
+    <span data-theme-slot></span>
+  </div>
+  <div class="chapter-bar"><span data-chapter-bar></span></div>
+</header>
+
+<main>
+
+<!-- 1. HOOK -->
+<section class="section wrap" data-section="hook" id="hook">
+  <span class="kicker">פרק 9: כבידה</span>
+  <h1 class="hero-title">התותח על ההר</h1>
+  <div data-mascot="thinking" data-size="118" data-say="הר דמיוני. תותח אמיתי. ואני, כרגיל, בפנים."></div>
+  <p class="lead">ניוטון שוב בתוך תותח. הפעם התותח על פסגה של הר דמיוני, כל כך גבוה שאין שם אוויר שיעצור אותו.</p>
+  <p>בפרק 3 ראינו שככל שיורים מהר יותר, הקליע נוחת רחוק יותר. אבל שם הרצפה הייתה שטוחה, וכדור הארץ עגול. אז מה קורה כשמגבירים את המהירות עוד ועוד?</p>
+  <div id="pc-hook">
+    <figure class="sim"><canvas id="c-hook"></canvas><div class="sim-controls" id="ctl-hook"></div></figure>
+  </div>
+  <p class="block-gap">למה שראינו כאן קוראים <b>מסלול</b>: נפילה חופשית שלא נגמרת, כי הקרקע מתעקלת מתחת למה שנופל. ככה ניוטון טס סביב העולם בלי מנוע, ובלי שאף אחד שאל אותו.</p>
+</section>
+
+<!-- 2. WHY 8 KM/S -->
+<section class="section wrap" data-section="curve" id="curve">
+  <div class="section-head"><span class="section-num">2</span><h2>למה דווקא 8 ק"מ בשנייה?</h2></div>
+  <p>יש לזה הסבר שאפשר לכתוב על מפית. צריך רק שני מספרים: כמה האדמה מתעקלת, וכמה דברים נופלים.</p>
+  <p>נתחיל מהעיקול. מותחים קו ישר לגמרי שנוגע באדמה בנקודה אחת, והולכים לאורכו 8 ק"מ. האדמה מתרחקת מהקו לאט לאט.</p>
+  <div id="pc-curve">
+    <figure class="sim"><canvas id="c-curve"></canvas><div class="sim-controls" id="ctl-curve"></div></figure>
+  </div>
+  <p class="block-gap">המהירות שבה הנפילה והעיקול מתאזנים נקראת <b>מהירות מסלול</b>. קרוב לקרקע היא \(v = \sqrt{gR}\), שזה 8000 מ/ש, והקפה שלמה לוקחת בערך 84 דקות.</p>
+</section>
+
+<!-- 3. INVERSE SQUARE -->
+<section class="section wrap" data-section="inverse" id="inverse">
+  <div class="section-head"><span class="section-num">3</span><h2>מה קורה לכבידה כשמתרחקים?</h2></div>
+  <p>קרוב לקרקע הכבידה היא 10 מ/ש². היא לא יכולה להישאר כזאת לנצח, כי אז גם הירח היה נופל עלינו באותה תאוצה. אז איך היא נחלשת?</p>
+  <p>נתחיל מניסוי בלי כבידה בכלל. ניוטון מרסס צבע דרך מסגרת ריבועית אל קיר, כי אף אחד לא עצר אותו בזמן.</p>
+  <div id="pc-spray">
+    <figure class="sim"><canvas id="c-spray"></canvas><div class="sim-controls" id="ctl-spray"></div></figure>
+  </div>
+  <h3 class="block-gap">מהצבע לכבידה</h3>
+  <p>הכבידה של כדור הארץ מתפשטת לכל הכיוונים, כמו התרסיס. במרחק כפול היא פרושה על שטח פי 4, ולכן חלשה פי 4. לזה קוראים <b>חוק הריבוע ההפוך</b>.</p>
+  <div class="formula">
+    <h3>חוק הכבידה</h3>
+    <div class="formula-main">\[F = \frac{G M m}{r^2}\]</div>
+    <ul class="legend-list">
+      <li><span class="sym">\(F\)</span><span><span class="c-force">הכוח</span> שכל אחד מהגופים מרגיש, בניוטון.</span></li>
+      <li><span class="sym">\(M, m\)</span><span>המסות של שני הגופים, למשל כדור הארץ והחתול.</span></li>
+      <li><span class="sym">\(r\)</span><span>המרחק בין <b>המרכזים</b>, לא מהקרקע. זו הטעות הכי נפוצה בפרק.</span></li>
+      <li><span class="sym">\(G\)</span><span>קבוע הכבידה, בערך \(6.67 \times 10^{-11}\) ניוטון·מ²/ק"ג². מספר קטן מאוד, ולכן רק גופים ענקיים מורגשים.</span></li>
+    </ul>
+    <p class="block-gap">על הקרקע \(r = R\) והכוח הוא \(mg\), ולכן \(g = GM / R^2\). בלי לדעת את \(G\) ואת \(M\) בנפרד: \(GM = gR^2 \approx 4.1 \times 10^{14}\) מ³/ש².</p>
+  </div>
+  <p class="block-gap">שני הגופים מרגישים כוח באותו גודל בדיוק, בכיוונים הפוכים, לפי החוק השלישי מפרק 4. ניוטון מושך את כדור הארץ ב-50 ניוטון, כמו שכדור הארץ מושך אותו. כדור הארץ פשוט כבד מכדי לשים לב, והחתול נעלב.</p>
+  <p>התרסיס הוא רמז, לא הוכחה. הבדיקה האמיתית של החוק הגיעה מלמעלה, מהירח.</p>
+</section>
+
+<!-- 4. APPLE AND MOON -->
+<section class="section wrap" data-section="moon" id="moon">
+  <div class="section-head"><span class="section-num">4</span><h2>התפוח והירח</h2></div>
+  <p>הסיפור על התפוח מפורסם. החלק החשוב בו הוא השאלה שבאה אחריו: האם מה שמפיל את התפוח הוא גם מה שמחזיק את הירח במסלול?</p>
+  <p>התפוח נמצא רדיוס אחד של כדור הארץ מהמרכז. הירח נמצא 60 רדיוסים מהמרכז, ומשלים סיבוב ב-27 ימים בערך. זה כל המידע שצריך.</p>
+  <div id="pc-moon">
+    <figure class="sim"><canvas id="c-moon"></canvas><div class="sim-controls" id="ctl-moon"></div></figure>
+  </div>
+  <p class="block-gap">אייזק ניוטון, זה עם הפאה ובלי הזנב, עשה את החשבון הזה לפני למעלה משלוש מאות שנים. שני מספרים שהגיעו מכיוונים שונים לגמרי, נפילה של תפוח והקפה של ירח, יצאו אותו דבר.</p>
+  <p>מאותו רגע כבידה היא לא "מה שקורה בכדור הארץ". זה חוק אחד, לכל מקום ביקום.</p>
+</section>
+
+<!-- 5. OTHER WORLDS -->
+<section class="section wrap" data-section="worlds" id="worlds">
+  <div class="section-head"><span class="section-num">5</span><h2>כמה שוקלים על מאדים?</h2></div>
+  <p>בפרק 4 הפרדנו בין מסה למשקל. מסה היא כמה חומר יש בגוף, בק"ג. משקל הוא בכמה כוח הכוכב מושך אותו, בניוטון.</p>
+  <p>ניוטון יצא לסיבוב בין עולמות, ועל כל אחד מחכים לו מאזניים ותפוח שנופל מגובה 5 מ'. אפשר להפיל, ואפשר לשנות את המסה שלו.</p>
+  <figure class="sim"><canvas id="c-lanes"></canvas><div class="sim-controls" id="ctl-lanes"></div></figure>
+  <p class="block-gap">המסה של ניוטון נשארת 5 ק"ג בכל מקום. המשקל שלו קופץ מ-8 ניוטון על הירח ל-125 ניוטון על צדק, וזו הסיבה שהוא מבקש להישאר על הירח.</p>
+  <p>אבל מאיפה מגיעים המספרים האלה של g? כל מה שצריך נמצא בנוסחה מסעיף 3: \(g = GM / R^2\). כוכב כבד יותר מושך חזק יותר, וכוכב גדול יותר מרחיק אותנו מהמרכז שלו.</p>
+  <div id="pc-worlds">
+    <figure class="sim"><canvas id="c-worlds"></canvas><div class="sim-controls" id="ctl-worlds"></div></figure>
+  </div>
+</section>
+
+<!-- 6. FLOATING -->
+<section class="section wrap" data-section="float" id="float">
+  <div class="section-head"><span class="section-num">6</span><h2>למה אסטרונאוטים מרחפים?</h2></div>
+  <p>תחנת החלל טסה בגובה 400 ק"מ מעל הקרקע. בסרטונים כולם מרחפים בה, כולל העיפרון והקפה.</p>
+  <p>כמעט כולם יודעים את התשובה: "אין שם כבידה". אז בואו נעמיד שם מאזניים, ונבדוק.</p>
+  <div id="pc-float">
+    <figure class="sim"><canvas id="c-float"></canvas><div class="sim-controls" id="ctl-float"></div></figure>
+  </div>
+  <p class="block-gap">מאזניים לא מודדים כבידה, אלא כמה הרצפה דוחפת אותנו. בתא שנופל הרצפה נופלת יחד איתנו, ולכן היא לא דוחפת כלום. לזה קוראים <b>חוסר משקל</b>, גם כשהכבידה חזקה.</p>
+  <p>זו בדיוק המעלית מפרק 4 שהכבל שלה נקרע, עם הבדל אחד: בתחנה יש גם 7.8 ק"מ/ש הצידה, ולכן הרצפה של כדור הארץ אף פעם לא מגיעה.</p>
+</section>
+
+<!-- 7. ORBIT LAB -->
+<section class="section wrap" data-section="orbit" id="orbit">
+  <div class="section-head"><span class="section-num">7</span><h2>כמה מהר טסים למעלה?</h2></div>
+  <p>עד עכשיו דיברנו על מסלול נמוך. עכשיו נעלה: רחוק יותר הכבידה חלשה יותר, אז כדי להישאר במעגל צריך לטוס אחרת.</p>
+  <p>נשווה שני לוויינים: השני רחוק מהמרכז פי 4 מהראשון. ניוטון כבר הודיע שהוא לוקח את זה שקרוב יותר למטבח.</p>
+  <div id="pc-orbit">
+    <figure class="sim"><canvas id="c-orbit"></canvas><div class="sim-controls" id="ctl-orbit"></div></figure>
+  </div>
+  <div class="formula block-gap">
+    <h3>מהירות וזמן הקפה</h3>
+    <div class="formula-main">\[v = \sqrt{\frac{GM}{r}} \qquad T = \frac{2\pi r}{v}\]</div>
+    <p>הכבידה היא הכוח שמספק את התאוצה הצנטריפטלית מפרק 6. משווים \(GMm/r^2 = mv^2/r\), והמסה של הלוויין \(m\) מתבטלת.</p>
+    <p class="block-gap">לכן גם לוויין ענק וגם בורג שנפל ממנו טסים באותו מסלול, באותה מהירות. במסלול גבוה יותר טסים לאט יותר, ועוברים דרך ארוכה יותר, ושני הדברים יחד מאריכים את ההקפה.</p>
+  </div>
+</section>
+
+<!-- 8. KEPLER -->
+<section class="section wrap" data-section="kepler" id="kepler">
+  <div class="section-head"><span class="section-num">8</span><h2>אליפסות, וקפלר</h2></div>
+  <p>לא כל מסלול הוא מעגל. בירי של 9 ק"מ/ש מסעיף 1 יוצאת אליפסה, שבה הלוויין פעם קרוב ופעם רחוק.</p>
+  <p>יוהנס קפלר גילה את החוקים של אליפסות כאלה עוד לפני שמישהו ידע למה הם נכונים. נראה אחד מהם קורה.</p>
+  <div id="pc-kepler">
+    <figure class="sim"><canvas id="c-kepler"></canvas><div class="sim-controls" id="ctl-kepler"></div></figure>
+  </div>
+  <div class="formula block-gap">
+    <h3>שלושת החוקים של קפלר</h3>
+    <ul class="legend-list">
+      <li><span class="sym">1</span><span><b>אליפסה:</b> המסלול הוא אליפסה, וכדור הארץ לא במרכז שלה אלא בצד, בנקודה שנקראת מוקד.</span></li>
+      <li><span class="sym">2</span><span><b>שטחים שווים:</b> בזמן שווה, הקו ממרכז כדור הארץ ללוויין מכסה שטח שווה. קרוב למרכז הפרוסה קצרה ורחבה, ולכן טסים מהר.</span></li>
+      <li><span class="sym">3</span><span><b>זמן ומרחק:</b> \(T^2\) יחסי ל-\(r^3\), אותו יחס לכל מה שמקיף את אותו גוף. באליפסה \(r\) הוא חצי מהציר הארוך.</span></li>
+    </ul>
+    <div class="formula-main">\[T^2 = \frac{4\pi^2}{GM}\, r^3\]</div>
+    <p class="muted small">בכנות, מה הוכחנו ומה רק ראינו: את החוק השלישי למעגל הוכחנו, בשתי שורות: מ-\(T = 2\pi r / v\) יוצא \(T^2 = 4\pi^2 r^2 / v^2\), ואחרי הצבת \(v^2 = GM/r\) נשאר \(T^2 = 4\pi^2 r^3 / GM\). אליפסה ושטחים שווים ראינו בסימולציה שפותרת את חוק הכבידה צעד אחרי צעד. ההוכחה המלאה שלהם צריכה חשבון דיפרנציאלי, והיא מעבר לקורס.</p>
+  </div>
+  <h3 class="block-gap">לוויין שעומד במקום</h3>
+  <p>מה אם נמצא מרחק שבו ההקפה לוקחת בדיוק 24 שעות? אם המסלול גם מעל קו המשווה ובכיוון הסיבוב של כדור הארץ, הלוויין מסתובב יחד איתו, ונראה מהקרקע כאילו הוא תלוי מעל אותה נקודה. לזה קוראים מסלול <b>גיאוסטציונרי</b>, ושם יושבים לווייני הטלוויזיה.</p>
+  <figure class="sim"><canvas id="c-third"></canvas><div class="sim-controls" id="ctl-third"></div></figure>
+  <p class="block-gap">במספרים המעוגלים שלנו יוצא כ-42,600 ק"מ מהמרכז, ועם המספרים המדויקים של כדור הארץ כ-42,200 ק"מ. כלומר בערך 42,000 ק"מ מהמרכז, שישה וחצי רדיוסים.</p>
+  <table class="orbit-table">
+    <thead><tr><th>מסלול</th><th>מרחק מהמרכז</th><th>זמן הקפה</th><th>\(T^2 / r^3\) (ש²/מ³)</th></tr></thead>
+    <tbody>
+      <tr><td>תחנת חלל</td><td>6,800 ק"מ</td><td>92 דק'</td><td>\(9.64 \times 10^{-14}\)</td></tr>
+      <tr><td>גיאוסטציונרי</td><td>כ-42,600 ק"מ</td><td>24 שעות</td><td>\(9.64 \times 10^{-14}\)</td></tr>
+      <tr><td>הירח</td><td>384,000 ק"מ</td><td>27 ימים</td><td>\(9.64 \times 10^{-14}\)</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- 9. ESCAPE -->
+<section class="section wrap" data-section="escape" id="escape">
+  <div class="section-head"><span class="section-num">9</span><h2>לברוח מכדור הארץ</h2></div>
+  <p>הכבידה לא נגמרת אף פעם, היא רק נחלשת. אז אפשר בכלל לעזוב ולא לחזור? זו שאלה על אנרגיה, כמו בפרק 5.</p>
+  <p>ניוטון במסלול מעגלי נמוך, ב-8 ק"מ/ש. הוא החליט שנמאס לו, ומבקש לדעת כמה עוד צריך.</p>
+  <div id="pc-escape">
+    <figure class="sim"><canvas id="c-escape"></canvas><div class="sim-controls" id="ctl-escape"></div></figure>
+  </div>
+  <div class="formula block-gap">
+    <h3>אנרגיה בכבידה</h3>
+    <div class="formula-main">\[U = -\frac{GMm}{r}\]</div>
+    <p>בפרק 5 האנרגיה הפוטנציאלית הייתה \(mgh\), וזה נכון רק קרוב לקרקע, כש-g לא משתנה. למעלה הכוח נחלש, ולכן נדרשת נוסחה אחרת: \(U\). המינוס אומר שאנחנו בתוך בור, ואפס הוא למעלה, רחוק מאוד.</p>
+    <div class="formula-main">\[v_{\text{esc}} = \sqrt{\frac{2GM}{r}} = \sqrt{2}\; v_{\text{orb}}\]</div>
+    <p>\(v_{\text{esc}}\) היא <b>מהירות הבריחה</b> (מהמילה escape): המהירות שנותנת אנרגיה כוללת 0. בספרים רבים קוראים לה מהירות מילוט. \(v_{\text{orb}}\) היא מהירות המסלול מסעיף 7.</p>
+    <p class="block-gap">במספרים המעוגלים שלנו הבריחה מכדור הארץ היא 11.3 ק"מ/ש, ועם המספרים המדויקים 11.2 ק"מ/ש. היא לא תלויה במסה של מי שבורח.</p>
+    <p class="muted small">את הנוסחה של \(U\) לא הוכחנו: היא השטח מתחת לגרף של הכוח, ולחשב אותו צריך אינטגרל. בדקנו אותה בסימולציה: האנרגיה הכוללת נשמרת לאורך כל הדרך.</p>
+  </div>
+</section>
+
+<!-- 10. EARNED FORMULAS -->
+<section class="section wrap" data-section="formula" data-passive id="formula">
+  <div class="section-head"><span class="section-num">10</span><h2>הנוסחאות שהרווחנו</h2></div>
+  <p>כל הפרק יוצא מנוסחה אחת ומהחוק השני של ניוטון. כאן הכול ביחד, עם המספרים שצריך למבחן.</p>
+  <div class="formula">
+    <h3>כוח ותאוצה</h3>
+    <div class="formula-main">\[F = \frac{GMm}{r^2} \qquad g(r) = \frac{GM}{r^2} = g_0 \left(\frac{R}{r}\right)^2\]</div>
+    <ul class="legend-list">
+      <li><span class="sym">\(r\)</span><span>מהמרכז. בגובה \(h\) מעל הקרקע, \(r = R + h\).</span></li>
+      <li><span class="sym">\(g_0\)</span><span>הכבידה על הקרקע, 10 מ/ש².</span></li>
+      <li><span class="sym">\(R\)</span><span>רדיוס כדור הארץ, 6400 ק"מ.</span></li>
+      <li><span class="sym">\(GM\)</span><span>\(g_0 R^2 \approx 4.1 \times 10^{14}\) מ³/ש². בכוכב אחר, \(g = GM/R^2\) עם המסה והרדיוס שלו.</span></li>
+    </ul>
+  </div>
+  <div class="formula">
+    <h3>מסלול מעגלי</h3>
+    <div class="formula-main">\[v = \sqrt{\frac{GM}{r}} \qquad T = \frac{2\pi r}{v} \qquad T^2 = \frac{4\pi^2}{GM} r^3\]</div>
+    <p>קרוב לקרקע: \(v = \sqrt{g_0 R} = 8\) ק"מ/ש ו-\(T \approx 84\) דקות. מרחק פי 4: <span class="c-vel">מהירות</span> חצי, וזמן הקפה פי 8. המסה של הלוויין לא מופיעה בכלל.</p>
+  </div>
+  <div class="formula">
+    <h3>אנרגיה ובריחה</h3>
+    <div class="formula-main">\[E = \tfrac{1}{2} m v^2 - \frac{GMm}{r} \qquad v_{\text{esc}} = \sqrt{2}\, v_{\text{orb}}\]</div>
+    <p>\(E\) נשמרת לאורך כל המסלול. אם \(E < 0\) חוזרים, ואם \(E \ge 0\) לא חוזרים. מכדור הארץ \(v_{\text{esc}}\), מהירות הבריחה, היא 11.3 ק"מ/ש, ו-\(v_{\text{orb}}\) היא מהירות המסלול באותו מקום.</p>
+  </div>
+</section>
+
+<!-- 11. 3D -->
+<section class="section wrap-wide" data-section="view3d" data-passive id="view3d">
+  <div class="section-head"><span class="section-num">11</span><h2>אותם מסלולים, בתלת-ממד</h2></div>
+  <p>עד עכשיו הסתכלנו מלמעלה, על דף שטוח. כאן אפשר לסובב את העולם בגרירה, להטות את המסלול ולהתרחק ממנו.</p>
+  <p class="muted">מומלץ לנסות את הכפתור "גיאוסטציונרי": החתול נשאר מעל אותה נקודה, וכדור הארץ מסתובב איתו. ועוד דבר: בכל הטיה המישור של המסלול עובר דרך מרכז כדור הארץ, כי הכוח תמיד פונה למרכז.</p>
+  <figure class="sim"><div id="o3d-host"></div><div class="sim-controls" id="ctl-3d"></div></figure>
+</section>
+
+<!-- 12. PLAYGROUND -->
+<section class="section wrap-wide" data-section="playground" id="playground">
+  <div class="section-head"><span class="section-num">12</span><h2>מגרש המסלולים</h2></div>
+  <p>כאן התותח בידיים שלך. אפשר להזיז את הסליידרים או לגרור את החץ הכחול, והקו המקווקו מראה מראש לאן הוא טס.</p>
+  <p>כל שיגור משאיר מסלול. יש כאן שלוש משימות גילוי, ואף אחד לא יגלה את המספרים לפני שמוצאים אותם.</p>
+  <figure class="sim"><canvas id="c-play"></canvas><div class="sim-controls" id="ctl-play"></div></figure>
+  <div class="quest-list block-gap" id="quests"></div>
+</section>
+
+<!-- 13. GAME -->
+<section class="section wrap-wide" data-section="game" id="game">
+  <div class="section-head"><span class="section-num">13</span><h2>משחקון: משימה למסלול</h2></div>
+  <p>שלוש משימות, מספרים חדשים בכל פעם. הזמן בהן מואץ מאוד, ודלק הוא הכסף: כל שינוי מהירות עולה, וגם ניסיון שנכשל נספר.</p>
+  <p class="muted small">קרוב לכמות הכי חסכונית נותן 3 נקודות, בזבוז קטן 2, וכל השאר נקודה אחת. 8 נקודות ומעלה הן 3 כוכבים, ו-5 ומעלה הן 2 כוכבים.</p>
+  <figure class="sim"><canvas id="c-game"></canvas><div class="sim-controls" id="ctl-game"></div></figure>
+</section>
+
+<!-- 14. TRAPS -->
+<section class="section wrap" data-section="traps" id="traps">
+  <div class="section-head"><span class="section-num">14</span><h2>מלכודות</h2></div>
+  <p>כבר נפלנו יחד בשתיים: "אין כבידה במסלול" ו"הירח לא נופל". הנה עוד שלוש שחוזרות בכל מבחן. כאן ליפול בהן עולה רק מבוכה קטנה.</p>
+  <div id="pc-trap1">
+    <figure class="sim"><canvas id="c-trap1"></canvas><div class="sim-controls" id="ctl-trap1"></div></figure>
+  </div>
+  <div id="pc-trap2" class="block-gap">
+    <figure class="sim"><canvas id="c-trap2"></canvas><div class="sim-controls" id="ctl-trap2"></div></figure>
+  </div>
+  <div id="pc-trap3" class="block-gap">
+    <figure class="sim"><canvas id="c-trap3"></canvas><div class="sim-controls" id="ctl-trap3"></div></figure>
+  </div>
+</section>
+
+<!-- 15. EXAM PROBLEMS -->
+<section class="section wrap" data-section="problems" id="problems">
+  <div class="section-head"><span class="section-num">15</span><h2>שאלות מכינה</h2></div>
+  <p>ככה זה נראה במבחן. כדאי לנסות לבד, ואם נתקעים יש רמז לפני כל שלב של הפתרון. בכל השאלות \(g = 10\) מ/ש² על הקרקע ו-\(R = 6400\) ק"מ.</p>
+  <div id="problems-host"></div>
+</section>
+
+<!-- 16. QUIZ -->
+<section class="section wrap" data-section="quiz" id="quiz">
+  <div class="section-head"><span class="section-num">16</span><h2>בוחן</h2></div>
+  <p>חמש שאלות על הפרק ועוד שתיים שחוזרות לפרקים קודמים. הציון הטוב ביותר נשמר, ואפשר לנסות שוב כמה שרוצים.</p>
+  <div id="quiz-host" class="block-gap"></div>
+</section>
+
+<!-- 17. POCKET CARD -->
+<section class="section wrap" data-section="pocket" data-passive id="pocket">
+  <div class="section-head"><span class="section-num">17</span><h2>כרטיס כיס</h2></div>
+  <div class="pocket">
+    <h3>כבידה על רגל אחת</h3>
+    <div class="pocket-grid">
+      <div class="pocket-item"><b>החוק:</b> \(F = GMm / r^2\), ו-\(r\) תמיד מהמרכז.</div>
+      <div class="pocket-item"><b>בלי G:</b> \(GM = gR^2\), ובגובה \(r\): \(g(r) = g_0 (R/r)^2\).</div>
+      <div class="pocket-item"><b>כוכב אחר:</b> \(g = GM/R^2\). מסה ×2 ורדיוס ×2 נותנים \(g / 2\).</div>
+      <div class="pocket-item"><b>מסלול:</b> \(v = \sqrt{GM/r}\), \(T = 2\pi r / v\). קרוב לקרקע: 8 ק"מ/ש ו-84 דק'.</div>
+      <div class="pocket-item"><b>מרחק ×4:</b> <span class="c-vel">מהירות</span> חצי, זמן הקפה פי 8. המסה של הלוויין לא משנה.</div>
+      <div class="pocket-item"><b>קפלר:</b> אליפסה, שטחים שווים, \(T^2 \propto r^3\). גיאוסטציונרי: בערך 42,000 ק"מ מהמרכז.</div>
+      <div class="pocket-item"><b>בריחה:</b> \(U = -GMm/r\), ו-\(v_{\text{esc}} = \sqrt{2}\, v_{\text{orb}}\) = 11.3 ק"מ/ש.</div>
+      <div class="pocket-item"><b>חוסר משקל:</b> <span class="c-acc">תאוצה</span> \(a = g\) של כולם, אז המאזניים מראים 0 ניוטון. הכבידה עובדת מצוין.</div>
+      <div class="pocket-item"><b>להשיג תחנה מלפנים:</b> בולמים, יורדים, ואז מהירים יותר.</div>
+    </div>
+    <div class="pocket-quote">"מסלול זה לנפול כל הזמן ולהחטיא את הרצפה. אני עושה את זה שנים, רק בלי ההחטאה."</div>
+  </div>
+</section>
+
+</main>
+
+<div data-chapter-nav></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.11/katex.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.11/contrib/auto-render.min.js"></script>
+<script src="../js/core/fmt.js"></script>
+<script src="../js/core/vec.js"></script>
+<script src="../js/core/progress.js"></script>
+<script src="../js/core/canvas.js"></script>
+<script src="../js/core/loop.js"></script>
+<script src="../js/core/mascot.js"></script>
+<script src="../js/core/ui.js"></script>
+<script src="../js/sims/ch02/plot.js"></script>
+<script src="../js/sims/ch03/ballistics.js"></script>
+<script src="../js/sims/ch09/grav-kit.js"></script>
+<script src="../js/sims/ch09/mountain-cannon.js"></script>
+<script src="../js/sims/ch09/falling-curve.js"></script>
+<script src="../js/sims/ch09/spray.js"></script>
+<script src="../js/sims/ch09/apple-moon.js"></script>
+<script src="../js/sims/ch09/worlds.js"></script>
+<script src="../js/sims/ch09/tower-station.js"></script>
+<script src="../js/sims/ch09/orbit-lab.js"></script>
+<script src="../js/sims/ch09/kepler.js"></script>
+<script src="../js/sims/ch09/escape.js"></script>
+<script src="../js/sims/ch09/orbit-3d.js"></script>
+<script src="../js/sims/ch09/mission-orbit.js"></script>
+<script>
+(function () {
+  'use strict';
+  const CH = '09';
+  const U = PHY.ui;
+  const $ = (id) => document.getElementById(id);
+  const TAG = 'קודם מנחשים';
+  const TRAP = 'מלכודת';
+
+  /* ---------- 1. Hook ---------- */
+  const hookSim = PHY.sims.mountainCannon($('c-hook'), $('ctl-hook'), { locked: true, speed: 8 });
+  hookSim.start();
+  U.PredictCard($('pc-hook'), {
+    chapter: CH, id: 'hook', section: 'hook', tag: TAG,
+    question: `יורים את ניוטון אופקית מהפסגה, ב-8 ק"מ בשנייה. אין אוויר. מה יקרה לו?`,
+    options: [
+      { text: `ינחת. נכון, רחוק מאוד, אבל כל מה שנורה נוחת בסוף.`, why: `ככה זה תמיד בפרק 3, כי שם הרצפה שטוחה. כאן הקרקע מתעקלת ונשמטת מתחתיו בדיוק בקצב שבו הוא נופל.` },
+      { text: `יעוף לחלל. 8 ק"מ בשנייה, מי יעצור אותו?`, why: `נשמע המון, אבל הכבידה מושכת אותו לאורך כל הדרך. בשביל לברוח באמת צריך עוד הרבה מהירות, ונגיע לזה בסעיף 9.` },
+      { text: `ימשיך ליפול כל הזמן, ולעולם לא ינחת.`, correct: true },
+      { text: `ייעצר באוויר ויסתכל למטה, כמו בסרטים מצוירים.`, why: `גם ניוטון קיווה. בעולם האמיתי הוא לא מקבל רגע להבין מה קרה.` },
+    ],
+    onRun: async () => {
+      await hookSim.play();
+      hookSim.setParam('locked', false);
+    },
+    steps: [
+      { hint: `מה הכבידה עשתה לניוטון בכל רגע של המעוף? מה מראה החץ האדום?`,
+        work: `היא משכה אותו אל מרכז כדור הארץ כל הזמן, בתאוצה של 10 מ/ש². הוא נפל כל הדרך, ולא הפסיק לרגע.` },
+      { hint: `אז למה ב-5 ק"מ/ש הוא פגע בקרקע, וב-8 ק"מ/ש לא?`,
+        work: `כי כדור הארץ עגול. ככל שטסים מהר יותר, הקרקע מתעקלת ונשמטת מתחת מהר יותר. ב-8 ק"מ/ש היא נשמטת בדיוק בקצב הנפילה, והמרחק מהמרכז לא משתנה.` },
+      { hint: `כמה זמן לוקח סיבוב שלם? היקף המעגל לחלק למהירות.`,
+        work: `\\[T = \\frac{2\\pi R}{v} = \\frac{2\\pi \\cdot 6400\\ \\text{km}}{8\\ \\text{km/s}} \\approx 5027\\ \\text{s} \\approx 84\\ \\text{min}\\] התשובה: הוא נופל ומחטיא, וחוזר להר אחרי 84 דקות. הוא לא נוחת.` },
+    ],
+    explanation: `<p><b>עכשיו תורך:</b> הסליידר פתוח. מה קורה ב-7.5 ק"מ/ש? וב-9 ק"מ/ש?</p>`,
+    sayRight: 'ידעת?! ואני חשבתי שרק אני נופל עם סטייל.',
+    sayWrong: 'גם אני הייתי בטוח שאני נוחת. אפילו הבאתי כרית.',
+  });
+
+  /* ---------- 2. Why 8 km/s ---------- */
+  const curveSim = PHY.sims.fallingCurve($('c-curve'), $('ctl-curve'), { locked: true });
+  curveSim.start();
+  U.PredictCard($('pc-curve'), {
+    chapter: CH, id: 'curve', section: 'curve', tag: TAG,
+    question: `בסוף הקו הישר, אחרי 8 ק"מ, כמה נמוכה הקרקע מהקו?`,
+    options: [
+      { text: `0 מ'. ב-8 ק"מ האדמה שטוחה, רואים את זה מהחלון.`, why: `נראית שטוחה, אבל כל קטע שלה מתעקל קצת. קטן, ולא אפס.` },
+      { text: `5 מ'.`, correct: true },
+      { text: `800 מ'. 8 ק"מ זה המון.`, why: `זה מרגיש ככה, אבל כדור הארץ ענק. ל-6400 ק"מ של רדיוס, 8 ק"מ זה כמעט כלום.` },
+      { text: `5 ק"מ. כדור הארץ עגול, לא?`, why: `זה היה נכון לכדור קטן בהרבה. בכדור הארץ קטע של 8 ק"מ הוא כמעט ישר.` },
+    ],
+    onRun: async () => {
+      await curveSim.play();
+      curveSim.setParam('locked', false);
+    },
+    steps: [
+      { hint: `נצייר משולש ישר-זווית ממרכז כדור הארץ. מהן הצלעות, ומה אומר פיתגורס מפרק 1?`,
+        work: `ניצב אחד הוא \\(R\\), עד נקודת המגע. ניצב שני הוא הקו הישר, \\(s = 8\\) ק"מ. היתר הוא \\(R + d\\), כש-\\(d\\) הוא מה שאנחנו מחפשים. לכן \\[(R + d)^2 = R^2 + s^2\\]` },
+      { hint: `\\(d\\) קטן מאוד לעומת \\(R\\). מה נשאר אחרי פתיחת הסוגריים?`,
+        work: `\\(2Rd + d^2 = s^2\\), ואת \\(d^2\\) אפשר לזרוק. \\[d = \\frac{s^2}{2R} = \\frac{(8\\ \\text{km})^2}{2 \\cdot 6400\\ \\text{km}} = 0.005\\ \\text{km} = 5\\ \\text{m}\\]` },
+      { hint: `וכמה כל דבר נופל בשנייה הראשונה? זו נוסחה מפרק 2.`,
+        work: `\\(5t^2\\), כלומר 5 מ' בשנייה אחת. אותו מספר!` },
+      { hint: `אז איזו מהירות גורמת לנפילה ולעיקול להתאזן?`,
+        work: `טסים 8 ק"מ בשנייה אחת, האדמה ירדה 5 מ', וניוטון נפל 5 מ'. הגובה מעל הקרקע לא השתנה. ובכלל: בזמן \\(t\\) ניוטון נופל \\(\\tfrac12 g t^2\\), והאדמה יורדת \\((vt)^2 / 2R\\). נשווה, והזמן מתבטל: \\(v^2 = gR\\). \\[v = \\sqrt{gR} = \\sqrt{10\\ \\text{m/s}^2 \\cdot 6.4 \\times 10^{6}\\ \\text{m}} = 8000\\ \\text{m/s}\\] התשובה: הקרקע נמוכה ב-5 מ' בלבד, ולכן 8 ק"מ/ש.` },
+    ],
+    explanation: `<p><b>עכשיו תורך:</b> מה קורה לגובה מעל הקרקע ב-4 ק"מ/ש? וב-12 ק"מ/ש?</p>`,
+    sayRight: 'חמישה מטרים. ואמרו לי שאני מגזים.',
+    sayWrong: 'גם אני חשבתי שהעולם מתעקל יותר. הוא פשוט גדול מאוד.',
+  });
+
+  /* ---------- 3. Inverse square ---------- */
+  const spraySim = PHY.sims.spray($('c-spray'), $('ctl-spray'), { locked: true });
+  spraySim.start();
+  U.PredictCard($('pc-spray'), {
+    chapter: CH, id: 'spray', section: 'inverse', tag: TAG,
+    question: `מרחיקים את הקיר פי 2 מהתרסיס. כמה צבע מגיע עכשיו למשבצת בגודל של המסגרת?`,
+    options: [
+      { text: `חצי. רחוק פי 2, צבע פי 2 פחות. פשוט.`, why: `זה היה נכון אם הכתם היה גדל רק לרוחב. אבל הוא גדל גם לגובה, ושני הדברים יחד נותנים פי 4.` },
+      { text: `רבע.`, correct: true },
+      { text: `אותו דבר. זה אותו תרסיס.`, why: `נכון שכמות הצבע כולה לא השתנתה. אבל היא נפרשת על הרבה יותר משבצות, ולכל אחת מגיע פחות.` },
+    ],
+    onRun: async () => {
+      await spraySim.play();
+      spraySim.setParam('locked', false);
+    },
+    steps: [
+      { hint: `הקרניים של התרסיס ישרות. מה קורה לרוחב של הכתם בקיר רחוק פי 2?`,
+        work: `משולשים דומים: במרחק כפול הרוחב כפול. וגם הגובה כפול, כי הקרניים מתפזרות לכל הכיוונים.` },
+      { hint: `אז פי כמה גדל השטח של הכתם?`,
+        work: `\\(2 \\times 2 = 4\\). הכתם תופס 4 משבצות במקום אחת.` },
+      { hint: `אותו צבע על פי 4 שטח. כמה מגיע למשבצת אחת?`,
+        work: `רבע. בריצה ספרנו: כ-100 טיפות מתוך 400. במרחק פי 3 זו תשיעית. הצפיפות יורדת כמו \\(1/r^2\\). התשובה: רבע.` },
+    ],
+    explanation: `<p><b>עכשיו תורך:</b> אפשר להזיז את הקיר ולרסס שוב. כמה טיפות נוחתות על המשבצת המסומנת במרחק פי 3?</p>`,
+    sayRight: 'רבע. גם הקיר התרשם, וזה לא קל.',
+    sayWrong: 'גם אני אמרתי חצי. ואז ראיתי את הקיר.',
+  });
+
+  /* ---------- 4. Apple and Moon ---------- */
+  const moonSim = PHY.sims.appleMoon($('c-moon'), $('ctl-moon'), { locked: true });
+  moonSim.start();
+  U.PredictCard($('pc-moon'), {
+    chapter: CH, id: 'moon', section: 'moon', tag: TRAP,
+    question: `הירח רחוק מהמרכז פי 60 מהתפוח. באיזו תאוצה הוא נופל לעבר כדור הארץ?`,
+    options: [
+      { text: `0 מ/ש². הירח לא נופל, הוא שם כבר מיליארדי שנים.`, why: `זו הטעות המפורסמת. בלי כבידה הירח היה טס בקו ישר ועוזב. הוא נופל כל הזמן מהקו הישר הזה, בדיוק כמו ניוטון מהתותח.` },
+      { text: `10 מ/ש². כבידה זו כבידה.`, why: `אז הוא היה מגיע אלינו מהר מאוד. במרחק כזה הכבידה נחלשת מאוד.` },
+      { text: `10/60, בערך 0.17 מ/ש². פי 60 רחוק, פי 60 פחות.`, why: `כמעט. זה היה נכון אם הכוח היה יורד כמו \\(1/r\\). חוק הריבוע ההפוך אומר שהוא יורד כמו \\(1/r^2\\).` },
+      { text: `10/3600, בערך 0.0028 מ/ש².`, correct: true },
+    ],
+    onRun: async () => {
+      await moonSim.play();
+      moonSim.setParam('locked', false);
+    },
+    steps: [
+      { hint: `מה אומר חוק הריבוע ההפוך על מרחק פי 60?`,
+        work: `הכבידה נחלשת פי \\(60^2 = 3600\\). \\[a = \\frac{10\\ \\text{m/s}^2}{3600} \\approx 0.0028\\ \\text{m/s}^2\\]` },
+      { hint: `איך בודקים את זה בלי לדעת כלום על כבידה? מה אומר פרק 6 על גוף במעגל?`,
+        work: `\\(a = v^2 / r\\). כאן \\(r = 60 \\cdot 6.4 \\times 10^{6} = 3.84 \\times 10^{8}\\) מ'. ב-27 ימים יש \\(2.33 \\times 10^{6}\\) ש', ולכן \\(v = 2\\pi r / T \\approx 1030\\) מ/ש. \\[a = \\frac{(1030\\ \\text{m/s})^2}{3.84 \\times 10^{8}\\ \\text{m}} \\approx 0.0028\\ \\text{m/s}^2\\]` },
+      { hint: `כמה הירח נופל בשנייה אחת, מול התפוח? אותה נוסחה מפרק 2.`,
+        work: `\\(\\tfrac12 a t^2 = \\tfrac12 \\cdot 0.0028\\ \\text{m/s}^2 \\cdot (1\\ \\text{s})^2 = 0.0014\\ \\text{m}\\), כלומר 1.4 מ"מ, בזמן שהתפוח נופל 5 מ'. התשובה: בערך 0.0028 מ/ש², ואותו חוק מפיל את שניהם.` },
+    ],
+    explanation: `<p><b>עכשיו תורך:</b> אפשר לכבות את הכבידה ולהפעיל את הירח. לאן הוא טס?</p>`,
+    sayRight: 'פי 3600. התפוח מתרגש, הירח פחות.',
+    sayWrong: 'גם אני חשבתי שהירח פשוט תלוי שם. מי תלה אותו, אגב?',
+  });
+
+  /* ---------- 5. Other worlds ---------- */
+  const lanes = PHY.sims.worlds($('c-lanes'), $('ctl-lanes'), { mode: 'lanes' });
+  lanes.start();
+  const worldSim = PHY.sims.worlds($('c-worlds'), $('ctl-worlds'), { mode: 'custom', locked: true });
+  worldSim.start();
+  U.PredictCard($('pc-worlds'), {
+    chapter: CH, id: 'worlds', section: 'worlds', tag: TAG,
+    question: `כוכב עם מסה פי 2 מכדור הארץ, וגם רדיוס פי 2. כמה יהיה g על הקרקע שלו?`,
+    options: [
+      { text: `20 מ/ש². פי 2 מסה, פי 2 כבידה.`, why: `המסה באמת מכפילה את g. אבל הגדלנו גם את הרדיוס, ושם הוא מתחלק בריבוע.` },
+      { text: `10 מ/ש². פי 2 ופי 2 מתבטלים.`, why: `הפיתוי הכי גדול פה. הם מתבטלים רק אם גם המסה וגם הרדיוס בחזקה אחת, אבל הרדיוס בריבוע.` },
+      { text: `5 מ/ש².`, correct: true },
+      { text: `2.5 מ/ש². הרדיוס בריבוע ניצח.`, why: `זו התוצאה של הרדיוס לבד. לא לשכוח שגם המסה הוכפלה.` },
+    ],
+    onRun: async () => {
+      await worldSim.play();
+      worldSim.setParam('locked', false);
+    },
+    steps: [
+      { hint: `איזו נוסחה נותנת את g על קרקע של כוכב?`,
+        work: `\\(g = GM / R^2\\): הכוח על ק"ג אחד, כש-\\(r = R\\).` },
+      { hint: `מה עושה לנוסחה מסה פי 2? ומה עושה רדיוס פי 2?`,
+        work: `המסה במונה: g פי 2. הרדיוס במכנה ובריבוע: g קטן פי \\(2^2 = 4\\).` },
+      { hint: `נחבר את שני השינויים.`,
+        work: `\\[g = 10\\ \\text{m/s}^2 \\cdot \\frac{2}{4} = 5\\ \\text{m/s}^2\\] התשובה: 5 מ/ש². המשקל של ניוטון, 5 ק"ג, הוא שם 25 ניוטון.` },
+    ],
+    explanation: `<p><b>עכשיו תורך:</b> אילו מסה ורדיוס נותנים בדיוק 10 מ/ש²? רמז: יש יותר מתשובה אחת.</p>`,
+    sayRight: 'חצי g. סוף סוף כוכב שמבין אותי.',
+    sayWrong: 'גם אני קיוויתי שזה יתבטל. הריבוע לא מתחשב ברגשות.',
+  });
+
+  /* ---------- 6. Floating ---------- */
+  const floatSim = PHY.sims.towerStation($('c-float'), $('ctl-float'), { mode: 'float', locked: true });
+  floatSim.start();
+  U.PredictCard($('pc-float'), {
+    chapter: CH, id: 'float', section: 'float', tag: TRAP,
+    question: `למה ניוטון מרחף בתחנה שמקיפה בגובה 400 ק"מ?`,
+    options: [
+      { text: `אין שם כבידה. זה חלל.`, why: `זו התשובה הכי נפוצה, וגם הכי רחוקה. בלי כבידה התחנה הייתה טסה בקו ישר ועוזבת. מה שמחזיק אותה במעגל זו הכבידה.` },
+      { text: `יש שם רק מעט כבידה, אז כמעט לא שוקלים.`, why: `נשמע הגיוני, אבל 400 ק"מ זה כמעט כלום מול 6400 ק"מ. על מגדל בגובה הזה המאזניים הראו יותר מ-44 ניוטון.` },
+      { text: `הוא והתחנה נופלים יחד, כל הזמן.`, correct: true },
+    ],
+    onRun: async () => {
+      await floatSim.play();
+    },
+    steps: [
+      { hint: `כמה כבידה יש שם באמת? מה \\(r\\) בגובה 400 ק"מ?`,
+        work: `\\(r = 6400 + 400 = 6800\\) ק"מ. \\[g = 10\\ \\text{m/s}^2 \\cdot \\left(\\frac{6400}{6800}\\right)^2 \\approx 8.9\\ \\text{m/s}^2\\] בערך 89% מהכבידה על הקרקע.` },
+      { hint: `מה מאזניים מודדים באמת? מה ראינו על המגדל?`,
+        work: `הם מודדים את הכוח שהרצפה דוחפת. כמו במעלית מפרק 4, כשהתאוצה \\(a\\) פונה למטה, \\(N = m(g - a)\\). על המגדל אין תאוצה: \\(N = 5\\ \\text{kg} \\cdot 8.9\\ \\text{m/s}^2 \\approx 44\\) ניוטון.` },
+      { hint: `ומה התאוצה של התא כשהוא נופל, עם מהירות הצידה או בלעדיה?`,
+        work: `\\(a = g\\), כי הכבידה היא הכוח היחיד. אז \\(N = m(g - g) = 0\\). התשובה: הם נופלים יחד, והמאזניים מראים 0 ניוטון, כמו במעלית שהכבל שלה נקרע.` },
+    ],
+    sayRight: 'נופלים יחד. את זה לא מציינים בדף של הטיסה.',
+    sayWrong: 'גם אני אמרתי "אין כבידה". ואז נזכרתי שאני נופל.',
+  });
+
+  /* ---------- 7. Orbit lab ---------- */
+  const raceSim = PHY.sims.orbitLab($('c-orbit'), $('ctl-orbit'), { mode: 'race', locked: true });
+  raceSim.start();
+  U.PredictCard($('pc-orbit'), {
+    chapter: CH, id: 'orbit', section: 'orbit', tag: TAG,
+    question: `הלוויין השני רחוק מהמרכז פי 4 מהראשון. מה קורה למהירות שלו ולזמן ההקפה?`,
+    options: [
+      { text: `מהירות פי 4 וזמן אותו דבר. מסלול גדול צריך יותר מהירות.`, why: `אינטואיציה של מכוניות: דרך ארוכה, טסים מהר. אבל לוויין במסלול גבוה צריך פחות מהירות, כי הכבידה שם חלשה יותר.` },
+      { text: `אותה מהירות וזמן פי 4. פי 4 דרך, וזהו.`, why: `הדרך באמת ארוכה פי 4. אבל גם המהירות יורדת, אז הזמן גדל עוד יותר.` },
+      { text: `מהירות חצי, וזמן פי 8.`, correct: true },
+      { text: `מהירות רבע, וזמן פי 16.`, why: `פה נפלנו על שורש: \\(v\\) יורד כמו \\(\\sqrt{1/r}\\), לא כמו \\(1/r\\).` },
+    ],
+    onRun: async () => {
+      await raceSim.play();
+      raceSim.setParam('locked', false);
+    },
+    steps: [
+      { hint: `איזה כוח מחזיק לוויין במעגל, ואיזו תאוצה נדרשת במעגל?`,
+        work: `הכבידה היא הכוח, וצריך תאוצה צנטריפטלית מפרק 6. \\[\\frac{GMm}{r^2} = \\frac{m v^2}{r} \\Rightarrow v = \\sqrt{\\frac{GM}{r}}\\] המסה \\(m\\) מתבטלת.` },
+      { hint: `מה קורה ל-\\(v\\) כש-\\(r\\) גדל פי 4?`,
+        work: `\\(\\sqrt{1/4} = 1/2\\): המהירות חצי. בריצה: 6.53 ק"מ/ש מול 3.27 ק"מ/ש.` },
+      { hint: `ומה קורה לזמן? \\(T = 2\\pi r / v\\).`,
+        work: `פי 4 דרך, ובחצי מהירות: \\(T\\) גדל פי \\(4 \\cdot 2 = 8\\). התשובה: מהירות חצי וזמן פי 8. בריצה: הפנימי השלים 8 סיבובים כשהחיצוני השלים סיבוב.` },
+    ],
+    explanation: `<p><b>עכשיו תורך:</b> הסליידרים פתוחים. כמה סיבובים עושה הפנימי כשהחיצוני רחוק פי 9?</p>`,
+    sayRight: 'פי 8. ואני עדיין מחכה לחיצוני.',
+    sayWrong: 'גם אני חשבתי שרחוק פירושו מהר. בחלל, רחוק פירושו בנחת.',
+  });
+
+  /* ---------- 8. Kepler ---------- */
+  const keplerSim = PHY.sims.kepler($('c-kepler'), $('ctl-kepler'), { mode: 'areas', locked: true, e: 0.6 });
+  keplerSim.start();
+  U.PredictCard($('pc-kepler'), {
+    chapter: CH, id: 'kepler', section: 'kepler', tag: TAG,
+    question: `ניוטון במסלול אליפטי. באיזו נקודה הוא הכי מהיר?`,
+    options: [
+      { text: `ברחוקה. שם יש הכי הרבה דרך לעבור.`, why: `בדיוק הפוך: שם הוא טיפס הכי גבוה מול הכבידה, והכי הרבה אנרגיה עברה לגובה.` },
+      { text: `אותה מהירות בכל מקום. אין לו גז.`, why: `מנוע אין לו, נכון. אבל הכבידה מאיצה אותו בדרך פנימה, ומאטה אותו בדרך החוצה.` },
+      { text: `בקרובה.`, correct: true },
+    ],
+    onRun: async () => {
+      await keplerSim.play();
+      keplerSim.setParam('locked', false);
+    },
+    steps: [
+      { hint: `בדרך פנימה הוא נופל לעבר כדור הארץ. מה זה עושה למהירות, לפי שימור אנרגיה מפרק 5?`,
+        work: `אנרגיית גובה הופכת לאנרגיית תנועה, אז הוא מאיץ. בדרך החוצה זה הפוך.` },
+      { hint: `מה מראות הפרוסות הצבעוניות? כל אחת מהן נמשכה עשירית מההקפה.`,
+        work: `לכולן אותו שטח. קרוב למרכז הפרוסה קצרה ורחבה, ולכן באותו זמן עוברים קשת ארוכה. זה החוק השני של קפלר.` },
+      { hint: `ובמספרים? מה מראים מדי המהירות מתחת לציור?`,
+        work: `בנקודה הקרובה 9.2 ק"מ/ש, ברחוקה 2.3 ק"מ/ש: פי 4, בדיוק כמו יחס המרחקים. התשובה: בנקודה הקרובה.` },
+    ],
+    explanation: `<p><b>עכשיו תורך:</b> מה קורה לזמן ההקפה כשמועכים את המסלול, אבל האורך של האליפסה נשאר אותו דבר? הסליידר פתוח.</p>`,
+    sayRight: 'בקרובה! שם גם רואים הכי טוב את המטבח.',
+    sayWrong: 'גם אני חשבתי שאני מאיץ כשרחוק. שם בעיקר משעמם.',
+  });
+  const thirdSim = PHY.sims.kepler($('c-third'), $('ctl-third'), { mode: 'third' });
+  thirdSim.start();
+
+  /* ---------- 9. Escape ---------- */
+  const escapeSim = PHY.sims.escape($('c-escape'), $('ctl-escape'), { locked: true, speed: 8 });
+  escapeSim.start();
+  U.PredictCard($('pc-escape'), {
+    chapter: CH, id: 'escape', section: 'escape', tag: TAG,
+    question: `פי כמה צריך להגדיל את המהירות של ניוטון, מ-8 ק"מ/ש, כדי שלא יחזור לעולם?`,
+    options: [
+      { text: `פי 2. כפול מהירות, וביי.`, why: `יספיק בהחלט, ואפילו יישאר עודף. בכפול מהירות יש פי 4 אנרגיית תנועה, הרבה מעבר למה שצריך.` },
+      { text: `פי 1.41, כלומר 11.3 ק"מ/ש.`, correct: true },
+      { text: `פי 10 לפחות. זו כבידה של כוכב שלם.`, why: `נשמע מכובד, אבל הכבידה נחלשת כל כך מהר עם המרחק, שצריך הרבה פחות.` },
+      { text: `אין מהירות כזאת. הכבידה לא נגמרת, אז תמיד חוזרים.`, why: `נכון שהיא לא נגמרת. אבל היא נחלשת מהר, והעבודה הכוללת עד אינסוף היא מספר סופי. אפשר לשלם אותו מראש.` },
+    ],
+    onRun: async () => {
+      await escapeSim.play();
+      escapeSim.setParam('locked', false);
+    },
+    steps: [
+      { hint: `כמה אנרגיה צריך לשלם כדי לטפס מ-\\(R\\) עד רחוק מאוד? מה מראה הבור בגרף?`,
+        work: `\\(U = -GMm/r\\). על הקרקע \\(U = -GMm/R\\), ורחוק מאוד \\(U = 0\\). צריך לשלם \\(GMm/R\\): עומק הבור, כ-64 מגה-ג'ול לכל ק"ג.` },
+      { hint: `כמה אנרגיית תנועה תשלם את זה? נשווה.`,
+        work: `\\[\\tfrac12 m v^2 = \\frac{GMm}{R} \\Rightarrow v^2 = \\frac{2GM}{R}\\] המסה מתבטלת שוב: אותה מהירות לחתול ולחללית.` },
+      { hint: `ומה היחס למהירות מסלול, שבה \\(v^2 = GM/R\\)?`,
+        work: `פי \\(\\sqrt{2} \\approx 1.41\\). \\[v = 1.41 \\cdot 8\\ \\text{km/s} \\approx 11.3\\ \\text{km/s}\\] התשובה: פי 1.41. אנרגיית התנועה מוכפלת, אבל המהירות לא.` },
+    ],
+    explanation: `<p><b>עכשיו תורך:</b> מה עושה 10.5 ק"מ/ש? ומה עושה 11.4 ק"מ/ש? כדאי להסתכל בגרף: מתי הקו של סך הכול חותך את הבור?</p>`,
+    sayRight: 'פי 1.41. מספר עגול מאוד, לפי מי ששואלים.',
+    sayWrong: 'גם אני חשבתי שצריך יותר. הייתי כבר ארוז.',
+  });
+
+  /* ---------- 11. 3D ---------- */
+  const view3d = PHY.sims.orbit3d($('o3d-host'), $('ctl-3d'), { r: 1.6, inclination: 35 });
+  view3d.start();
+
+  /* ---------- 12. Playground ---------- */
+  const play = PHY.sims.mountainCannon($('c-play'), $('ctl-play'), { free: true, chapter: CH, section: 'playground', speed: 7, angle: 0, quests: $('quests') });
+  play.start();
+
+  /* ---------- 13. Game ---------- */
+  const game = PHY.sims.missionOrbit($('c-game'), $('ctl-game'), { chapter: CH, section: 'game' });
+  game.start();
+
+  /* ---------- 14. Traps ---------- */
+  const trapDone = {};
+  const trapFinished = (name) => {
+    trapDone[name] = true;
+    if (trapDone.a && trapDone.b && trapDone.c) PHY.progress.markSection(CH, 'traps');
+  };
+
+  const trap1 = PHY.sims.towerStation($('c-trap1'), $('ctl-trap1'), { mode: 'height', locked: true });
+  trap1.start();
+  U.PredictCard($('pc-trap1'), {
+    chapter: CH, id: 'trap-r', tag: TRAP,
+    question: `ניוטון שוקל 50 ניוטון על הקרקע. מעלים אותו לגובה 6400 ק"מ מעל הקרקע, בדיוק רדיוס אחד. מה יראו המאזניים?`,
+    options: [
+      { text: `50 ניוטון. הגובה הוא R, אז מציבים \\(r = R\\) ויוצא אותו דבר.`, why: `זו בדיוק המלכודת: הצבת הגובה במקום המרחק. \\(r\\) נמדד מהמרכז, אז כאן \\(r = 2R\\).` },
+      { text: `25 ניוטון. פי 2 רחוק, חצי משקל.`, why: `את \\(r\\) זיהינו נכון, אבל הריבוע נשמט. במרחק פי 2 הכבידה קטנה פי 4.` },
+      { text: `12.5 ניוטון.`, correct: true },
+      { text: `0 ניוטון. שם זה כבר חלל.`, why: `הירח רחוק פי 60 ועדיין נמשך. כבידה לא נגמרת בגובה מסוים.` },
+    ],
+    onRun: async () => {
+      await trap1.play();
+      trap1.setParam('locked', false);
+    },
+    steps: [
+      { hint: `מאיזו נקודה מודדים את \\(r\\)?`,
+        work: `ממרכז כדור הארץ. \\(r = R + h = 6400 + 6400 = 12800\\) ק"מ, כלומר \\(2R\\).` },
+      { hint: `פי כמה נחלשת הכבידה במרחק כפול?`,
+        work: `פי \\(2^2 = 4\\), ולכן \\(g = 10/4 = 2.5\\) מ/ש².` },
+      { hint: `המסה לא השתנתה. מה המשקל?`,
+        work: `\\(5\\ \\text{kg} \\cdot 2.5\\ \\text{m/s}^2 = 12.5\\) ניוטון. התשובה: 12.5 ניוטון.` },
+    ],
+    explanation: `<p><b>עכשיו תורך:</b> באיזה גובה המאזניים יראו 25 ניוטון? הסליידר פתוח.</p>`,
+    sayRight: 'רבע מהמשקל. הדיאטה הכי טובה שניסיתי.',
+    sayWrong: 'גם אני מדדתי מהקרקע. ככה זה כשעומדים עליה.',
+    onDone: () => trapFinished('a'),
+  });
+
+  const trap2 = PHY.sims.orbitLab($('c-trap2'), $('ctl-trap2'), { mode: 'heavy', locked: true, massA: 1, massB: 4 });
+  trap2.start();
+  U.PredictCard($('pc-trap2'), {
+    chapter: CH, id: 'trap-heavy', tag: TRAP,
+    question: `שני לוויינים באותו מסלול, ב-\\(r = 2R\\), אחד של טון ואחד של 4 טון. למי מהם צריך יותר מהירות כדי להישאר במעגל?`,
+    options: [
+      { text: `לכבד. הכבידה מושכת אותו פי 4 חזק יותר.`, why: `נכון, הכוח עליו פי 4. אבל גם קשה פי 4 לשנות לו את הכיוון, ושתי ההשפעות מתבטלות.` },
+      { text: `לקל. אותו כוח לא יזיז כבד.`, why: `הכוח לא אותו כוח: הכבד נמשך יותר, בדיוק לפי המסה שלו.` },
+      { text: `לשניהם אותה מהירות.`, correct: true },
+    ],
+    onRun: async () => {
+      await trap2.play();
+      trap2.setParam('locked', false);
+    },
+    steps: [
+      { hint: `כמה כוח מרגיש כל אחד? מה מראים החצים הירוקים?`,
+        work: `\\(F = mg(r)\\). ב-\\(r = 2R\\), \\(g = 2.5\\) מ/ש². על הקל 2500 ניוטון, ועל הכבד 10000 ניוטון.` },
+      { hint: `ומה התאוצה של כל אחד? החוק השני מפרק 4.`,
+        work: `\\(a = F/m\\). לקל 2.5 מ/ש², ולכבד גם 2.5 מ/ש². בדיוק כמו שכל הגופים נופלים באותה תאוצה בפרק 2.` },
+      { hint: `אז איזו מהירות נדרשת לכל אחד?`,
+        work: `\\(v^2 / r = a\\) ואותה תאוצה נותנת אותה מהירות, \\(v \\approx 5.66\\) ק"מ/ש. המרחק ביניהם נשאר 40° כל ההקפה. התשובה: לשניהם אותה מהירות.` },
+    ],
+    explanation: `<p><b>עכשיו תורך:</b> אפשר להגדיל את הכבד ל-100 טון. מי מקדים את מי?</p>`,
+    sayRight: 'אותה מהירות. סוף סוף משהו שלא תלוי במשקל שלי.',
+    sayWrong: 'גם אני חשבתי שהכבד צריך לרוץ יותר. אצלי זה עובד הפוך.',
+    onDone: () => trapFinished('b'),
+  });
+
+  const trap3 = PHY.sims.orbitLab($('c-trap3'), $('ctl-trap3'), { mode: 'phasing', locked: true });
+  trap3.start();
+  U.PredictCard($('pc-trap3'), {
+    chapter: CH, id: 'trap-catch', tag: TRAP,
+    question: `תחנת התפוחים טסה באותו מסלול שלנו, ב-\\(r = 2R\\), 40° לפנינו. איך משיגים אותה?`,
+    options: [
+      { text: `מאיצים. היא לפנינו, אז רודפים אחריה.`, why: `ככה זה בכביש, אבל לא במסלול. דחיפה קדימה מעלה אותנו למסלול גבוה יותר ואיטי יותר, ואנחנו נשארים מאחור.` },
+      { text: `בולמים. יורדים למסלול נמוך ומהיר יותר.`, correct: true },
+      { text: `אי אפשר. אותו מסלול, אותה מהירות, לנצח.`, why: `זה נכון רק אם לא עושים כלום. הדלקה קטנה משנה את המסלול, ואיתו את זמן ההקפה.` },
+    ],
+    onRun: async () => {
+      await trap3.play();
+      trap3.setParam('locked', false);
+    },
+    steps: [
+      { hint: `מה קורה למסלול אחרי דחיפה קדימה? לאן הוא מתרחב?`,
+        work: `יש יותר אנרגיה, אז המסלול גדל ועולה מעל התחנה. מסלול גדול יותר אומר זמן הקפה ארוך יותר, ולכן נשארים מאחור.` },
+      { hint: `ומה קורה אחרי בלימה?`,
+        work: `המסלול קטן ויורד מתחת לתחנה. למסלול קטן זמן הקפה קצר יותר, ולכן באותו זמן עוברים זווית גדולה יותר.` },
+      { hint: `כמה צריך לבלום כדי להגיע אליה? ההקפה שלנו צריכה להסתיים בדיוק כשהיא מגיעה לאותה נקודה.`,
+        work: `התחנה 40° לפנינו, אז עד נקודת ההדלקה נשארו לה 320°. זמן ההקפה שלנו צריך להיות \\(320/360\\) מזמן ההקפה שלה. החשבון המלא דורש גם את החוק השלישי וגם שימור אנרגיה, ואת המספר חישבה הסימולציה: ב-\\(r = 2R\\) זו בלימה של 236 מ/ש, ואחרי הקפה אחת נפגשים. התשובה: בולמים.` },
+    ],
+    sayRight: 'בולמים כדי להשיג. אני אומר את זה גם לכלבים.',
+    sayWrong: 'גם אני הייתי דוחף קדימה. לכן אין לי רישיון.',
+    onDone: () => trapFinished('c'),
+  });
+
+  /* ---------- 15. Problems ---------- */
+  const probs = $('problems-host');
+  U.Problem(probs, {
+    chapter: CH, section: 'problems', tag: 'שאלה 1: כבידה בגובה',
+    text: `מה תאוצת הכובד בגובה \\(h = R\\) מעל פני כדור הארץ? על הקרקע \\(g = 10\\) מ/ש².`,
+    fields: [
+      { label: 'g בגובה הזה', answer: 2.5, unit: 'מ/ש²' },
+    ],
+    steps: [
+      { hint: `מאיזו נקודה נמדד \\(r\\) בחוק הכבידה?`,
+        work: `מהמרכז, לא מהקרקע. \\(r = R + h = 2R\\).` },
+      { hint: `איך \\(g\\) תלוי ב-\\(r\\)? נכתוב יחס בין הגובה הזה לקרקע, כדי להיפטר מ-\\(GM\\).`,
+        work: `\\[g(r) = \\frac{GM}{r^2},\\quad g_0 = \\frac{GM}{R^2} \\;\\Rightarrow\\; g(r) = g_0 \\left(\\frac{R}{r}\\right)^2\\]` },
+      { hint: `נציב את היחס \\(R/r\\) שמצאנו.`,
+        work: `\\[g = 10\\ \\text{m/s}^2 \\cdot \\left(\\frac{1}{2}\\right)^2 = 2.5\\ \\text{m/s}^2\\] התשובה: 2.5 מ/ש². רבע מהערך על הקרקע, ולא חצי.` },
+    ],
+  });
+  U.Problem(probs, {
+    chapter: CH, section: 'problems', tag: 'שאלה 2: לוויין במסלול',
+    text: `לוויין מקיף את כדור הארץ במסלול מעגלי במרחק \\(r = 2R\\) מהמרכז. נמצא את המהירות שלו ואת זמן ההקפה, בשניות ובשעות. \\(R = 6400\\) ק"מ.`,
+    fields: [
+      { label: 'מהירות', answer: 5657, unit: 'מ/ש' },
+      { label: 'זמן הקפה', answer: 14200, unit: "ש'" },
+      { label: 'זמן הקפה', answer: 3.95, unit: 'שעות' },
+    ],
+    steps: [
+      { hint: `איזה כוח מספק את התאוצה הצנטריפטלית? נשווה ונמצא נוסחה ל-\\(v\\).`,
+        work: `\\[\\frac{GMm}{r^2} = \\frac{mv^2}{r} \\Rightarrow v^2 = \\frac{GM}{r}\\]` },
+      { hint: `אין לנו \\(GM\\). במה אפשר להחליף אותו?`,
+        work: `\\(GM = g R^2\\). עם \\(r = 2R\\): \\[v^2 = \\frac{g R^2}{2R} = \\frac{g R}{2} = \\frac{10\\ \\text{m/s}^2 \\cdot 6.4 \\times 10^{6}\\ \\text{m}}{2} = 3.2 \\times 10^{7}\\ \\text{m}^2/\\text{s}^2\\]` },
+      { hint: `נוציא שורש.`,
+        work: `\\(v = \\sqrt{3.2 \\times 10^{7}\\ \\text{m}^2/\\text{s}^2} \\approx 5657\\ \\text{m/s}\\). נשים לב: זה \\(8000 / \\sqrt{2}\\) מ/ש, פחות מהמסלול הנמוך.` },
+      { hint: `זמן הקפה הוא דרך לחלק למהירות. מהי הדרך?`,
+        work: `\\[T = \\frac{2\\pi r}{v} = \\frac{2\\pi \\cdot 1.28 \\times 10^{7}\\ \\text{m}}{5657\\ \\text{m/s}} \\approx 14200\\ \\text{s}\\]` },
+      { hint: `וכמה זה בשעות? כמה שניות יש בשעה?`,
+        work: `\\(14200 / 3600 \\approx 3.95\\) שעות. התשובה: 5657 מ/ש, 14200 ש' שהן 3.95 שעות.` },
+    ],
+  });
+  U.Problem(probs, {
+    chapter: CH, section: 'problems', tag: 'שאלה 3: כוכב אחר',
+    text: `לכוכב לכת יש מסה פי 9 ממסת כדור הארץ, ורדיוס פי 3 מהרדיוס של כדור הארץ. מהי תאוצת הכובד על פניו?`,
+    fields: [
+      { label: 'g על הכוכב', answer: 10, unit: 'מ/ש²' },
+    ],
+    steps: [
+      { hint: `איזו נוסחה נותנת את \\(g\\) על פני כוכב?`,
+        work: `\\(g = GM / R^2\\), עם המסה והרדיוס של הכוכב עצמו.` },
+      { hint: `נכתוב את היחס מול כדור הארץ. איזה חלק מתבטל?`,
+        work: `\\(G\\) מתבטל. \\[\\frac{g}{g_0} = \\frac{M/M_0}{(R/R_0)^2}\\]` },
+      { hint: `נציב את שני היחסים. נשים לב למה שבריבוע.`,
+        work: `\\[\\frac{g}{g_0} = \\frac{9}{3^2} = \\frac{9}{9} = 1\\] התשובה: \\(g = 10\\) מ/ש², בדיוק כמו אצלנו. הכובד זהה, גם אם הנוף פחות.` },
+    ],
+  });
+
+  /* ---------- 16. Quiz ---------- */
+  U.Quiz($('quiz-host'), {
+    chapter: CH, section: 'quiz',
+    questions: [
+      {
+        type: 'num',
+        q: `ניוטון נמצא בגובה \\(h = 3R\\) מעל הקרקע. מה \\(g\\) שם, במ/ש²?`,
+        answer: 0.625, unit: 'מ/ש²',
+        steps: [
+          { hint: `כמה זה \\(r\\) כשהגובה הוא \\(h = 3R\\)?`,
+            work: `\\(r = R + 3R = 4R\\).` },
+          { hint: `פי כמה הכבידה קטנה במרחק הזה?`,
+            work: `פי \\(4^2 = 16\\). \\[g = \\frac{10\\ \\text{m/s}^2}{16} = 0.625\\ \\text{m/s}^2\\]` },
+        ],
+      },
+      {
+        type: 'mc',
+        q: `שני לוויינים באותו מסלול, אחד של טון ואחד של 5 טון. מה נכון?`,
+        options: [`הכבד טס מהר יותר`, `הקל טס מהר יותר`, `שניהם באותה מהירות`, `תלוי מי יצא קודם`],
+        answer: 2,
+        steps: [
+          { hint: `מה קורה למסה של הלוויין במשוואה \\(GMm/r^2 = mv^2/r\\)?`,
+            work: `היא מופיעה בשני הצדדים ומתבטלת, ונשאר \\(v^2 = GM/r\\).` },
+          { hint: `אז מה קובע את המהירות?`,
+            work: `רק \\(r\\) והכוכב. התשובה: שניהם באותה מהירות.` },
+        ],
+      },
+      {
+        type: 'num',
+        q: `לכוכב מסה פי 8 ורדיוס פי 2 ביחס לכדור הארץ. מה \\(g\\) על פניו?`,
+        answer: 20, unit: 'מ/ש²',
+        steps: [
+          { hint: `מה נוסחת \\(g\\) על פני כוכב?`,
+            work: `\\(g = GM/R^2\\). המסה במונה, והרדיוס בריבוע במכנה.` },
+          { hint: `מה נותנים שני היחסים יחד?`,
+            work: `\\[g = 10\\ \\text{m/s}^2 \\cdot \\frac{8}{2^2} = 20\\ \\text{m/s}^2\\]` },
+        ],
+      },
+      {
+        type: 'num',
+        q: `לוויין נמוך, ב-\\(r = R\\) בקירוב, מקיף ב-84 דקות. בכמה דקות מקיף לוויין ב-\\(r = 4R\\)?`,
+        answer: 672, unit: "דק'",
+        steps: [
+          { hint: `מה קורה למהירות כש-\\(r\\) גדל פי 4?`,
+            work: `\\(v = \\sqrt{GM/r}\\), אז המהירות חצי.` },
+          { hint: `ומה קורה לזמן, כשגם הדרך ארוכה יותר?`,
+            work: `פי 4 דרך, בחצי מהירות, זה פי 8. \\(84 \\cdot 8 = 672\\) דק', כ-11 שעות.` },
+        ],
+      },
+      {
+        type: 'mc',
+        q: `במרחק מסוים מהירות מסלול מעגלי היא 6 ק"מ/ש. מה מהירות הבריחה מאותו מרחק?`,
+        options: [`6 ק"מ/ש`, `8.5 ק"מ/ש`, `12 ק"מ/ש`, `36 ק"מ/ש`],
+        answer: 1,
+        steps: [
+          { hint: `מה הקשר בין מהירות בריחה למהירות מסלול באותו מרחק?`,
+            work: `\\(v^2\\) של בריחה הוא \\(2GM/r\\), ושל מסלול \\(GM/r\\). אז היחס במהירויות הוא \\(\\sqrt{2}\\).` },
+          { hint: `נכפיל.`,
+            work: `\\(1.41 \\cdot 6 \\approx 8.5\\) ק"מ/ש. התשובה: 8.5 ק"מ/ש.` },
+        ],
+      },
+      {
+        type: 'num',
+        q: `חזרה לפרק 6: מכונית נוסעת ב-10 מ/ש בעיקול ברדיוס 50 מ'. מה התאוצה הצנטריפטלית שלה?`,
+        answer: 2, unit: 'מ/ש²',
+        steps: [
+          { hint: `מה הנוסחה לתאוצה בתנועה מעגלית?`,
+            work: `\\(a = v^2 / R\\). אותה נוסחה שבדקה את הירח בסעיף 4.` },
+          { hint: `נציב.`,
+            work: `\\[a = \\frac{(10\\ \\text{m/s})^2}{50\\ \\text{m}} = 2\\ \\text{m/s}^2\\]` },
+        ],
+      },
+      {
+        type: 'mc',
+        q: `חזרה לפרק 4: ניוטון, 5 ק"ג, עומד על מאזניים במעלית. הכבל נקרע והמעלית נופלת. מה יראו המאזניים?`,
+        options: [`50 ניוטון`, `25 ניוטון`, `0 ניוטון`, `100 ניוטון`],
+        answer: 2,
+        steps: [
+          { hint: `מה התאוצה של המעלית ושל החתול אחרי שהכבל נקרע?`,
+            work: `שניהם נופלים ב-\\(a = g\\) כלפי מטה.` },
+          { hint: `מה הכוח שהמאזניים דוחפים, לפי \\(N = m(g - a)\\)?`,
+            work: `\\(N = 5\\ \\text{kg} \\cdot (10 - 10)\\ \\text{m/s}^2 = 0\\). התשובה: 0 ניוטון, בדיוק כמו בתחנת החלל.` },
+        ],
+      },
+    ],
+  });
+
+  /* ---------- Easter egg: click the cat ---------- */
+  /* The last step sends the cat around the screen on a real circle, at constant speed. */
+  function orbitCat() {
+    if (U.reduced()) return;
+    const cat = U.h('div', { class: 'egg-cat', 'aria-hidden': 'true', html: PHY.mascot.svg('flying', 'width="84" height="84"') });
+    document.body.appendChild(cat);
+    const cx = window.innerWidth / 2 - 42, cy = window.innerHeight / 2 - 42;
+    const r = Math.min(window.innerWidth, window.innerHeight) * 0.36;
+    const T = 2.6;
+    const t0 = performance.now();
+    (function frame(now) {
+      const t = (now - t0) / 1000;
+      if (t >= T) { cat.remove(); return; }
+      const a = -Math.PI / 2 + (t / T) * Math.PI * 2;
+      cat.style.transform = `translate(${cx + Math.cos(a) * r}px, ${cy + Math.sin(a) * r}px) rotate(${a + Math.PI / 2}rad)`;
+      requestAnimationFrame(frame);
+    })(t0);
+  }
+  PHY.mascot.easterEgg([
+    { text: 'מיאו. ב-8 ק"מ בשנייה זה נשמע אחרת.', pose: 'standing' },
+    { text: 'הקשה שנייה. האצבע הזאת מושכת את כדור הארץ באותו כוח שהוא מושך אותה. הוא לא התלונן.', pose: 'thinking' },
+    { text: 'עוד אחת, ואני בורח ב-11.3 ק"מ/ש. יש לי את המספרים.', pose: 'dizzy' },
+    { text: 'אני מרגיש שאני מתקרב למהירות מסלול. עוד הקשה אחת.', pose: 'thinking' },
+    { text: 'מסלול! נופל ולא נוחת! שמישהו יגיד למטבח שאני מאחר!', pose: 'flying', spin: true, rain: true, action: orbitCat },
+  ]);
+
+  U.initChapter({ id: CH });
+})();
+</script>
+</body>
+</html>

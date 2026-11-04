@@ -99,7 +99,7 @@
       ctx.strokeStyle = C.gridStrong;
       ctx.lineWidth = 1.5;
       ctx.beginPath(); ctx.arc(px, py, 16, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
-      ctx.fillStyle = C.apple;
+      ctx.fillStyle = C.ink;
       ctx.beginPath(); ctx.moveTo(px, py - 13); ctx.lineTo(px - 4.5, py); ctx.lineTo(px + 4.5, py); ctx.closePath(); ctx.fill();
       ctx.fillStyle = C.soft;
       ctx.beginPath(); ctx.moveTo(px, py + 13); ctx.lineTo(px - 4.5, py); ctx.lineTo(px + 4.5, py); ctx.closePath(); ctx.fill();
@@ -301,8 +301,8 @@
       const R = pts[pts.length - 1];
       if (FR.showComp && V.len(R) > 0.01) {
         const opt = { color: C.displacement, width: 2.5, dash: [6, 5], alpha: 0.8 };
-        view.arrow(0, 0, R.x, 0, Object.assign({ label: 'x: ' + F.num(R.x, 1), labelSide: R.y >= 0 ? 1 : -1, labelGap: 13 }, opt));
-        view.arrow(R.x, 0, R.x, R.y, Object.assign({ label: 'y: ' + F.num(R.y, 1), labelSide: R.x >= 0 ? -1 : 1, labelGap: 26 }, opt));
+        view.arrow(0, 0, R.x, 0, Object.assign({ label: F.unit(R.x, 'm', 1), labelSide: R.y >= 0 ? 1 : -1, labelGap: 13 }, opt));
+        view.arrow(R.x, 0, R.x, R.y, Object.assign({ label: F.unit(R.y, 'm', 1), labelSide: R.x >= 0 ? -1 : 1, labelGap: 26 }, opt));
       }
       if (V.len(R) > 0.01) view.arrow(0, 0, R.x, R.y, { color: C.displacement, width: 6, alpha: 0.32 });
       FR.vecs.forEach(function (v, i) {
@@ -720,7 +720,7 @@
       hud.readout = U.Readouts(hud.main, [
         { key: 'x', label: 'רכיב x (מזרח)', color: 'var(--c-displacement)' },
         { key: 'y', label: 'רכיב y (צפון)', color: 'var(--c-displacement)' },
-        { key: 'len', label: 'מרחק מהבית', color: 'var(--c-displacement)' },
+        { key: 'len', label: 'כמה רחוק מהבית', color: 'var(--c-displacement)' },
       ]);
       hud.main.appendChild(hud.feedback);
       const row = U.h('div', { class: 'sim-row' }, [hud.action]);
@@ -768,9 +768,9 @@
         if (G.cursor && G.phase === 'play') {
           const c = G.cursor;
           const a = 7 / view.scale;
-          view.line(c.x - a, c.y - a, c.x + a, c.y + a, { color: C.apple, width: 4 });
-          view.line(c.x - a, c.y + a, c.x + a, c.y - a, { color: C.apple, width: 4 });
-          view.circle(c.x, c.y, 14 + Math.sin(S.t * 5) * 2, { px: true, color: C.apple, width: 2, alpha: 0.5 });
+          view.line(c.x - a, c.y - a, c.x + a, c.y + a, { color: C.accent, width: 4 });
+          view.line(c.x - a, c.y + a, c.x + a, c.y - a, { color: C.accent, width: 4 });
+          view.circle(c.x, c.y, 14 + Math.sin(S.t * 5) * 2, { px: true, color: C.accent, width: 2, alpha: 0.5 });
         }
         drawCat();
       } else if (G.level === 1) {

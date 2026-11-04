@@ -29,7 +29,7 @@
     });
     const row = U.h('div', { class: 'sim-row' });
     const fireBtn = U.Button(row, 'ירה!', function () { fireFree(); }, { primary: true });
-    const strobeToggle = U.Toggle(row, 'תצוגת סטרובוסקופ', {
+    const strobeToggle = U.Toggle(row, 'סימון כל ' + F.unit(opts.every, 's', 1), {
       value: true,
       onChange(v) { S.strobe = v; loop.requestRender(); },
     });
@@ -112,7 +112,7 @@
       if (S.strobe) {
         S.stamps.forEach(function (s) {
           const far = Math.max.apply(null, s.xs.concat([0.6]));
-          if (s.t > 0) view.line(0, s.y, far, s.y, { color: C.displacement, width: 1.4, dash: [4, 5], alpha: 0.75 });
+          if (s.t > 0) view.line(0, s.y, far, s.y, { color: C.soft, width: 1.4, dash: [4, 5], alpha: 0.75 });
           B.drawApple(view, 0, s.y, 11, { color: C.gold, plain: true, alpha: 0.7 });
           s.xs.forEach(function (x, i) { B.drawApple(view, x, s.ys[i], 11, { plain: true, alpha: 0.7 }); });
         });
@@ -134,7 +134,7 @@
       if (S.t > 0 && S.t < S.T) view.arrow(p.drop.x, p.drop.y, p.drop.x, p.drop.y + p.drop.vy * K, { color: C.velocity, width: 3 });
 
       if (S.caption) view.screenText(view.w / 2 + 16, 20, S.caption, { size: 14, weight: 700, pill: true });
-      else if (!S.running && !S.done && r.xMax) view.screenText(view.w / 2 + 16, 20, 'זהב נשמט, אדום נורה', { size: 13, color: C.soft });
+      else if (!S.running && !S.done && r.xMax) view.screenText(view.w / 2 + 16, 20, 'הזהוב נשמט, האדום נורה', { size: 13, color: C.soft });
 
       const last = p.fired[p.fired.length - 1];
       out.set('t', F.unit(S.t, 's', 2));

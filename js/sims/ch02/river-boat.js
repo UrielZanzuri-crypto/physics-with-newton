@@ -2,7 +2,7 @@
    Heading 0° points straight across; a positive heading turns the bow downstream, negative upstream.
    The frame toggle changes the viewpoint: from the shore the water moves, from the river the water
    stands still and the shores slide past. Same boat, two different paths.
-   mode 'free': opts {u, b, heading, width, locked}. sim.play(heading) -> Promise; sim.race([headings]) -> Promise.
+   mode 'free': opts {u, b, heading, width, locked, hideGround}. hideGround keeps the ground speed off the stage until the first play. sim.play(heading) -> Promise; sim.race([headings]) -> Promise.
    mode 'game': reach the dock opposite, reach a downstream dock, cross as fast as possible.
    setParam: heading, u, frame, locked, dock. getState(): {t, groundSpeed, measured, boats, ...}. */
 (function () {
@@ -17,6 +17,7 @@
     { name: 'שלב 3: הכי מהר' },
   ];
   const TOL = 3;
+  const LABEL_FONT = 'Heebo, Rubik, system-ui, sans-serif';
 
   PHY.sims.riverBoat = function (canvasEl, controlsEl, opts) {
     opts = Object.assign({ mode: 'free', u: 3, b: 4, heading: 0, width: 60, locked: true, frame: 'shore', rate: RATE }, opts || {});
@@ -30,7 +31,7 @@
     const P = H2.pix(view);
     const S = {
       u: opts.u, b: opts.b, W: opts.width, heading: opts.heading, frame: opts.frame, t: 0, running: false, resolve: null,
-      locked: opts.locked, boats: [], dock: opts.dock === undefined ? null : opts.dock, caption: '', race: false,
+      locked: opts.locked, boats: [], dock: opts.dock === undefined ? null : opts.dock, caption: '', race: false, hideGround: !!opts.hideGround,
     };
 
     function newBoat(th) { return { th, x: 0, y: 0, land: null, path: [{ t: 0, x: 0, y: 0 }] }; }
@@ -89,9 +90,10 @@
       const bt = S.boats[0];
       const g = groundVec(bt.th);
       out.set('t', F.unit(S.t, 's', 1));
-      out.set('v', F.unit(V.len(g), 'ms', 2));
+      /* Mid-race one number cannot describe three boats. Before the guess this number is the answer. */
+      out.set('v', S.race ? 'שונה לכל סירה' : S.hideGround ? '?' : F.unit(V.len(g), 'ms', 2));
       out.set('b', F.unit(S.b, 'ms', 1));
-      out.set('x', F.unit(bt.x, 'm', 1));
+      out.set('x', S.race ? 'שונה לכל סירה' : F.unit(bt.x, 'm', 1));
     }
 
     /* ---------- physics: exact straight lines ---------- */
@@ -146,6 +148,39 @@
     }
     const frameX = (x, t) => (S.frame === 'river' ? x - S.u * t : x);
 
+    /* Race labels keep separate columns, in the boats' left-to-right order, so two of them can never
+       touch, whatever the finish order and however close the boats are. A boat that has left the canvas
+       gets its label on a row of its own, so the boats still in view keep their labels above them.
+       All three fit in one row down to a 320px screen. */
+    function drawRaceLabels() {
+      const size = view.w < 420 ? 10.5 : 12, weight = 800, edge = 4, gap = 8, lift = view.w < 420 ? 21 : 24;
+      const ctx = view.ctx;
+      ctx.save();
+      ctx.font = weight + ' ' + size + 'px ' + LABEL_FONT;
+      const items = S.boats.map(function (b) {
+        const text = (b.th === 0 ? 'ישר' : b.th < 0 ? 'נגד הזרם' : 'עם הזרם') + (b.land !== null ? ': ' + F.unit(b.land, 's', 1) : '');
+        return { b, text, w: ctx.measureText(text).width, x: view.sx(frameX(b.x, S.t)) };
+      }).sort((p, q) => p.x - q.x || p.b.th - q.b.th);
+      ctx.restore();
+      const inView = items.filter((it) => it.x >= 0 && it.x <= view.w);
+      const gone = items.filter((it) => inView.indexOf(it) < 0);
+      /* Pushed right first, then back in from the right edge. */
+      [inView, gone].forEach(function (row) {
+        row.forEach(function (it, i) {
+          const p = row[i - 1];
+          it.x = Math.max(it.x, p ? p.x + (p.w + it.w) / 2 + gap : edge + it.w / 2);
+        });
+        for (let i = row.length - 1; i >= 0; i--) {
+          const it = row[i], n = row[i + 1];
+          it.x = Math.min(it.x, n ? n.x - (n.w + it.w) / 2 - gap : view.w - edge - it.w / 2);
+        }
+      });
+      items.forEach(function (it) {
+        const y = gone.indexOf(it) < 0 ? view.sy(Math.min(it.b.y, S.W)) - lift : view.sy(S.W) + 16;
+        view.screenText(it.x, y, it.text, { size, weight, font: LABEL_FONT, color: it.b.land !== null ? C.accent : C.ink, halo: true });
+      });
+    }
+
     function render() {
       view.clear();
       const r = view.visible;
@@ -189,15 +224,8 @@
         const pts = b.path.map((p) => ({ x: frameX(p.x, p.t), y: p.y }));
         view.poly(pts, { color: C.displacement, width: 3.5, alpha: 0.85 });
       });
-      S.boats.forEach(function (b) {
-        drawBoat(b, { noCat: S.race });
-        if (S.race) {
-          const lbl = (b.th === 0 ? 'ישר' : b.th < 0 ? 'נגד הזרם' : 'עם הזרם') + (b.land !== null ? ': ' + F.unit(b.land, 's', 1) : '');
-          const half = 46 / view.scale;
-          const lx = Math.max(r.xMin + half, Math.min(r.xMax - half, frameX(b.x, S.t)));
-          view.text(lx, Math.min(b.y, S.W), lbl, { size: view.w < 420 ? 10.5 : 12, weight: 800, color: b.land !== null ? C.accent : C.ink, halo: true, offset: [0, b.land !== null ? -24 : 26] });
-        }
-      });
+      S.boats.forEach(function (b) { drawBoat(b, { noCat: S.race }); });
+      if (S.race) drawRaceLabels();
 
       /* Vector triangle at the boat. All three are velocities: all blue, told apart by style. */
       if (!S.race) {
@@ -216,8 +244,10 @@
             view.arrow(tx, ty, gx, ty, { color: C.velocity, width: 3, dash: [6, 4] });
             label((tx + gx) / 2, ty, 'זרם', [0, -13]);
           }
-          view.arrow(ox, oy, gx, ty, { color: C.velocity, width: 5 });
-          label(gx, ty, 'ביחס לחוף', [8, 4], 'left');
+          if (!S.hideGround) {
+            view.arrow(ox, oy, gx, ty, { color: C.velocity, width: 5 });
+            label(gx, ty, 'ביחס לחוף', [8, 4], 'left');
+          }
         } else if (S.u > 0) {
           view.arrow(ox, oy, ox - S.u * k, oy, { color: C.velocity, width: 3, dash: [6, 4] });
           label(ox - (S.u * k) / 2, oy, 'החוף', [0, 12]);
@@ -257,6 +287,7 @@
       nextBtn.hidden = true;
       shootBtn.hidden = false;
       heading.set(0);
+      S.heading = 0;
       if (i === 0) {
         S.u = H2.pick([1.5, 2, 2.4, 3]);
         S.dock = 0;
@@ -370,6 +401,7 @@
       },
       play(th) {
         if (th !== undefined) { heading.set(th); S.heading = th; }
+        S.hideGround = false;
         api.toStart();
         S.running = true;
         return new Promise(function (res) { S.resolve = res; });
@@ -379,6 +411,7 @@
         S.boats = list.map(newBoat);
         S.race = true;
         S.running = true;
+        update();
         return new Promise(function (res) { S.resolve = res; });
       },
       shoot,

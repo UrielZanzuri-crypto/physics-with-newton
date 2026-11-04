@@ -19,8 +19,8 @@
     ];
     let running = false, t = 0, resolve = null, clock = 0;
     const out = PHY.ui.Readouts(controlsEl, [
-      { key: 'a', label: 'ניוטון א: מיקום', color: 'var(--c-displacement)' },
-      { key: 'b', label: 'ניוטון ב: מיקום', color: 'var(--c-displacement)' },
+      { key: 'a', label: "ניוטון א': מיקום", color: 'var(--c-displacement)' },
+      { key: 'b', label: "ניוטון ב': מיקום", color: 'var(--c-displacement)' },
       { key: 't', label: 'זמן' },
     ]);
     const T_END = 2;
@@ -55,7 +55,8 @@
           view.line(t, y - 4 / view.scale, t, y + 4 / view.scale, { color: C.axis, width: 1.5 });
           view.text(t, y, F.num(t), { size: narrow ? 10 : 11, color: C.soft, offset: [0, 13] });
         }
-        const tip = c.x + c.v * 0.45;
+        /* Equal arrows until the run starts, so the ready state does not draw which cat is faster. */
+        const tip = c.x + (t > 0 ? c.v * 0.45 : Math.sign(c.v) * 1.8);
         PHY.mascot.draw(view, c.x, y, { pose: running ? 'sliding' : 'standing', px: catPx, flipX: c.v < 0 });
         const ay = y + (catPx + 8) / view.scale;
         view.arrow(c.x, ay, tip, ay, { color: C.velocity, width: 4 });

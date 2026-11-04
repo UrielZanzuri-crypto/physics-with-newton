@@ -48,11 +48,11 @@
       ctx.strokeStyle = C.surface;
       ctx.lineWidth = 10;
       ctx.beginPath(); ctx.moveTo(view.sx(tx), view.sy(-0.9)); ctx.lineTo(view.sx(tx), view.sy(2.1)); ctx.stroke();
-      ctx.strokeStyle = C.apple;
+      ctx.strokeStyle = C.accent;
       ctx.lineWidth = 6;
       ctx.beginPath(); ctx.moveTo(view.sx(tx), view.sy(-0.9)); ctx.lineTo(view.sx(tx), view.sy(1)); ctx.stroke();
       ctx.restore();
-      view.circle(tx, -1, 11, { px: true, fill: C.apple, color: C.axis, width: 2.5 });
+      view.circle(tx, -1, 11, { px: true, fill: C.accent, color: C.axis, width: 2.5 });
       view.text(tx, 2.75, '30°', { weight: 800, size: 16 });
 
       /* Crate with the cat on top */

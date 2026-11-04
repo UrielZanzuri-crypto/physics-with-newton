@@ -1,7 +1,9 @@
 /* PHY.sims.tugOfWar: משיכת חבל בשלושה. Three ropes pull on one knot (with the cat tied to it).
-   Set the sizes so the resultant is 0. The knot sits where the springy ropes balance, so an unbalanced
-   force visibly drags the cat toward the resultant. Force is always green.
-   opts: {locked, onSolved(i)}. sim.setPuzzle(i), sim.animateForces([F1, F2, F3], seconds) -> Promise. */
+   Set the sizes so the resultant is 0. He is also tied to a soft elastic from a peg at the center, drawn
+   whenever he is off center: an unbalanced total drags him toward the resultant until the elastic holds him.
+   The readout counts the three ropes only, and the elastic cancels it. Force is always green.
+   opts: {locked, masked, onSolved(i)}: until setParam('masked', false), masked hides the resultant and keeps
+   the cat at the center in a neutral pose, so the ready state shows nothing about the total. sim.setPuzzle(i), sim.animateForces([F1, F2, F3], seconds) -> Promise. */
 (function () {
   'use strict';
   const PHY = window.PHY;
@@ -16,12 +18,12 @@
     { angles: [0, 135, 270], start: [20, 30, 40] },           // F, 1.41 F, F
   ];
   const NAMES = ['א', 'ב', 'ג'];
-  const K = 16;            // N per meter of knot displacement
+  const K = 16;            // elastic stiffness: N per meter off center
   const ARROW = 0.075;     // meters of arrow per newton
     const TOL = 1;           // |R| below this counts as balanced
 
   PHY.sims.tugOfWar = function (canvasEl, controlsEl, opts) {
-    opts = Object.assign({ locked: false }, opts || {});
+    opts = Object.assign({ locked: false, masked: false }, opts || {});
     const view = PHY.canvas.create(canvasEl, {
       world: { xMin: -9, xMax: 9, yMin: -8.2, yMax: 8.2 },
       aspect: 1.35,
@@ -30,12 +32,12 @@
     });
     const S = {
       puzzle: 0, forces: PUZZLES[0].start.slice(), angles: PUZZLES[0].angles.slice(),
-      p: V.v(0, 0), v: V.v(0, 0), t: 0, tw: null, locked: opts.locked, wasBalanced: false, solved: {}, hasInteracted: false,
+      p: V.v(0, 0), v: V.v(0, 0), t: 0, tw: null, locked: opts.locked, masked: opts.masked, wasBalanced: false, solved: {}, hasInteracted: false,
     };
 
     const sliders = NAMES.map(function (n, i) {
       return U.Slider(controlsEl, {
-        label: 'חבל ' + n, min: 0, max: 70, step: 1, value: S.forces[i], unit: 'N', digits: 0, color: 'var(--c-force)',
+        label: 'חבל ' + n + "'", min: 0, max: 70, step: 1, value: S.forces[i], unit: 'N', digits: 0, color: 'var(--c-force)',
         onInput(v) { S.forces[i] = v; S.hasInteracted = true; S.tw = null; updateOut(); },
       });
     });
@@ -55,8 +57,8 @@
     function updateOut() {
       const R = resultant();
       const m = V.len(R);
-      out.set('R', F.unit(m < 0.05 ? 0 : m, 'N', 1));
-      out.set('state', m < TOL ? 'מאוזן. שלו.' : m < 15 ? 'נגרר קצת' : m < 40 ? 'נגרר בכוח' : 'עף!');
+      out.set('R', S.masked ? '?' : F.unit(m < 0.05 ? 0 : m, 'N', 1));
+      out.set('state', S.masked ? '?' : m < TOL ? 'מאוזן. שלו.' : m < 15 ? 'לא מאוזן: נמשך קצת' : m < 40 ? 'לא מאוזן: נמשך חזק' : 'לא מאוזן: נמשך מאוד');
       const bal = m < TOL;
       if (bal && !S.wasBalanced && S.hasInteracted && !S.tw) {
         if (!S.solved[S.puzzle]) {
@@ -91,7 +93,12 @@
           tw.resolve();
         }
       }
-      /* Damped spring toward the balance point: a soft, physical wobble. */
+      if (S.masked) {
+        S.p = V.v(0, 0);
+        S.v = V.v(0, 0);
+        return;
+      }
+      /* The damped elastic pulls him back to the center: a soft, physical wobble. */
       const R = resultant();
       const m = 3, c = 14;
       const ax = (R.x - K * S.p.x - c * S.v.x) / m;
@@ -128,10 +135,26 @@
         view.text(scaled.x, scaled.y, NAMES[i], { color: C.force, weight: 800, size: 14 });
       });
 
+      /* The peg of the elastic: behind the cat, so a centered cat hides it. */
+      const peg = () => view.circle(0, 0, 5, { px: true, fill: C.soft, color: C.soft, width: 1 });
+      peg();
+
       /* Arrows start outside the cat so he never hides them. Radius and label size follow the canvas width. */
       const narrow = view.w < 420;
       const catR = (narrow ? 25 : 38) / view.scale;
       const fLabel = (f) => (narrow ? F.num(f, 0) + ' N' : F.unit(f, 'N', 0));
+      const pose = S.masked ? 'standing' : balanced ? 'happy' : rm < 15 ? 'standing' : rm < 40 ? 'sliding' : 'dizzy';
+      PHY.mascot.draw(view, S.p.x, S.p.y - 0.1, { pose, px: narrow ? 46 : 64, anchor: [0.5, 0.6], rot: Math.max(-16, Math.min(16, -S.p.x * 3.5)) });
+
+      /* The fourth force, drawn over the cat because a small offset would hide it behind him.
+         It holds him still when the ropes do not balance, so it is always shown then. A balanced cat
+         settling his last few centimeters shows none, so "שקול = 0" never comes with a dot on his belly. */
+      if (V.len(S.p) > (balanced ? 0.3 : 0.05)) {
+        view.line(0, 0, S.p.x, S.p.y, { color: C.soft, width: 2.5 });
+        peg();
+      }
+
+      /* After the elastic: rope ג often points back through the center, and its force must stay readable. */
       S.angles.forEach(function (a, i) {
         if (S.forces[i] < 0.5) return;
         const from = V.add(S.p, V.polar(catR, a));
@@ -139,14 +162,11 @@
         view.arrow(from.x, from.y, tip.x, tip.y, { color: C.force, width: 4.5, label: fLabel(S.forces[i]), labelSize: 12.5, labelGap: narrow ? 12 : 16 });
       });
 
-      const pose = balanced ? 'happy' : rm < 15 ? 'standing' : rm < 40 ? 'sliding' : 'dizzy';
-      PHY.mascot.draw(view, S.p.x, S.p.y - 0.1, { pose, px: narrow ? 46 : 64, anchor: [0.5, 0.6], rot: Math.max(-16, Math.min(16, -S.p.x * 3.5)) });
-
-      if (!balanced) {
+      if (!balanced && !S.masked) {
         const from = V.add(S.p, V.scale(V.norm(R), catR));
         const tip = V.add(from, V.scale(R, ARROW));
         view.arrow(from.x, from.y, tip.x, tip.y, { color: C.force, width: 7, alpha: 0.5, dash: [8, 6], label: 'שקול', labelSide: -1, labelGap: narrow ? 13 : 18 });
-      } else {
+      } else if (balanced) {
         view.screenText(view.w / 2, view.h - 20, 'שקול = 0', { color: C.force, weight: 800, size: 15, pill: true, pillBorder: C.force });
       }
     }
@@ -168,6 +188,7 @@
       },
       setParam(name, v) {
         if (name === 'locked') setLocked(!!v);
+        if (name === 'masked') { S.masked = !!v; updateOut(); }
         if (name === 'forces') {
           S.forces = v.slice();
           sliders.forEach(function (s, j) { s.set(S.forces[j]); });

@@ -74,7 +74,7 @@
         S.t = end;
         S.running = false;
         S.done = true;
-        S.caption = opts.twin ? 'נחתו יחד, אחרי ' + F.unit(end, 's', 1) : 'רצפה: צעדים שווים. קיר: נפילה חופשית.';
+        S.caption = opts.twin ? 'נחתו יחד, אחרי ' + F.unit(end, 's', 1) : 'רצפה: צעדים שווים. קיר: זריקה למעלה.';
         if (S.resolve) { const r = S.resolve; S.resolve = null; r(); }
       }
     }
@@ -96,7 +96,7 @@
 
       /* The lamp lines */
       if (p.y > 0.2) view.line(p.x, p.y, p.x, 0, { color: C.soft, width: 1.3, dash: [3, 5] });
-      if (p.x > 0.2) view.line(p.x, p.y, 0, p.y, { color: C.soft, width: 1.3, dash: [3, 5] });
+      if (p.x > 0.2 && !opts.twin) view.line(p.x, p.y, 0, p.y, { color: C.soft, width: 1.3, dash: [3, 5] });
 
       /* The shadows carry the velocity components */
       view.circle(p.x, 0, 8, { px: true, fill: C.displacement, color: C.surface, width: 2 });
@@ -110,7 +110,7 @@
       /* The twin apple, thrown straight up with the same vy */
       if (opts.twin) {
         B.drawApple(view, 0, p.y, 18);
-        if (S.t > 0) view.line(0, p.y, p.x, p.y, { color: C.apple, width: 1.5, dash: [5, 4] });
+        if (S.t > 0) view.line(0, p.y, p.x, p.y, { color: C.soft, width: 1.5, dash: [5, 4] });
       }
 
       /* The cat is the projectile */
@@ -122,11 +122,14 @@
 
       if (S.caption) view.screenText(view.w / 2 + 12, 20, S.caption, { size: 13.5, weight: 700, pill: true });
 
-      out.set('t', F.unit(S.t, 's', 2) + ' מתוך ' + F.num(end, 2));
+      /* Before the first run of a locked card, the flight time and the speeds would give the answer away.
+         F.num(NaN) is the same empty mark that an untouched readout shows. */
+      const hide = S.locked && !S.running && !S.done;
+      out.set('t', hide ? F.unit(S.t, 's', 2) : F.unit(S.t, 's', 2) + ' מתוך ' + F.unit(end, 's', 2));
       out.set('x', F.unit(p.x, 'm', 1));
       out.set('y', F.unit(p.y, 'm', 1));
-      out.set('vx', F.unit(p.vx, 'ms', 1));
-      out.set('vy', F.unit(p.vy, 'ms', 1));
+      out.set('vx', hide ? F.num(NaN) : F.unit(p.vx, 'ms', 1));
+      out.set('vy', hide ? F.num(NaN) : F.unit(p.vy, 'ms', 1));
     }
 
     const loop = PHY.SimLoop({ view, step, render });

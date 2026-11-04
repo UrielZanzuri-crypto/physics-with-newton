@@ -1,0 +1,944 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>פרק 8: תנועה הרמונית פשוטה | פיזיקה עם ניוטון החתול</title>
+<meta name="description" content="למה קפיץ לא ממהר גם כשלוחצים אותו חזק: מדריך אינטראקטיבי לתנועה הרמונית, לקפיצים ולמטוטלות.">
+<script>try{var t=localStorage.getItem('phy-theme');document.documentElement.setAttribute('data-theme',t||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'))}catch(e){document.documentElement.setAttribute('data-theme','light')}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700&family=Rubik:wght@500;600;700;800&display=swap">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.11/katex.min.css">
+<link rel="stylesheet" href="../css/style.css">
+<style>
+  /* Chapter 8 only */
+  .sim-controls-inner { display: grid; gap: 10px; }
+  .toggle { min-height: 44px; }
+  .quest-list { margin: 8px 0 0; padding-inline-start: 22px; }
+  .quest-list li { margin-bottom: 6px; }
+  .egg-cat { position: fixed; left: 0; top: 0; z-index: 61; width: 84px; height: 84px; pointer-events: none; }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-in">
+    <a class="brand" href="../index.html" aria-label="חזרה לדף הבית"><span data-brand-cat></span><span class="brand-name">ניוטון החתול</span></a>
+    <span class="topbar-spacer"></span>
+    <span class="topbar-title">פרק 8: תנועה הרמונית פשוטה</span>
+    <span data-theme-slot></span>
+  </div>
+  <div class="chapter-bar"><span data-chapter-bar></span></div>
+</header>
+
+<main>
+
+<!-- 1. HOOK -->
+<section class="section wrap" data-section="hook" id="hook">
+  <span class="kicker">פרק 8: תנועה הרמונית פשוטה</span>
+  <h1 class="hero-title">הקפיץ שלא ממהר</h1>
+  <div data-mascot="happy" data-size="118" data-say="הבטיחו לי טרמפולינה. זה קפיץ."></div>
+  <p class="lead">ניוטון יושב על קפיץ. לוחצים אותו למטה, עוזבים, והוא עולה ויורד, עולה ויורד, ומתלונן בשני הכיוונים.</p>
+  <p>הלוך ושוב שלם נקרא <b>מחזור</b>, והזמן שלו נקרא <b>זמן המחזור</b>, ומסמנים אותו \(T\). <b>נקודת המנוחה</b> היא המקום שבו הוא יושב אם לא נוגעים בו, והמרחק הכי גדול ממנה נקרא <b>משרעת</b>, או אמפליטודה, ומסמנים אותה \(A\).</p>
+  <p>כשלוחצים את ניוטון 0.5 מ', מחזור לוקח 2 ש'. לידו יושב תאום על קפיץ זהה, ואותו לוחצים 1 מ', פי 2.</p>
+  <div id="pc-hook">
+    <figure class="sim"><canvas id="c-hook"></canvas><div class="sim-controls" id="ctl-hook"></div></figure>
+  </div>
+</section>
+
+<!-- 2. RESTORING FORCE -->
+<section class="section wrap" data-section="restoring" id="restoring">
+  <div class="section-head"><span class="section-num">2</span><h2>מה מושך את החתול?</h2></div>
+  <p>כדי לראות מה מניע את ניוטון, נשכיב את הקפיץ. ניוטון על קרונית, רצפה בלי חיכוך, ובאמצע נקודה שבה הקפיץ לא מתוח ולא לחוץ. נקרא לה בית, \(x = 0\).</p>
+  <p>לכל קפיץ יש מספר, \(k\), שפגשנו בפרק 5: כמה ניוטון צריך כדי למתוח אותו מטר אחד. כאן \(k = 4\) ניוטון/מ', והמסה 1 ק"ג.</p>
+  <p>בריצה, <span class="c-force">הכוח</span> של הקפיץ מצויר בירוק, <span class="c-acc">התאוצה</span> באדום ו<span class="c-vel">המהירות</span> בכחול. מתחת לקרונית מצטייר אז גרף של הכוח מול המיקום.</p>
+  <div id="pc-rest">
+    <figure class="sim"><canvas id="c-rest"></canvas><div class="sim-controls" id="ctl-rest"></div></figure>
+  </div>
+  <p class="block-gap">יש כאן הבדל גדול מפרק 2. שם <span class="c-acc">התאוצה</span> הייתה קבועה, וכאן היא משתנה בכל רגע, כי הכוח משתנה עם המיקום. לכן \(x = v_0 t + \tfrac12 at^2\) לא עובדת כאן, וצריך כלי אחר, שמגיע מכיוון לא צפוי.</p>
+</section>
+
+<!-- 3. SHADOW OF A CIRCLE -->
+<section class="section wrap" data-section="shadow" id="shadow">
+  <div class="section-head"><span class="section-num">3</span><h2>הצל של המעגל</h2></div>
+  <p>הכלי הזה מחכה לנו מפרק 1 ומפרק 6. ניוטון נוסע על שולחן מסתובב במהירות קבועה, ואנחנו מסתכלים מלמעלה. מנורה בצד אחד של השולחן מטילה את הצל שלו על רצועת קיר בצד השני.</p>
+  <p>מתחת לקיר יש קרונית על קפיץ, עם אותו זמן מחזור ואותה משרעת. הצל והקרונית יוצאים מהקצה הימני באותו רגע.</p>
+  <div id="pc-shadow">
+    <figure class="sim"><canvas id="c-shadow"></canvas><div class="sim-controls" id="ctl-shadow"></div></figure>
+  </div>
+</section>
+
+<!-- 4. GRAPHS -->
+<section class="section wrap" data-section="graphs" id="graphs">
+  <div class="section-head"><span class="section-num">4</span><h2>שלושה גרפים, חתול אחד</h2></div>
+  <p>הצל נתן לנו נוסחה לכל רגע: \(x = A\cos(\omega t)\), עם \(\omega = 2\pi/T\), והקפיץ נותן אותה כש-\(\omega^2 = k/m\). אז אפשר לצייר. למטה יש שלושה גרפים של אותה קרונית: <span class="c-disp">המיקום</span>, <span class="c-vel">המהירות</span> ו<span class="c-acc">התאוצה</span>, וקו אחד רץ על שלושתם.</p>
+  <p>לפני שמריצים: ניוטון מגיע לקצה ועוצר שם לרגע, ואז טס דרך האמצע. מה קורה בשני הרגעים האלה?</p>
+  <div id="pc-graphs">
+    <figure class="sim"><canvas id="c-graphs"></canvas><div class="sim-controls" id="ctl-graphs"></div></figure>
+  </div>
+</section>
+
+<!-- 5. PERIOD LAB -->
+<section class="section wrap" data-section="period" id="period">
+  <div class="section-head"><span class="section-num">5</span><h2>אז מה כן משנה את הקצב?</h2></div>
+  <p>המשרעת לא משנה את הזמן. אז מה כן? שני חתולים על שני קפיצים זהים: אחד במסה של 1 ק"ג, והשני אכל הרבה תפוחים, והמסה שלו 4 ק"ג.</p>
+  <p>מחזור של הקל לוקח בערך 1 ש'.</p>
+  <div id="pc-period">
+    <figure class="sim"><canvas id="c-period"></canvas><div class="sim-controls" id="ctl-period"></div></figure>
+  </div>
+</section>
+
+<!-- 6. ENERGY -->
+<section class="section wrap" data-section="energy" id="energy">
+  <div class="section-head"><span class="section-num">6</span><h2>האנרגיה עוברת ידיים</h2></div>
+  <p>מפרק 5 אנחנו יודעים שקפיץ אוגר <b>אנרגיה אלסטית</b>, \(\tfrac12 kx^2\). בזמן התנודה היא עוברת הלוך ושוב בין הקפיץ לתנועה, כלומר ל<b>אנרגיה קינטית</b>, והסכום לא משתנה. זה כמו כסף שעובר בין שני כיסים של אותם מכנסיים.</p>
+  <p>למטה יש שלוש עמודות, ובריצה מצטיירת לידן הקערה של אנרגיית הקפיץ. בקצה הכול בקפיץ, ובאמצע הכול בתנועה. ובחצי הדרך מהקצה לאמצע?</p>
+  <div id="pc-energy">
+    <figure class="sim"><canvas id="c-energy"></canvas><div class="sim-controls" id="ctl-energy"></div></figure>
+  </div>
+</section>
+
+<!-- 7. PENDULUM -->
+<section class="section wrap" data-section="pendulum" id="pendulum">
+  <div class="section-head"><span class="section-num">7</span><h2>בלי קפיץ בכלל</h2></div>
+  <p>חתול על חוט. זו <b>מטוטלת</b>, וגם כאן יש משהו שמחזיר הביתה: החלק של הכבידה שפועל לאורך המסלול. נזכור את הצל מפרק 1.</p>
+  <p>מטוטלת של 1 מ' משלימה מחזור ב-2 ש'. לידה תלויה מטוטלת ארוכה פי 4.</p>
+  <div id="pc-pend">
+    <figure class="sim"><canvas id="c-pend"></canvas><div class="sim-controls" id="ctl-pend"></div></figure>
+  </div>
+  <p class="block-gap">ועל הירח? הכבידה קטנה, \(g = 1.6\) מ/ש², ולכן הכוח שמחזיר הביתה קטן והנדנוד איטי יותר. מטוטלת של 1 מ' לוקחת שם בערך 5 ש' למחזור, והכפתור שמעל מראה את זה.</p>
+
+  <h3 class="block-gap">ועכשיו ביושר: מה עם זוויות גדולות?</h3>
+  <p>הקפיץ לא התרגש ממשרעת גדולה. הנוסחה של המטוטלת, \(T = 2\pi\sqrt{L/g}\), מגיעה מקירוב של זוויות קטנות. הסימולציה הזאת לא מקרבת: היא פותרת את המשוואה האמיתית, והחתול השקוף נע לפי הנוסחה.</p>
+  <div id="pc-big">
+    <figure class="sim"><canvas id="c-big"></canvas><div class="sim-controls" id="ctl-big"></div></figure>
+  </div>
+</section>
+
+<!-- 8. SPRINGS COMBINED -->
+<section class="section wrap" data-section="combo" id="combo">
+  <div class="section-head"><span class="section-num">8</span><h2>שני קפיצים במקום אחד</h2></div>
+  <p>אפשר לחבר שני קפיצים בשתי דרכים. <b>במקביל</b> הם זה לצד זה, ושניהם נמתחים באותה מידה. <b>בטור</b> הם זה אחרי זה, כמו קפיץ ארוך אחד.</p>
+  <p>בשורה העליונה קפיץ אחד של 20 ניוטון/מ', ומחזור של 1.4 ש'. מתחתיו שניים כאלה במקביל, ובשורה התחתונה שניים כאלה בטור.</p>
+  <div id="pc-combo">
+    <figure class="sim"><canvas id="c-combo"></canvas><div class="sim-controls" id="ctl-combo"></div></figure>
+  </div>
+</section>
+
+<!-- 9. EARNED FORMULAS -->
+<section class="section wrap" data-section="formula" data-passive id="formula">
+  <div class="section-head"><span class="section-num">9</span><h2>הנוסחאות שהרווחנו</h2></div>
+  <p>תנועה הרמונית פשוטה היא מה שקורה כשהכוח שמחזיר הביתה גדל בקו ישר עם המרחק מהבית. כל מה שכאן כבר רץ על המסך.</p>
+
+  <div class="formula">
+    <h3>הכוח המחזיר</h3>
+    <div class="formula-main">\[F = -kx \qquad a = -\frac{k}{m}\,x\]</div>
+    <ul class="legend-list">
+      <li><span class="sym">\(F\)</span><span><span class="c-force">הכוח</span> של הקפיץ. הוא נקרא <b>כוח מחזיר</b>, כי הוא תמיד פונה הביתה.</span></li>
+      <li><span class="sym">\(k\)</span><span><b>קבוע הקפיץ</b>, בניוטון/מ': כמה ניוטון צריך כדי למתוח מטר אחד. קפיץ קשיח: \(k\) גדול.</span></li>
+      <li><span class="sym">\(x\)</span><span><span class="c-disp">המרחק מהבית</span>, עם סימן. המינוס אומר שהכוח תמיד הפוך למיקום, גם כשהחתול עדיין מתרחק.</span></li>
+      <li><span class="sym">\(a\)</span><span><span class="c-acc">התאוצה</span>. היא משתנה עם המיקום, ולכן הנוסחאות של תאוצה קבועה מפרק 2 לא חלות כאן.</span></li>
+    </ul>
+  </div>
+
+  <div class="formula">
+    <h3>הצל של המעגל</h3>
+    <div class="formula-main">\[x = A\cos(\omega t)\]</div>
+    <div class="formula-main">\[v = -A\omega\sin(\omega t)\]</div>
+    <div class="formula-main">\[a = -A\omega^2\cos(\omega t) = -\omega^2 x\]</div>
+    <p>אלה הצללים של הרדיוס, של <span class="c-vel">המהירות</span> ושל <span class="c-acc">התאוצה</span> של חתול על מעגל, מפרק 1 ומפרק 6. הזמן נמדד מהרגע שהוא בקצה הימני.</p>
+    <ul class="legend-list">
+      <li><span class="sym">\(A\)</span><span>ה<b>משרעת</b>: רדיוס המעגל, והמרחק הכי גדול מהבית.</span></li>
+      <li><span class="sym">\(\omega\)</span><span>כמה רדיאנים עוברים על המעגל הדמיוני בשנייה: \(\omega = 2\pi/T\). בפרק 6 קראנו לה מהירות זוויתית, ובתנודה היא נקראת <b>תדירות זוויתית</b>.</span></li>
+      <li><span class="sym">\(T\)</span><span><b>זמן המחזור</b>: כמה זמן לוקח הלוך ושוב שלם.</span></li>
+    </ul>
+    <p class="block-gap">בקצה: \(v = 0\), ו-\(|a| = A\omega^2\), הכי גדולה. באמצע: \(|v| = A\omega\), הכי גדולה, ו-\(a = 0\).</p>
+  </div>
+
+  <div class="formula">
+    <h3>זמן המחזור של קפיץ</h3>
+    <div class="formula-main">\[\omega = \sqrt{\frac{k}{m}} \qquad T = 2\pi\sqrt{\frac{m}{k}}\]</div>
+    <p>משווים \(a = -\omega^2 x\) מהצל ל-\(a = -\tfrac{k}{m}x\) מהקפיץ, וזה מה שיוצא. מסה פי 4 נותנת זמן פי 2, וקפיץ קשיח פי 4 נותן זמן חלקי 2.</p>
+    <p>לחפש את \(A\) בנוסחה: הוא לא שם. זו תשובת הפתיח, ועל זה בנויים שעונים.</p>
+  </div>
+
+  <div class="formula">
+    <h3>אנרגיה</h3>
+    <div class="formula-main">\[E = \tfrac12 kx^2 + \tfrac12 mv^2 = \tfrac12 kA^2\]</div>
+    <div class="formula-main">\[v_{\max} = A\omega \qquad a_{\max} = A\omega^2\]</div>
+    <p>הסכום קבוע. משרעת פי 2 נותנת אנרגיה פי 4 ומהירות מרבית פי 2, וזמן המחזור נשאר. ב-\(x = A/2\) רבע מהאנרגיה בקפיץ ושלושה רבעים בתנועה.</p>
+  </div>
+
+  <div class="formula">
+    <h3>מטוטלת</h3>
+    <div class="formula-main">\[T = 2\pi\sqrt{\frac{L}{g}}\]</div>
+    <ul class="legend-list">
+      <li><span class="sym">\(L\)</span><span>אורך החוט. עם \(L = 1\) מ' ו-\(g = 10\) מ/ש²: \(T \approx 2\) ש'.</span></li>
+      <li><span class="sym">\(g\)</span><span>הכבידה של המקום. על הירח הזמן ארוך יותר.</span></li>
+    </ul>
+    <p class="block-gap">המסה לא מופיעה: היא מצטמצמת, כי הכבידה עצמה היא הכוח המחזיר.</p>
+    <p class="block-gap">הנוסחה מניחה \(\sin\theta \approx \theta\), כשהזווית ברדיאנים: 15° הם 0.262 רדיאן, והסינוס שלהם 0.259. לכן היא טובה לזוויות קטנות. ב-15° הטעות 0.4%, וב-60° היא כבר 7.3%.</p>
+  </div>
+
+  <div class="formula">
+    <h3>חיבור קפיצים</h3>
+    <div class="formula-main">\[k_{p} = k_1 + k_2 \qquad \frac{1}{k_{s}} = \frac{1}{k_1} + \frac{1}{k_2}\]</div>
+    <p>\(k_p\) הוא הקבוע של זוג <b>במקביל</b>: אותה מתיחה, הכוחות מתחברים. \(k_s\) הוא הקבוע של זוג <b>בטור</b>: אותו כוח, המתיחות מתחברות. אחר כך מציבים ב-\(T = 2\pi\sqrt{m/k}\).</p>
+  </div>
+</section>
+
+<!-- 10. PLAYGROUND -->
+<section class="section wrap" data-section="playground" id="playground">
+  <div class="section-head"><span class="section-num">10</span><h2>מגרש הקפיצים</h2></div>
+  <p>כל הסליידרים פתוחים, והגרפים מצטיירים תוך כדי. אפשר גם לגרור את החתול למקום אחר ולעזוב. קווי הזהב על הגרף מסמנים כל מחזור שהושלם.</p>
+  <figure class="sim"><canvas id="c-play"></canvas><div class="sim-controls" id="ctl-play"></div></figure>
+  <ul class="quest-list">
+    <li>למצוא מסה וקבוע קפיץ שנותנים \(T\) של בערך 2 ש'. כמה זוגות כאלה יש?</li>
+    <li>לשנות רק את \(A\). מה זז בקריאות, ומה לא זז?</li>
+    <li>להכפיל גם את המסה וגם את \(k\). מה קורה לזמן המחזור, ולמה?</li>
+  </ul>
+</section>
+
+<!-- 11. MINI GAME -->
+<section class="section wrap-wide" data-section="game" id="game">
+  <div class="section-head"><span class="section-num">11</span><h2>משחקון: נדנדה בקצב</h2></div>
+  <p>דחיפות קטנות בקצב הטבעי של הנדנדה מצטברות לתנודה גדולה. קוראים לזה <b>תהודה</b>, וזו הסיבה שאפשר להעיף ילד על נדנדה עם אצבע אחת, בסבלנות.</p>
+  <p>שתי תנודות הן <b>באותו מופע</b> אם הן מגיעות לאותו קצה באותו רגע. שלושה שלבים: לדחוף נדנדה בזמן, לכוון קפיץ למטרונום, ולשחרר קרונית ברגע הנכון.</p>
+  <p class="muted small">שלב 1 נמדד בדחיפות, שלב 2 בבדיקות ושלב 3 בדיוק של השחרור. בכל שלב 1-3 נקודות, ומהסכום נקבעים הכוכבים.</p>
+  <figure class="sim"><canvas id="c-game"></canvas><div class="sim-controls" id="ctl-game"></div></figure>
+</section>
+
+<!-- 12. TRAPS -->
+<section class="section wrap" data-section="traps" id="traps">
+  <div class="section-head"><span class="section-num">12</span><h2>מלכודות</h2></div>
+  <p>שתיים כבר עברנו: "משרעת גדולה מאריכה את הזמן" מסעיף 1, ו"בקצה אין תאוצה כי החתול עצר" מסעיף 4. נשארו עוד שלוש, ועליהן נופלים גם אנשים רציניים.</p>
+  <div id="pc-trap1">
+    <figure class="sim"><canvas id="c-trap1"></canvas><div class="sim-controls" id="ctl-trap1"></div></figure>
+  </div>
+  <div id="pc-trap2">
+    <figure class="sim"><canvas id="c-trap2"></canvas><div class="sim-controls" id="ctl-trap2"></div></figure>
+  </div>
+  <div id="pc-trap3">
+    <figure class="sim"><canvas id="c-trap3"></canvas><div class="sim-controls" id="ctl-trap3"></div></figure>
+  </div>
+</section>
+
+<!-- 13. EXAM PROBLEMS -->
+<section class="section wrap" data-section="problems" id="problems">
+  <div class="section-head"><span class="section-num">13</span><h2>שאלות מכינה</h2></div>
+  <p>ככה זה נראה במבחן. כדאי לנסות לבד, ואם נתקעים יש רמז לפני כל שלב של הפתרון.</p>
+  <div id="problems-host"></div>
+</section>
+
+<!-- 14. QUIZ -->
+<section class="section wrap" data-section="quiz" id="quiz">
+  <div class="section-head"><span class="section-num">14</span><h2>בוחן</h2></div>
+  <p>חמש שאלות על הפרק ועוד שתיים שחוזרות לפרקים קודמים. הציון הטוב ביותר נשמר, ואפשר לנסות שוב.</p>
+  <div id="quiz-host" class="block-gap"></div>
+</section>
+
+<!-- 15. POCKET CARD -->
+<section class="section wrap" data-section="pocket" data-passive id="pocket">
+  <div class="section-head"><span class="section-num">15</span><h2>כרטיס כיס</h2></div>
+  <div class="pocket">
+    <h3>תנועה הרמונית על רגל אחת</h3>
+    <div class="pocket-grid">
+      <div class="pocket-item"><b>הרעיון:</b> כוח מחזיר \(F = -kx\), והתנועה היא צל של מעגל.</div>
+      <div class="pocket-item"><b>בכל רגע:</b> \(x = A\cos\omega t,\;\; v = -A\omega\sin\omega t,\;\; a = -\omega^2 x\)</div>
+      <div class="pocket-item"><b>קפיץ:</b> \(T = 2\pi\sqrt{m/k}\), ו-\(\omega = 2\pi/T\). המשרעת לא משנה את \(T\).</div>
+      <div class="pocket-item"><b>מטוטלת, זווית קטנה:</b> \(T = 2\pi\sqrt{L/g}\). המסה לא משנה. 1 מ' נותן כ-2 ש'.</div>
+      <div class="pocket-item"><b>בקצה:</b> \(v = 0\), ו-\(a\) מרבית. <b>באמצע:</b> \(v\) מרבית, ו-\(a = 0\).</div>
+      <div class="pocket-item"><b>מרביים:</b> \(v_{\max} = A\omega,\;\; a_{\max} = A\omega^2,\;\; E = \tfrac12 kA^2\)</div>
+      <div class="pocket-item"><b>במקביל:</b> \(k_1 + k_2\). <b>בטור:</b> \(1/k = 1/k_1 + 1/k_2\).</div>
+      <div class="pocket-item"><b>קפיץ אנכי:</b> הכבידה מזיזה את נקודת המנוחה ב-\(mg/k\), ו-\(T\) נשאר.</div>
+      <div class="pocket-item"><b>לא לשכוח:</b> \(x = \tfrac12 at^2\) לא חלה כאן. התאוצה לא קבועה.</div>
+    </div>
+    <div class="pocket-quote">"הקפיץ הוא הפקיד המושלם: לא משנה כמה עבודה נותנים לו, הוא מסיים באותה שעה."</div>
+  </div>
+</section>
+
+</main>
+
+<div data-chapter-nav></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.11/katex.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.11/contrib/auto-render.min.js"></script>
+<script src="../js/core/fmt.js"></script>
+<script src="../js/core/vec.js"></script>
+<script src="../js/core/progress.js"></script>
+<script src="../js/core/canvas.js"></script>
+<script src="../js/core/loop.js"></script>
+<script src="../js/core/mascot.js"></script>
+<script src="../js/core/ui.js"></script>
+<script src="../js/sims/ch02/plot.js"></script>
+<script src="../js/sims/ch08/kit.js"></script>
+<script src="../js/sims/ch08/lanes.js"></script>
+<script src="../js/sims/ch08/spring-lab.js"></script>
+<script src="../js/sims/ch08/circle-shadow.js"></script>
+<script src="../js/sims/ch08/ghost-race.js"></script>
+<script src="../js/sims/ch08/swing-game.js"></script>
+<script>
+(function () {
+  'use strict';
+  const CH = '08';
+  const U = PHY.ui, F = PHY.fmt;
+  const $ = (id) => document.getElementById(id);
+  const TAG = 'הניחוש שלך';
+
+  /* ---------- 1. Hook: same spring, double the amplitude ---------- */
+  const hook = PHY.sims.oscLanes($('c-hook'), $('ctl-hook'), {
+    world: { xMin: -2.2, xMax: 2.2, yMin: -1, yMax: 4 }, aspect: 1.25, minHeight: 330, maxHeight: 460,
+    duration: 6.1, endCaption: 'שלושה מחזורים לכל אחד, ואותו שעון',
+    lanes: [
+      { type: 'vspring', x0: -1.1, y0: 0, m: 1, k: 10, A: 0.5, L0: 2.6, px: 50, labelFn: (l) => 'לחיצה ' + F.unit(l.A, 'm', 1) },
+      { type: 'vspring', x0: 1.1, y0: 0, m: 1, k: 10, A: 1, L0: 2.6, px: 50, labelFn: (l) => 'לחיצה ' + F.unit(l.A, 'm', 1) },
+    ],
+    controls: [{ lane: 1, key: 'A', label: 'לחיצה של הימני', min: 0.1, max: 1, step: 0.1, unit: 'm', digits: 1, color: 'var(--c-displacement)' }],
+  });
+  hook.start();
+  U.PredictCard($('pc-hook'), {
+    chapter: CH, id: 'hook', section: 'hook', tag: TAG,
+    question: `לחיצה של 1 מ', פי 2 מ-0.5 מ'. כמה זמן ייקח מחזור אחד של התאום?`,
+    options: [
+      { text: `4 ש'. כפול דרך, כפול זמן. מה יש פה לחשוב?`, why: `זה נכון למכונית במהירות קבועה. כאן המהירות לא קבועה: מי שנלחץ יותר גם מקבל דחיפה חזקה יותר.` },
+      { text: `בערך 3 ש'. קצת יותר דרך, קצת יותר זמן.`, why: `פשרה הגיונית, אבל השעון של התאום עצר על אותו מספר בדיוק. אין כאן שום תוספת.` },
+      { text: `2 ש', בדיוק כמו הראשון.`, correct: true },
+      { text: `1 ש'. לחצנו חזק יותר, אז הוא ממהר.`, why: `הוא באמת ממהר: מהיר פי 2 בכל רגע. אבל גם הדרך שלו ארוכה פי 2, אז הזמן לא התקצר.` },
+    ],
+    onRun: async () => {
+      hook.setParam('locked', true);
+      hook.setLane(1, { A: 1 });
+      await hook.play();
+      hook.setParam('locked', false);
+    },
+    steps: [
+      { hint: `מה הראה השעון של כל אחד מהתאומים?`,
+        work: `כל מחזור לקח 1.99 ש', בערך 2 ש', לשניהם. הם גם הגיעו למטה יחד בכל פעם.` },
+      { hint: `התאום עובר פי 2 דרך באותו זמן. מה חייב להיות אצלו גדול יותר?`,
+        work: `<span class="c-vel">המהירות</span>: בכל רגע הוא מהיר פי 2 מהראשון.` },
+      { hint: `מאיפה הוא מקבל את המהירות הנוספת?`,
+        work: `קפיץ שנלחץ פי 2 דוחף בכוח גדול פי 2, ולכן גם <span class="c-acc">התאוצה</span> גדולה פי 2. דרך כפולה בתאוצה כפולה נגמרת בדיוק באותו זמן.` },
+      { hint: `אז מה התשובה, ומה זה אומר על \\(T\\)?`,
+        work: `<b>2 ש', בדיוק כמו הראשון.</b> זמן המחזור של קפיץ לא תלוי במשרעת. זו התכונה הכי מפתיעה של התנועה הזאת, ובהמשך נראה למה.` },
+    ],
+    explanation: `<p><b>עכשיו תורך:</b> אפשר לשנות את הלחיצה של הימני ולהפעיל שוב. השעון לא יתרגש.</p>`,
+    sayRight: 'ניחוש נכון. ואני עוד הרגשתי שזה לקח נצח.',
+    sayWrong: 'גם אני הייתי בטוח שאני עובד קשה יותר. אותו זמן, יותר צעקות.',
+  });
+
+  /* ---------- 2. Restoring force ---------- */
+  const rest = PHY.sims.springLab($('c-rest'), $('ctl-rest'), { panel: 'fx', m: 1, k: 4, A: 1, locked: true, hideUntilRun: true, Amax: 1.2, minHeight: 400 });
+  rest.start();
+  U.PredictCard($('pc-rest'), {
+    chapter: CH, id: 'restoring', section: 'restoring', tag: TAG,
+    question: `ניוטון נמצא 0.6 מ' ימינה מהבית, ועדיין <b>נע ימינה</b>, מתרחק. לאן מושך הקפיץ ברגע הזה?`,
+    options: [
+      { text: `ימינה. הוא נע ימינה, אז משהו דוחף אותו לשם.`, why: `זו האינטואיציה של אריסטו, ובפרק 4 ראינו שהיא שגויה: כוח לא שומר על תנועה, הוא משנה אותה. החתול נע ימינה רק כי יצא מהבית מהר.` },
+      { text: `שמאלה, הביתה. החתול רק מאט בדרך החוצה.`, correct: true },
+      { text: `לאף כיוון. הכוח מתחיל רק כשהוא נעצר בקצה.`, why: `קפיץ לא מחכה לרגע מתאים. ברגע שהוא מתוח הוא מושך, וככל שהוא מתוח יותר הוא מושך חזק יותר.` },
+    ],
+    onRun: async () => {
+      rest.setParam('locked', true);
+      await rest.play([
+        { set: { x: 0, v: 2 }, hold: 0.7, caption: 'יוצא מהבית ימינה, במהירות' },
+        { run: { x: 0.6, dir: 1 } },
+        { hold: 1.7, caption: "ב-0.6 מ': עדיין מתרחק, והכוח כבר שמאלה" },
+        { run: 'turn' },
+        { hold: 0.9, caption: 'נעצר לרגע. הכוח כאן הכי גדול' },
+        { run: { x: 0, dir: -1 } },
+        { hold: 0.9, caption: 'בבית: הכוח אפס, והמהירות בשיא' },
+        { run: { x: -0.6, dir: -1 } },
+        { hold: 1, caption: 'בצד השני: הכוח שוב פונה הביתה' },
+        { run: 'turn' },
+        { run: { x: 0, dir: 1 } },
+        { hold: 0.2, caption: '' },
+      ]);
+      rest.reset();
+      rest.setParam('locked', false);
+    },
+    steps: [
+      { hint: `מה עושה קפיץ מתוח, בלי קשר למה שמחובר אליו?`,
+        work: `מושך חזרה לאורך הטבעי שלו. הקפיץ לא יודע לאן החתול נע, הוא מרגיש רק כמה הוא מתוח.` },
+      { hint: `מה ראינו בגרף? איך הכוח משתנה עם המיקום?`,
+        work: `קו ישר דרך הראשית, שיורד: מרחק כפול נותן כוח כפול, בכיוון הפוך למיקום. בכתיב: \\(F = -kx\\). עם \\(k = 4\\) ניוטון/מ' ו-\\(x = 0.6\\) מ', יוצא \\(F = -2.4\\) ניוטון.` },
+      { hint: `מה עושה כוח שפונה נגד התנועה?`,
+        work: `מאט. לכן המהירות קטנה בדרך החוצה, עד שהחתול נעצר לרגע בקצה. משם אותו כוח מאיץ אותו חזרה.` },
+      { hint: `אז לאן מושך הקפיץ כשהחתול עדיין מתרחק?`,
+        work: `<b>שמאלה, הביתה</b>, כל עוד החתול מימין לבית. כוח כזה נקרא <b>כוח מחזיר</b>.` },
+    ],
+    explanation: `<p><b>עכשיו תורך:</b> אפשר לגרור את החתול לכל מקום ולעזוב. בזמן הגרירה החץ הירוק מראה את הכוח.</p>`,
+    sayRight: 'בדיוק. הקפיץ שלי לא מתעניין בתוכניות שלי.',
+    sayWrong: 'גם אני הרגשתי שמשהו דוחף אותי החוצה. זו הייתה רק התנופה שלי.',
+  });
+
+  /* ---------- 3. The shadow of a circle ---------- */
+  const shadow = PHY.sims.circleShadow($('c-shadow'), $('ctl-shadow'), { T: 4, A: 1.5, turns: 2, locked: true });
+  shadow.start();
+  U.PredictCard($('pc-shadow'), {
+    chapter: CH, id: 'shadow', section: 'shadow', tag: TAG,
+    question: `הצל והקרונית יוצאים יחד, ולכל אחד מקור אחר לגמרי: גיאומטריה של מעגל, וכוח של קפיץ. מה יקרה להם בהמשך?`,
+    options: [
+      { text: `ייפרדו. החתול נע בקצב קבוע, אז גם הצל, והקרונית מאטה בקצוות.`, why: `החתול באמת נע בקצב קבוע, אבל הצל לא. ליד הקצה החתול נע כמעט בניצב לקיר, לעברו או ממנו, אז הצל מאט עד עצירה.` },
+      { text: `ייפגשו רק בקצוות. באמצע הקרונית תקדים.`, why: `נשמע סביר, כי לקפיץ יש מנוע אחר לגמרי. אבל הקריאה של הפער נשארה 0 מ' לכל אורך הדרך, גם באמצע.` },
+      { text: `יישארו צמודים כל הזמן, כאילו הם אותו דבר.`, correct: true },
+    ],
+    onRun: async () => {
+      shadow.setParam('locked', true);
+      shadow.setParam('T', 4);
+      await shadow.play();
+      shadow.setParam('locked', false);
+    },
+    steps: [
+      { hint: `בפרק 6 קראנו ל-\\(\\omega\\) הזווית שעוברים בשנייה. באיזו זווית נמצא החתול אחרי זמן \\(t\\)?`,
+        work: `\\(\\theta = \\omega t\\), כש-\\(\\omega = 2\\pi/T\\). בציור \\(T = 4\\) ש', אז \\(\\omega \\approx 1.57\\) רד/ש.` },
+      { hint: `הצל הוא רכיב של הרדיוס. מפרק 1: סינוס או קוסינוס, כשהזווית נמדדת מהציר?`,
+        work: `קוסינוס: \\(x = A\\cos(\\omega t)\\). \\(A\\) הוא רדיוס המעגל, והוא גם המשרעת של הצל.` },
+      { hint: `חץ <span class="c-vel">המהירות</span> משיק למעגל, וגודלו \\(\\omega A\\). מה הצל שלו?`,
+        work: `\\(v = -A\\omega\\sin(\\omega t)\\). המינוס אומר שבחצי הראשון של ההקפה הצל נע שמאלה.` },
+      { hint: `חץ <span class="c-acc">התאוצה</span> פונה למרכז, וגודלו \\(v^2/R = A\\omega^2\\). מה הצל שלו?`,
+        work: `\\(a = -A\\omega^2\\cos(\\omega t)\\). ועכשיו הקטע היפה: זה בדיוק \\(-\\omega^2 x\\).` },
+      { hint: `תאוצה שגדלה עם המיקום ובכיוון הפוך לו. איפה כבר ראינו את זה, ומה המסקנה?`,
+        work: `בקפיץ: \\(a = -\\tfrac{k}{m}x\\), וזו אותה תנועה בדיוק אם רק \\(\\omega^2 = k/m\\). לכן <b>הם צמודים כל הזמן</b>, והפער הוא 0 מ'. לתנועה הזאת קוראים <b>תנועה הרמונית פשוטה</b>: הצל של תנועה מעגלית.` },
+    ],
+    explanation: `<p><b>עכשיו תורך:</b> אפשר לשנות את זמן ההקפה ולסובב שוב. הקפיץ מתכוונן יחד עם השולחן, והפער נשאר אפס.</p>`,
+    sayRight: 'שני חתולים, אחד צל ואחד קפיץ, ואף אחד לא מצליח לעקוף. מרגיז.',
+    sayWrong: 'גם אני הייתי מהמר על פרידה. אבל הפער לא זז.',
+  });
+
+  /* ---------- 4. Graphs ---------- */
+  const graphs = PHY.sims.springLab($('c-graphs'), $('ctl-graphs'), { panel: 'graphs', m: 1, k: 4, A: 1, locked: true, hideUntilRun: true, minHeight: 500, maxHeight: 580, aspect: 1.2 });
+  graphs.start();
+  U.PredictCard($('pc-graphs'), {
+    chapter: CH, id: 'graphs', section: 'graphs', tag: TAG,
+    question: `בקצה ניוטון עוצר לרגע. באמצע הוא טס. מה נכון לגבי <span class="c-vel">המהירות</span> \\(v\\) ו<span class="c-acc">התאוצה</span> \\(a\\)?`,
+    options: [
+      { text: `בקצה \\(v = 0\\) וגם \\(a = 0\\), הוא הרי עצר. באמצע שתיהן הכי גדולות.`, why: `הטעות הכי נפוצה בפרק. בקצה הקפיץ הכי מתוח, אז הכוח הכי גדול. אם הייתה שם תאוצה 0, החתול היה נשאר בקצה לנצח.` },
+      { text: `בקצה \\(v = 0\\), ו-\\(a\\) הכי גדולה. באמצע \\(v\\) הכי גדולה, ו-\\(a = 0\\).`, correct: true },
+      { text: `בקצה \\(v\\) הכי גדולה, כי הקפיץ הכי מתוח. באמצע \\(v = 0\\).`, why: `כאן התחלפו הכוח והמהירות. קפיץ מתוח נותן תאוצה גדולה, אבל המהירות מצטברת רק בדרך הביתה.` },
+    ],
+    onRun: async () => {
+      graphs.setParam('locked', true);
+      await graphs.play([
+        { hold: 1.2, caption: 'בקצה: v = 0, ו-a בשיא' },
+        { run: { x: 0, dir: -1 }, rate: 0.7, caption: '' },
+        { hold: 1.7, caption: 'באמצע: v בשיא, ו-a = 0' },
+        { run: 'turn', rate: 0.7, caption: '' },
+        { hold: 1.4, caption: 'בקצה השני: שוב v = 0, ו-a בשיא' },
+        { run: { x: 0, dir: 1 }, rate: 0.7, caption: '' },
+        { run: 'turn', rate: 0.7 },
+      ]);
+      graphs.setParam('locked', false);
+    },
+    steps: [
+      { hint: `נתחיל בקצה. מה קורה שם למהירות, ומה קורה לקפיץ?`,
+        work: `המהירות מתאפסת, כי החתול מחליף כיוון. הקפיץ בשיא המתיחה שלו, ולכן גם הכוח \\(F = -kx\\) בשיא.` },
+      { hint: `מה נותן הכוח הזה לתאוצה? נחשב לפי הקרונית שבציור, שבה \\(\\omega = 2\\) רד/ש ו-\\(A = 1\\) מ'.`,
+        work: `\\(|a| = A\\omega^2 = 1 \\cdot 4 = 4\\) מ/ש². זו התאוצה הכי גדולה בכל התנועה.` },
+      { hint: `עוברים לאמצע. מה הקפיץ עושה שם?`,
+        work: `שום דבר: הוא בדיוק באורך הטבעי. לכן \\(F = 0\\), וגם \\(a = 0\\).` },
+      { hint: `אם התאוצה שם אפס, למה החתול לא עוצר? ומה המהירות שלו?`,
+        work: `תאוצה 0 אומרת שהמהירות לא משתנה ברגע הזה, לא שהיא 0. כל הדרך מהקצה הוא הואץ, אז כאן היא בשיא: \\(v = A\\omega = 2\\) מ/ש. התשובה: <b>בקצה \\(v = 0\\) ו-\\(a\\) הכי גדולה, באמצע \\(v\\) הכי גדולה ו-\\(a = 0\\)</b>.` },
+    ],
+    explanation: `<p><b>עכשיו תורך:</b> אפשר להפעיל, לעצור בכל רגע, ולגרור את הסמן על הגרפים. הגרף של \\(a\\) הוא תמיד הגרף של \\(x\\) הפוך.</p>`,
+    sayRight: 'נכון. אני עוצר בקצה, אבל הקפיץ כבר צורח עליי לחזור.',
+    sayWrong: 'גם אני חשבתי שכשעוצרים אין כלום. אז הקפיץ הסביר לי.',
+  });
+
+  /* ---------- 5. Period lab ---------- */
+  const period = PHY.sims.oscLanes($('c-period'), $('ctl-period'), {
+    world: { xMin: -2.5, xMax: 2.5, yMin: -0.6, yMax: 3.1 }, aspect: 1.7, minHeight: 280, maxHeight: 420,
+    duration: 4.05, endCaption: (ls) => `ב-4 ש': ${ls[0].meter.n} מחזורים מול ${ls[1].meter.n}`,
+    lanes: [
+      { type: 'hspring', x0: -2.4, y0: 1.6, L0: 2.4, m: 1, k: 40, A: 0.6, px: 40, label: '1 ק"ג' },
+      { type: 'hspring', x0: -2.4, y0: 0, L0: 2.4, m: 4, k: 40, A: 0.6, px: 52, labelFn: (l) => F.unit(l.m, 'kg', 1) + ', k = ' + F.unit(l.k, "ניוטון/מ'", 0) },
+    ],
+    controls: [
+      { lane: 1, key: 'm', label: 'המסה של התחתון', min: 0.5, max: 8, step: 0.5, unit: 'kg', digits: 1 },
+      { lane: 1, key: 'k', label: 'קבוע הקפיץ של התחתון', min: 10, max: 160, step: 10, unit: "ניוטון/מ'", digits: 0, color: 'var(--c-force)' },
+    ],
+  });
+  period.start();
+  U.PredictCard($('pc-period'), {
+    chapter: CH, id: 'period', section: 'period', tag: TAG,
+    question: `מסה פי 4, אותו קפיץ. כמה זמן ייקח מחזור של הכבד?`,
+    options: [
+      { text: `4 ש'. מסה פי 4, זמן פי 4.`, why: `נשמע הוגן. התאוצה באמת קטנה פי 4, אבל הזמן לא גדל באותו קצב: הוא הולך עם השורש.` },
+      { text: `2 ש'. פי 2.`, correct: true },
+      { text: `1 ש'. המשרעת לא שינתה כלום, אז גם המסה לא.`, why: `כאן הפיתוי הפוך: אם דבר אחד לא משנה, אז כלום לא משנה. אבל הקפיץ דוחף באותו כוח, ומסה גדולה קשה יותר להאיץ.` },
+      { text: `16 ש'. בפיזיקה הכול בריבוע, לא?`, why: `לא הכול. כאן זה בדיוק ההפך: שורש, לא ריבוע.` },
+    ],
+    onRun: async () => {
+      period.setParam('locked', true);
+      period.setLane(1, { m: 4, k: 40 });
+      await period.play();
+      period.setParam('locked', false);
+    },
+    steps: [
+      { hint: `כמה מחזורים השלים כל אחד ב-4 ש'?`,
+        work: `הקל השלים 4 מחזורים, והכבד 2. אז זמן המחזור של הכבד גדול פי 2.` },
+      { hint: `אותו קפיץ, אותה מתיחה, אותו כוח. מה קורה לתאוצה אם המסה פי 4?`,
+        work: `\\(a = F/m\\), ולכן בכל נקודה <span class="c-acc">התאוצה</span> קטנה פי 4.` },
+      { hint: `התאוצה כאן לא קבועה, אבל אפשר להשוות. אם בכל נקודה היא קטנה פי 4, מה קורה לזמן?`,
+        work: `כשכל התאוצות קטנות פי 4, אותה דרך לוקחת פי 2 זמן. זה אותו יחס כמו ב-\\(\\tfrac12 at^2\\): \\(t^2\\) גדל פי 4, ולכן \\(t\\) גדל פי 2.` },
+      { hint: `איך זה נראה בנוסחה? ראינו ש-\\(\\omega^2 = k/m\\), ו-\\(\\omega = 2\\pi/T\\).`,
+        work: `\\[T = 2\\pi\\sqrt{\\frac{m}{k}}\\] עם \\(k = 40\\) ניוטון/מ': 0.99 ש' ל-1 ק"ג ו-1.99 ש' ל-4 ק"ג. התשובה: <b>בערך 2 ש', פי 2</b>.` },
+    ],
+    explanation: `<p><b>עכשיו תורך:</b> אפשר לשנות את המסה ואת הקפיץ של התחתון. מה יקרה עם \\(k\\) גדול פי 4?</p>`,
+    sayRight: 'פי 2 בלבד. אז עוד תפוח זה לא נורא כמו שאומרים.',
+    sayWrong: 'גם אני חשבתי פי 4. אבל השורש הציל את כבודי.',
+  });
+
+  /* ---------- 6. Energy ---------- */
+  const energy = PHY.sims.springLab($('c-energy'), $('ctl-energy'), { panel: 'energy', m: 1, k: 4, A: 1, locked: true, hideUntilRun: true, sliders: ['A'], minHeight: 430 });
+  energy.start();
+  U.PredictCard($('pc-energy'), {
+    chapter: CH, id: 'energy', section: 'energy', tag: TAG,
+    question: `ניוטון בחצי הדרך, ב-\\(x = A/2\\). איזה חלק מהאנרגיה נמצא עכשיו בתנועה?`,
+    options: [
+      { text: `חצי. חצי דרך, חצי אנרגיה.`, why: `זה היה נכון אם האנרגיה הייתה עולה בקו ישר. אבל היא הולכת עם \\(x^2\\), אז חצי מהמרחק נותן רק רבע מהאנרגיה בקפיץ.` },
+      { text: `שלושה רבעים.`, correct: true },
+      { text: `רבע. בחצי הדרך נשאר רק מעט לתנועה.`, why: `קרוב, אבל הפוך: רבע הוא מה שנשאר בקפיץ. כל השאר כבר בתנועה.` },
+    ],
+    onRun: async () => {
+      energy.setParam('locked', true);
+      energy.setParam('A', 1);
+      await energy.play([
+        { hold: 1, caption: 'בקצה: הכול בקפיץ' },
+        { run: { x: 0.5, dir: -1 }, rate: 0.6, caption: '' },
+        { hold: 2.4, caption: 'ב-A/2: רבע בקפיץ, שלושה רבעים בתנועה' },
+        { run: { x: 0, dir: -1 }, rate: 0.6, caption: '' },
+        { hold: 1.2, caption: 'באמצע: הכול בתנועה' },
+        { run: 'turn', rate: 0.6, caption: '' },
+      ]);
+      energy.setParam('locked', false);
+    },
+    steps: [
+      { hint: `מה נשמר כאן, וכמה זה בקצה, כשהמהירות 0?`,
+        work: `האנרגיה הכוללת. בקצה כולה בקפיץ: \\(E = \\tfrac12 kA^2\\). עם \\(k = 4\\) ניוטון/מ' ו-\\(A = 1\\) מ': \\(E = 2\\) ג'ול.` },
+      { hint: `כמה אנרגיה יש בקפיץ ב-\\(x = A/2\\)?`,
+        work: `\\(\\tfrac12 k (A/2)^2 = \\tfrac14 \\cdot \\tfrac12 kA^2 = \\tfrac14 E\\), כלומר 0.5 ג'ול.` },
+      { hint: `מה נשאר לתנועה?`,
+        work: `\\(E - \\tfrac14 E = \\tfrac34 E\\), כלומר 1.5 ג'ול מתוך 2 ג'ול.` },
+      { hint: `ומה המהירות המרבית שיוצאת מזה?`,
+        work: `באמצע הכול בתנועה: \\(\\tfrac12 m v_{\\max}^2 = \\tfrac12 kA^2\\), ולכן \\(v_{\\max} = A\\sqrt{k/m} = A\\omega = 2\\) מ/ש. ב-\\(A/2\\) המהירות כבר 1.73 מ/ש, 87% מהמרבית. התשובה: <b>שלושה רבעים</b> מהאנרגיה בתנועה.` },
+    ],
+    explanation: `<p><b>עכשיו תורך:</b> אפשר לעבור ממשרעת של 0.5 מ' למשרעת של 1 מ', ולראות במספר שמעל עמודת הסכום שהאנרגיה גדלה פי 4 ולא פי 2. אפשר גם לגרור את החתול.</p>`,
+    sayRight: 'נכון. רבע נשאר בקפיץ, ואני קיבלתי את השאר בפנים.',
+    sayWrong: 'גם אני ניחשתי חצי. אבל ההיגיון של הריבוע לא שואל אותנו.',
+  });
+
+  /* ---------- 7. Pendulum ---------- */
+  const pend = PHY.sims.oscLanes($('c-pend'), $('ctl-pend'), {
+    world: { xMin: -2.6, xMax: 2.6, yMin: -5, yMax: 1.4 }, aspect: 1.15, minHeight: 370, maxHeight: 520,
+    duration: 8.1, endCaption: '',
+    lanes: [
+      { type: 'pendulum', x0: -1.4, y0: 0, L: 1, g: 10, theta0: 15, px: 46, labelFn: (l) => 'L = ' + F.unit(l.L, 'm', 1) + (l.g === 10 ? '' : ', g = ' + F.unit(l.g, 'ms2', 1)) },
+      { type: 'pendulum', x0: 1, y0: 0, L: 4, g: 10, theta0: 15, px: 46, labelFn: (l) => 'L = ' + F.unit(l.L, 'm', 1) + (l.g === 10 ? '' : ', g = ' + F.unit(l.g, 'ms2', 1)) },
+    ],
+    controls: [
+      { lane: 1, key: 'L', label: 'האורך של הימנית', min: 0.5, max: 4, step: 0.5, unit: 'm', digits: 1 },
+      { lane: 1, key: 'g', label: 'הכבידה של הימנית', min: 1.6, max: 25, step: 0.1, unit: 'ms2', digits: 1, color: 'var(--c-acceleration)' },
+    ],
+  });
+  pend.start();
+  const moonBtn = U.Button($('ctl-pend'), 'אותה מטוטלת של 1 מ\', על הירח', () => {
+    pend.setLane(1, { L: 1, g: 1.6 });
+    pend.play({ duration: 10.2 });
+  }, { ghost: true, disabled: true });
+  U.PredictCard($('pc-pend'), {
+    chapter: CH, id: 'pendulum', section: 'pendulum', tag: TAG,
+    question: `חוט ארוך פי 4. כמה זמן ייקח מחזור של המטוטלת הארוכה?`,
+    options: [
+      { text: `8 ש'. אורך פי 4, זמן פי 4.`, why: `הקשת באמת ארוכה פי 4 באותה זווית, אבל התנועה לאורכה גם מהירה פי 2. פי 4 דרך במהירות פי 2 נותן פי 2 זמן.` },
+      { text: `4 ש'. פי 2.`, correct: true },
+      { text: `2 ש'. אותו זמן, כמו שהמשרעת לא שינתה כלום.`, why: `אורך ומשרעת הם לא אותו דבר. אורך החוט קובע כמה חזק הכבידה מחזירה הביתה לכל מטר של סטייה.` },
+    ],
+    onRun: async () => {
+      pend.setParam('locked', true);
+      moonBtn.disabled = true;
+      pend.setLane(1, { L: 4, g: 10 });
+      await pend.play({ duration: 8.1 });
+      pend.setParam('locked', false);
+      moonBtn.disabled = false;
+    },
+    steps: [
+      { hint: `כמה מחזורים השלימה כל מטוטלת בזמן הריצה?`,
+        work: `הקצרה 4 מחזורים, והארוכה 2. אז זמן המחזור של הארוכה גדול פי 2.` },
+      { hint: `מה מחזיר את המטוטלת הביתה, ומה הוא נותן בזווית קטנה?`,
+        work: `הרכיב של הכבידה לאורך המסלול, בכיוון הביתה: \\(F = -mg\\sin\\theta\\). בזווית קטנה, ברדיאנים, \\(\\sin\\theta \\approx \\theta = x/L\\), כש-\\(x\\) הוא המרחק מהשפל לאורך הקשת, ולכן \\(F \\approx -\\tfrac{mg}{L}x\\). זה \\(F = -kx\\) בדיוק, עם \\(k = mg/L\\).` },
+      { hint: `נציב את ה-\\(k\\) הזה בנוסחה של הקפיץ. מה קורה למסה?`,
+        work: `\\[T = 2\\pi\\sqrt{\\frac{m}{mg/L}} = 2\\pi\\sqrt{\\frac{L}{g}}\\] המסה מצטמצמת ונעלמת.` },
+      { hint: `נציב את שני האורכים, עם \\(g = 10\\) מ/ש².`,
+        work: `\\(L = 1\\) מ' נותן \\(T = 2\\pi\\sqrt{0.1} \\approx 1.99\\) ש', ו-\\(L = 4\\) מ' נותן \\(T \\approx 3.97\\) ש'. השעון הראה מעט יותר, 2 ש' ו-3.99 ש', כי ב-15° הנוסחה היא כבר קירוב. התשובה: <b>4 ש', פי 2</b>, בגלל השורש.` },
+    ],
+    explanation: `<p><b>עכשיו תורך:</b> אפשר לשנות אורך וכבידה, ויש כפתור שלוקח את המטוטלת לירח.</p>`,
+    sayRight: 'שורש שוב. אני מתחיל לחבב אותו, וזה מדאיג.',
+    sayWrong: 'גם אני חשבתי פי 4. בינתיים אני מתנדנד, אז יש לי זמן לחשוב.',
+  });
+
+  const big = PHY.sims.oscLanes($('c-big'), $('ctl-big'), {
+    world: { xMin: -2.4, xMax: 2.75, yMin: -1.95, yMax: 1.3 }, aspect: 1.45, minHeight: 290, maxHeight: 440,
+    duration: 8.6, endCaption: '',
+    lanes: [
+      { type: 'pendulum', x0: -1.4, y0: 0, L: 1, g: 10, theta0: 10, px: 46, label: '10°' },
+      { type: 'pendulum', x0: 1.35, y0: 0, L: 1, g: 10, theta0: 60, px: 46, ghost: true, labelFn: (l) => F.deg(l.theta0) },
+    ],
+    controls: [{ lane: 1, key: 'theta0', label: 'הזווית של הימנית', min: 5, max: 85, step: 5, format: (v) => F.deg(v) }],
+  });
+  big.start();
+  U.PredictCard($('pc-big'), {
+    chapter: CH, id: 'bigangle', tag: TAG,
+    question: `אותה מטוטלת, פעם ב-10° ופעם ב-60°. לקפיץ המשרעת לא שינתה כלום. ומה כאן?`,
+    options: [
+      { text: `אותו זמן בדיוק. מה שנכון לקפיץ נכון גם כאן.`, why: `כמעט. המטוטלת דומה לקפיץ רק בזוויות קטנות, כי הנוסחה שלה נשענת על קירוב. ב-60° הוא כבר לא מדויק.` },
+      { text: `קצת יותר זמן, בערך 7%.`, correct: true },
+      { text: `בערך פי 2. זווית פי 6, דרך הרבה יותר ארוכה.`, why: `הדרך באמת ארוכה פי 6, אבל גם הכוח גדל בהתאם. הוא רק גדל קצת פחות ממה שקפיץ היה נותן, ומזה מגיעים 7%.` },
+    ],
+    onRun: async () => {
+      big.setParam('locked', true);
+      big.setLane(1, { theta0: 60 });
+      await big.play();
+      big.setParam('locked', false);
+    },
+    steps: [
+      { hint: `מה מדד השעון לכל מטוטלת?`,
+        work: `ב-10°: 1.99 ש'. ב-60°: 2.13 ש'. הימנית מפגרת ב-0.14 ש' בכל מחזור, והחתול השקוף, שנע לפי הנוסחה, בורח לה.` },
+      { hint: `בקפיץ הכוח עולה בקו ישר עם המרחק. מה הכוח במטוטלת?`,
+        work: `\\(mg\\sin\\theta\\), ולא \\(mg\\theta\\). ב-60°, שהם 1.05 רדיאן, \\(\\sin\\theta = 0.87\\): כוח קטן ב-17% ממה שקו ישר היה נותן.` },
+      { hint: `מה עושה כוח מחזיר קטן יותר לזמן החזרה?`,
+        work: `תאוצה קטנה יותר, חזרה איטית יותר. הסימולציה פותרת את המשוואה האמיתית: ב-30° התוספת 1.7%, וב-60° היא 7.3%.` },
+      { hint: `אז מתי מותר להשתמש בנוסחה \\(T = 2\\pi\\sqrt{L/g}\\)?`,
+        work: `בזוויות קטנות: עד 15° הטעות קטנה מ-0.5%. התשובה: <b>קצת יותר זמן, בערך 7%</b>. במבחן, אם לא נאמר אחרת, הזווית קטנה.` },
+    ],
+    explanation: `<p><b>עכשיו תורך:</b> אפשר לשנות את הזווית ולראות מתי החתול השקוף מתחיל לברוח. ב-85° המרחק כבר גדול מאוד.</p>`,
+    sayRight: 'נכון, וזו הסיבה ששעונים עם מטוטלת מתנדנדים בעדינות.',
+    sayWrong: 'גם אני הנחתי שהנוסחה תמיד צודקת. נוסחאות אוהבות שמניחים את זה.',
+  });
+
+  /* ---------- 8. Springs combined ---------- */
+  const combo = PHY.sims.oscLanes($('c-combo'), $('ctl-combo'), {
+    world: { xMin: -2.5, xMax: 2.5, yMin: -0.65, yMax: 4.25 }, aspect: 1.25, minHeight: 360, maxHeight: 480,
+    duration: 4.05, endCaption: '',
+    lanes: [
+      { type: 'hspring', x0: -2.4, y0: 2.85, L0: 2.4, m: 1, k: 20, A: 0.5, px: 40, label: 'קפיץ אחד' },
+      { type: 'hspring', x0: -2.4, y0: 1.42, L0: 2.4, m: 1, k: 20, A: 0.5, px: 40, config: 'parallel', label: 'שניים במקביל' },
+      { type: 'hspring', x0: -2.4, y0: 0, L0: 2.4, m: 1, k: 20, A: 0.5, px: 40, config: 'series', label: 'שניים בטור' },
+    ],
+    runButton: true,
+  });
+  combo.start();
+  U.PredictCard($('pc-combo'), {
+    chapter: CH, id: 'combo', section: 'combo', tag: TAG,
+    question: `לקפיץ אחד יש מחזור של 1.4 ש'. מה זמן המחזור של שניים במקביל, ושל שניים בטור?`,
+    options: [
+      { text: `במקביל 0.7 ש', בטור 2.8 ש'. פי 2 קפיצים, פי 2 השפעה.`, why: `הקשיחות באמת משתנה פי 2, אבל הזמן הולך עם השורש שלה ולא איתה.` },
+      { text: `במקביל 1 ש', בטור 2 ש'.`, correct: true },
+      { text: `אותו 1.4 ש' בכולם. אותם קפיצים, אותו חתול.`, why: `הקפיצים אותם קפיצים, אבל החיבור משנה כמה הם מושכים לכל מטר של תזוזה.` },
+      { text: `במקביל 2 ש', בטור 1 ש'. יותר קפיצים זה יותר עיכוב.`, why: `הפוך. שניים במקביל מושכים יחד, ולכן החתול חוזר מהר יותר.` },
+    ],
+    onRun: async () => {
+      combo.setParam('locked', true);
+      await combo.play();
+      combo.setParam('locked', false);
+    },
+    steps: [
+      { hint: `במקביל: שני הקפיצים נמתחים באותו \\(x\\). מה הכוח הכולל?`,
+        work: `\\(F = kx + kx = 2kx\\). זה כמו קפיץ אחד עם \\(k = 40\\) ניוטון/מ'.` },
+      { hint: `בטור: אותו כוח עובר דרך שניהם. כמה נמתח כל אחד, וכמה בסך הכול?`,
+        work: `כל אחד נמתח \\(F/k\\), ובסך הכול \\(x = 2F/k\\). זה כמו קפיץ אחד עם \\(k = 10\\) ניוטון/מ', רך פי 2.` },
+      { hint: `מה עושה שינוי ב-\\(k\\) לזמן המחזור?`,
+        work: `\\(T = 2\\pi\\sqrt{m/k}\\), לכן \\(k\\) פי 2 מחלק את \\(T\\) ב-\\(\\sqrt2\\), ו-\\(k\\) חלקי 2 כופל אותו ב-\\(\\sqrt2\\).` },
+      { hint: `נציב, עם מסה של 1 ק"ג.`,
+        work: `קפיץ אחד: 1.40 ש', במקביל: 0.99 ש', בטור: 1.99 ש'. התשובה: <b>במקביל בערך 1 ש', בטור בערך 2 ש'</b>.` },
+    ],
+    sayRight: 'במקביל הם מושכים יחד, בטור כל אחד מחכה לשני. כמו ישיבת צוות.',
+    sayWrong: 'גם אני חשבתי פי 2. השורש שוב עבר פה ולא אמר שלום.',
+  });
+
+  /* ---------- 10. Playground ---------- */
+  const play = PHY.sims.springLab($('c-play'), $('ctl-play'), { panel: 'live', m: 1, k: 4, A: 1, sliders: ['m', 'k', 'A'], autorun: true, chapter: CH, section: 'playground', minHeight: 440, maxHeight: 540, aspect: 1.2 });
+  play.start();
+
+  /* ---------- 11. Game ---------- */
+  const game = PHY.sims.swingGame($('c-game'), $('ctl-game'), { chapter: CH, section: 'game' });
+  game.start();
+
+  /* ---------- 12. Traps ---------- */
+  const trapDone = {};
+  const trapFinished = (name) => {
+    trapDone[name] = true;
+    if (trapDone.a && trapDone.b && trapDone.c) PHY.progress.markSection(CH, 'traps');
+  };
+
+  const trap1 = PHY.sims.ghostRace($('c-trap1'), $('ctl-trap1'), { m: 1, k: 4, A: 1, rate: 0.3 });
+  trap1.start();
+  U.PredictCard($('pc-trap1'), {
+    chapter: CH, id: 'trap1', tag: 'מלכודת 1: הנוסחה מפרק 2',
+    question: `קרונית עם \\(A = 1\\) מ' ותאוצה מרבית של 4 מ/ש² משתחררת מהקצה. לידה רצה רוח רפאים, עם אותה תאוצה קבועה לאורך כל הדרך. כמה זמן לוקח לקרונית להגיע הביתה?`,
+    options: [
+      { text: `0.71 ש'. \\(x = \\tfrac12 at^2\\), כלומר \\(1 = 2t^2\\).`, why: `זו המלכודת. הנוסחה הזאת מניחה תאוצה קבועה, וכאן 4 מ/ש² הוא רק ההתחלה: היא נעלמת בדרך.` },
+      { text: `0.79 ש'. קצת יותר, כי התאוצה דועכת בדרך.`, correct: true },
+      { text: `0.5 ש'. היא מאיצה כל הדרך, אז מגיעה מהר.`, why: `היא באמת מאיצה כל הדרך, אבל פחות ופחות. גם בתאוצה מלאה לאורך כל הדרך זה היה לוקח 0.71 ש'.` },
+    ],
+    onRun: () => trap1.play(),
+    steps: [
+      { hint: `מה הנחנו כשהצבנו את המספר ב-\\(x = \\tfrac12 at^2\\)?`,
+        work: `שהתאוצה קבועה לאורך כל הדרך. זה בדיוק מה שעושה רוח הרפאים: 0.71 ש'.` },
+      { hint: `מה קורה ל<span class="c-acc">תאוצה</span> של הקרונית האמיתית בדרך הביתה?`,
+        work: `\\(a = -\\omega^2 x\\), והיא קטנה יחד עם \\(x\\). בבית היא 0 מ/ש². בגרף רואים את הקו יורד.` },
+      { hint: `הדרך מהקצה לבית היא איזה חלק מהמחזור? ומה \\(\\omega\\) כאן?`,
+        work: `רבע מחזור. \\(a_{\\max} = A\\omega^2\\), ולכן \\(\\omega^2 = 4\\), \\(\\omega = 2\\) רד/ש, ו-\\(T = 2\\pi/\\omega \\approx 3.14\\) ש'.` },
+      { hint: `נחלק ונשווה.`,
+        work: `\\(T/4 \\approx 0.79\\) ש', ארוך ב-11% מ-0.71 ש'. גם המהירות בבית שונה: 2 מ/ש מול 2.83 מ/ש של רוח הרפאים. התשובה: <b>0.79 ש'</b>.` },
+    ],
+    onDone: () => trapFinished('a'),
+    sayRight: 'בדיוק. רוח הרפאים ניצחה במירוץ, ואני ניצחתי בפיזיקה.',
+    sayWrong: 'גם אני שלפתי את הנוסחה מפרק 2. היא הייתה ככה קרובה.',
+  });
+
+  const trap2 = PHY.sims.oscLanes($('c-trap2'), $('ctl-trap2'), {
+    world: { xMin: -2.7, xMax: 2.7, yMin: -0.95, yMax: 4.6 }, aspect: 1.1, minHeight: 390, maxHeight: 500,
+    duration: 8.1, endCaption: '',
+    lanes: [
+      { type: 'pendulum', x0: -1.35, y0: 3.3, L: 1, g: 10, theta0: 14, m: 1, px: 36, label: '1 ק"ג' },
+      { type: 'pendulum', x0: 1.35, y0: 3.3, L: 1, g: 10, theta0: 14, m: 4, px: 50, label: '4 ק"ג' },
+      { type: 'hspring', x0: -2.6, y0: 0.82, L0: 2.6, m: 1, k: 10, A: 0.5, px: 36, label: '1 ק"ג' },
+      { type: 'hspring', x0: -2.6, y0: -0.42, L0: 2.6, m: 4, k: 10, A: 0.5, px: 44, label: '4 ק"ג' },
+    ],
+  });
+  trap2.start();
+  U.PredictCard($('pc-trap2'), {
+    chapter: CH, id: 'trap2', tag: 'מלכודת 2: מה המסה עושה',
+    question: `חתול של 1 ק"ג וחתול של 4 ק"ג, פעם על חוט ופעם על קפיץ. מי משלים מחזור ראשון?`,
+    options: [
+      { text: `הכבד, בשני המקרים. כבד נופל חזק יותר.`, why: `הכבד באמת נמשך חזק יותר, אבל גם קשה יותר להאיץ אותו. על החוט זה מתקזז בדיוק, ועל הקפיץ הוא ממש מפסיד.` },
+      { text: `על החוט יחד. על הקפיץ הקל.`, correct: true },
+      { text: `יחד, בשני המקרים. אם המסה לא משנה, היא לא משנה.`, why: `זה נכון לחוט, ולא לקפיץ. בקפיץ הכוח לא תלוי במסה, אז אין מה שיצמצם אותה.` },
+      { text: `על החוט הקל. על הקפיץ יחד.`, why: `הפוך בדיוק. כדאי לשאול בכל פעם מי נותן את הכוח: הכבידה או הקפיץ.` },
+    ],
+    onRun: () => trap2.play(),
+    steps: [
+      { hint: `על החוט, מאיפה בא הכוח המחזיר, והאם הוא תלוי במסה?`,
+        work: `מהכבידה, \\(mg\\sin\\theta\\). מסה פי 4 נותנת כוח פי 4.` },
+      { hint: `מה יוצאת התאוצה אם כך?`,
+        work: `\\(a = g\\sin\\theta\\). המסה נעלמה, בדיוק כמו בנפילה חופשית מפרק 4. לכן הכבד והקל הולכים יחד.` },
+      { hint: `ובקפיץ: האם הכוח יודע מה המסה?`,
+        work: `לא. \\(F = -kx\\) תלוי רק במתיחה. אותו כוח על מסה פי 4 נותן <span class="c-acc">תאוצה</span> קטנה פי 4.` },
+      { hint: `מה ראינו על השעונים?`,
+        work: `על החוט: 1.99 ש' לשניהם. על הקפיץ, עם \\(k = 10\\) ניוטון/מ': 1.99 ש' ל-1 ק"ג ו-3.97 ש' ל-4 ק"ג. התשובה: <b>על החוט יחד, על הקפיץ הקל</b>.` },
+    ],
+    onDone: () => trapFinished('b'),
+    sayRight: 'בדיוק. אז על חוט מותר לי לאכול. על קפיץ רואים את זה מיד.',
+    sayWrong: 'גם אני מתבלבל בזה. השאלה היא מי מושך: הכבידה או הקפיץ.',
+  });
+
+  const trap3 = PHY.sims.oscLanes($('c-trap3'), $('ctl-trap3'), {
+    world: { xMin: -2.2, xMax: 2.2, yMin: -1, yMax: 4 }, aspect: 1.25, minHeight: 330, maxHeight: 460,
+    duration: 6.1, endCaption: 'אותו זמן. זזה רק נקודת המנוחה, הקו המקווקו',
+    lanes: [
+      { type: 'vspring', x0: -1.1, y0: 0, m: 1, k: 10, g: 10, A: 0.4, L0: 2.4, px: 50, showRest: true, label: 'כדור הארץ' },
+      { type: 'vspring', x0: 1.1, y0: 0, m: 1, k: 10, g: 1.6, A: 0.4, L0: 2.4, px: 50, showRest: true, label: 'הירח' },
+    ],
+  });
+  trap3.start();
+  U.PredictCard($('pc-trap3'), {
+    chapter: CH, id: 'trap3', tag: 'מלכודת 3: קפיץ על הירח',
+    question: `אותו חתול, קשור לאותו קפיץ, פעם על כדור הארץ ופעם על הירח, עם \\(g = 1.6\\) מ/ש². את המטוטלת הירח האט. ואת הקפיץ?`,
+    options: [
+      { text: `גם אותו. פחות כבידה, קצב איטי יותר.`, why: `במטוטלת הכבידה היא הכוח המחזיר. כאן הכוח המחזיר הוא הקפיץ, והכבידה רק קבוע שמצטרף.` },
+      { text: `אותו זמן. הכבידה רק מזיזה את נקודת המנוחה.`, correct: true },
+      { text: `הירח מהיר יותר. החתול קל שם, אז הוא זריז.`, why: `החתול שוקל שם פחות, אבל המסה שלו אותה מסה, כמו בפרק 4. \\(T\\) תלוי במסה, לא במשקל.` },
+    ],
+    onRun: () => trap3.play(),
+    steps: [
+      { hint: `נסמן ב-\\(s\\) כמה הקפיץ מכווץ. מה הכוח הכולל על החתול, עם למעלה חיובי?`,
+        work: `הקפיץ דוחף למעלה \\(ks\\), והכבידה מושכת למטה \\(mg\\). ביחד: \\(F = ks - mg\\).` },
+      { hint: `באיזה כיווץ הכוח הכולל מתאפס?`,
+        work: `ב-\\(s_0 = mg/k\\). זו <b>נקודת המנוחה</b>: 1 מ' בכדור הארץ, ו-0.16 מ' על הירח. לכן על הירח החתול יושב גבוה יותר.` },
+      { hint: `נמדוד מהנקודה הזאת למעלה: \\(y = s_0 - s\\). מה הכוח עכשיו?`,
+        work: `\\(F = k(s_0 - y) - mg = -ky\\). ה-\\(mg\\) נעלם לגמרי, ונשאר \\(F = -ky\\), אותו כוח מחזיר בדיוק.` },
+      { hint: `אז מה נשאר בזמן המחזור?`,
+        work: `\\(T = 2\\pi\\sqrt{m/k} = 1.99\\) ש' בשני המקומות, עם \\(m = 1\\) ק"ג ו-\\(k = 10\\) ניוטון/מ'. התשובה: <b>אותו זמן, ורק נקודת המנוחה זזה</b>.` },
+    ],
+    onDone: () => trapFinished('c'),
+    sayRight: 'נכון. על הירח אני יושב גבוה יותר, אבל מתלונן באותו קצב.',
+    sayWrong: 'גם אני חשבתי שהירח ישנה הכול. הוא שינה רק את הגובה.',
+  });
+
+  /* ---------- 13. Problems ---------- */
+  const probs = $('problems-host');
+  U.Problem(probs, {
+    chapter: CH, section: 'problems', tag: 'שאלה 1: מסה על קפיץ',
+    text: `מסה של 0.5 ק"ג מחוברת לקפיץ עם \\(k = 50\\) ניוטון/מ', על רצפה חלקה. משחררים אותה ממנוחה במרחק 0.1 מ' מנקודת המנוחה. למצוא את \\(\\omega\\), את זמן המחזור, את המהירות המרבית ואת התאוצה המרבית.`,
+    fields: [
+      { label: '\\(\\omega\\)', answer: 10, unit: 'רד/ש' },
+      { label: 'זמן המחזור', answer: 0.63, unit: "ש'" },
+      { label: 'המהירות המרבית', answer: 1, unit: 'מ/ש' },
+      { label: 'התאוצה המרבית', answer: 10, unit: 'מ/ש²' },
+    ],
+    steps: [
+      { hint: `מה קובע את \\(\\omega\\) של קפיץ?`,
+        work: `\\(\\omega = \\sqrt{k/m} = \\sqrt{50/0.5} = \\sqrt{100} = 10\\) רד/ש.` },
+      { hint: `איך עוברים מ-\\(\\omega\\) לזמן מחזור?`,
+        work: `\\(T = 2\\pi/\\omega = 6.28/10 \\approx 0.63\\) ש'.` },
+      { hint: `איפה המהירות מרבית, ואיזו נוסחה נותנת אותה?`,
+        work: `באמצע: \\(v_{\\max} = A\\omega = 0.1 \\cdot 10 = 1\\) מ/ש.` },
+      { hint: `איפה התאוצה מרבית?`,
+        work: `בקצה: \\(a_{\\max} = A\\omega^2 = 0.1 \\cdot 100 = 10\\) מ/ש².` },
+      { hint: `נוודא דרך אנרגיה וכוח. המספרים מסתדרים?`,
+        work: `\\(\\tfrac12 kA^2 = 0.25\\) ג'ול, וגם \\(\\tfrac12 m v_{\\max}^2 = 0.25\\) ג'ול. בקצה \\(F = kA = 5\\) ניוטון, ו-\\(F/m = 10\\) מ/ש². התשובה: 10 רד/ש, 0.63 ש', 1 מ/ש, 10 מ/ש².` },
+    ],
+  });
+  U.Problem(probs, {
+    chapter: CH, section: 'problems', tag: 'שאלה 2: מטוטלת בכוכב אחר',
+    text: `מטוטלת שזמן המחזור שלה כאן, עם \\(g = 10\\) מ/ש², הוא 2 ש', נלקחת לכוכב שבו \\(g = 2.5\\) מ/ש². מה זמן המחזור שלה שם?`,
+    fields: [{ label: 'זמן המחזור', answer: 4, unit: "ש'" }],
+    steps: [
+      { hint: `מה בנוסחת המטוטלת משתנה במעבר לכוכב, ומה לא?`,
+        work: `\\(T = 2\\pi\\sqrt{L/g}\\). החוט אותו חוט, ולכן רק \\(g\\) משתנה.` },
+      { hint: `פי כמה קטנה הכבידה שם?`,
+        work: `\\(10 / 2.5 = 4\\): קטנה פי 4.` },
+      { hint: `איך שינוי כזה בתוך השורש משפיע על הזמן?`,
+        work: `\\(T\\) הולך עם \\(1/\\sqrt{g}\\), ולכן הוא גדל פי \\(\\sqrt{4} = 2\\).` },
+      { hint: `נכפול, ונבדוק דרך האורך.`,
+        work: `\\(T = 2 \\cdot 2 = 4\\) ש'. בדיקה: \\(L = gT^2/4\\pi^2 \\approx 1.01\\) מ', ו-\\(2\\pi\\sqrt{1.01/2.5} \\approx 4\\) ש'. התשובה: 4 ש'.` },
+    ],
+  });
+  U.Problem(probs, {
+    chapter: CH, section: 'problems', tag: 'שאלה 3: חצי הדרך',
+    text: `קרונית על קפיץ, עם \\(T = 1.2\\) ש', משתחררת ממנוחה ב-\\(x = A\\). כמה זמן עובר עד שהיא מגיעה בפעם הראשונה ל-\\(x = A/2\\)? ואיזה חלק מהמחזור זה: \\(T\\) חלקי כמה?`,
+    fields: [
+      { label: 'הזמן', answer: 0.2, unit: "ש'" },
+      { label: '\\(T\\) חלקי', answer: 6 },
+    ],
+    steps: [
+      { hint: `איזו נוסחה נותנת את המיקום בכל רגע, כשמתחילים בקצה?`,
+        work: `\\(x = A\\cos(\\omega t)\\). הנוסחאות של תאוצה קבועה לא חלות כאן.` },
+      { hint: `נציב את המיקום שבשאלה. מה יוצא על הקוסינוס?`,
+        work: `\\(A\\cos(\\omega t) = A/2\\), ולכן \\(\\cos(\\omega t) = 0.5\\). המשרעת מצטמצמת.` },
+      { hint: `איזו זווית נותנת את זה? נחשוב על המעגל של הצל.`,
+        work: `\\(\\omega t = 60^\\circ\\).` },
+      { hint: `איזה חלק מהקפה שלמה היא הזווית הזאת?`,
+        work: `\\(60^\\circ / 360^\\circ\\), שזה שישית. כלומר \\(t = T/6\\), ו-\\(T\\) חלקי 6 היא התשובה השנייה.` },
+      { hint: `נציב את זמן המחזור. ומה לגבי החלק השני של הדרך הביתה?`,
+        work: `\\(t = 1.2/6 = 0.2\\) ש'. החצי הראשון של הדרך לוקח \\(T/6\\), והחצי השני רק \\(T/4 - T/6 = T/12\\), כי מהקצה יוצאים לאט. התשובה: 0.2 ש', שהם \\(T\\) חלקי 6.` },
+    ],
+  });
+
+  /* ---------- 14. Quiz ---------- */
+  U.Quiz($('quiz-host'), {
+    chapter: CH, section: 'quiz',
+    questions: [
+      {
+        type: 'mc',
+        q: `קרונית על קפיץ נמצאת בקצה התנועה, ב-\\(x = +A\\). מה נכון?`,
+        options: [`\\(v = 0\\) ו-\\(a = 0\\)`, `\\(v = 0\\), ו-\\(a\\) הכי גדולה, לכיוון הבית`, `\\(v\\) הכי גדולה, ו-\\(a = 0\\)`, `\\(v = 0\\), ו-\\(a\\) הכי גדולה, הרחק מהבית`],
+        answer: 1,
+        steps: [
+          { hint: `מה קורה למהירות ברגע שבו החתול מחליף כיוון?`,
+            work: `היא מתאפסת: \\(v = 0\\).` },
+          { hint: `כמה מתוח הקפיץ שם, ולאן הוא מושך?`,
+            work: `הכי מתוח, ולכן \\(F = -kx\\) הכי גדול, והוא מושך הביתה. התשובה: \\(v = 0\\), ו-\\(a\\) הכי גדולה, לכיוון הבית.` },
+        ],
+      },
+      {
+        type: 'num',
+        q: `למסה על קפיץ יש \\(T = 1.5\\) ש'. מחליפים אותה במסה גדולה פי 9. מה זמן המחזור החדש?`,
+        answer: 4.5, unit: "ש'",
+        steps: [
+          { hint: `איך \\(T\\) תלוי במסה?`,
+            work: `\\(T = 2\\pi\\sqrt{m/k}\\), אז \\(T\\) הולך עם השורש של המסה.` },
+          { hint: `מה השורש של היחס בין המסות?`,
+            work: `\\(\\sqrt{9} = 3\\), ולכן \\(T\\) גדל פי 3: \\(3 \\cdot 1.5 = 4.5\\) ש'.` },
+        ],
+      },
+      {
+        type: 'num',
+        q: `מטוטלת באורך 2.5 מ', עם \\(g = 10\\) מ/ש². מה זמן המחזור שלה?`,
+        answer: 3.14, unit: "ש'",
+        steps: [
+          { hint: `איזו נוסחה מתאימה, ומה יוצא בתוך השורש?`,
+            work: `\\(T = 2\\pi\\sqrt{L/g}\\). בתוך השורש: \\(2.5/10 = 0.25\\) ש'².` },
+          { hint: `נוציא שורש ונכפול.`,
+            work: `\\(\\sqrt{0.25} = 0.5\\) ש', ולכן \\(T = 2\\pi \\cdot 0.5 = \\pi \\approx 3.14\\) ש'.` },
+        ],
+      },
+      {
+        type: 'num',
+        q: `האנרגיה הכוללת של קרונית על קפיץ היא 8 ג'ול. כמה אנרגיית תנועה יש לה ב-\\(x = A/2\\)?`,
+        answer: 6, unit: "ג'ול",
+        steps: [
+          { hint: `כמה אנרגיה יש בקפיץ בחצי מהמשרעת, יחסית לאנרגיה הכוללת?`,
+            work: `האנרגיה בקפיץ הולכת עם \\(x^2\\), ולכן בחצי מהמשרעת יש רבע: \\(8/4 = 2\\) ג'ול.` },
+          { hint: `מה נשאר לתנועה?`,
+            work: `\\(8 - 2 = 6\\) ג'ול, שלושה רבעים מהאנרגיה.` },
+        ],
+      },
+      {
+        type: 'mc',
+        q: `שעון מטוטלת ושעון קפיץ נלקחים לירח. איזה מהם ישנה את הקצב?`,
+        options: [`שניהם יאטו`, `רק שעון המטוטלת יאט`, `רק שעון הקפיץ יאט`, `אף אחד לא ישתנה`],
+        answer: 1,
+        steps: [
+          { hint: `מי הכוח המחזיר במטוטלת, ומה קורה לו על הירח?`,
+            work: `הכבידה. על הירח היא קטנה, ו-\\(T = 2\\pi\\sqrt{L/g}\\) גדל: השעון מאט.` },
+          { hint: `ומי הכוח המחזיר בקפיץ?`,
+            work: `הקפיץ עצמו, ו-\\(T = 2\\pi\\sqrt{m/k}\\) לא כולל את \\(g\\). התשובה: רק שעון המטוטלת יאט.` },
+        ],
+      },
+      {
+        type: 'num',
+        q: `<span class="chip">חזרה מפרק 5</span> קפיץ עם \\(k = 800\\) ניוטון/מ' מכווץ ב-0.1 מ'. כמה אנרגיה אגורה בו?`,
+        answer: 4, unit: "ג'ול",
+        steps: [
+          { hint: `איזו נוסחה נותנת את האנרגיה של קפיץ?`,
+            work: `\\(\\tfrac12 kx^2\\). חשוב: \\(x\\) בריבוע.` },
+          { hint: `נציב במטרים.`,
+            work: `\\(\\tfrac12 \\cdot 800 \\cdot 0.1^2 = 400 \\cdot 0.01 = 4\\) ג'ול.` },
+        ],
+      },
+      {
+        type: 'num',
+        q: `<span class="chip">חזרה מפרק 6</span> ניוטון נע על מעגל ברדיוס 2 מ' במהירות קבועה של 4 מ/ש. מה גודל התאוצה שלו?`,
+        answer: 8, unit: 'מ/ש²',
+        steps: [
+          { hint: `מהירות קבועה בגודל, אבל הכיוון משתנה. איזו תאוצה יש על מעגל?`,
+            work: `תאוצה לכיוון המרכז: \\(a = v^2/R\\).` },
+          { hint: `נציב.`,
+            work: `\\(a = 4^2/2 = 16/2 = 8\\) מ/ש².` },
+        ],
+      },
+    ],
+  });
+
+  /* ---------- Easter egg: click the cat ---------- */
+  /* The last step sets a cat oscillating across the screen. The amplitude dies away, and the period does not change. */
+  function springCat() {
+    if (U.reduced()) return;
+    const cat = U.h('div', { class: 'egg-cat', 'aria-hidden': 'true', html: PHY.mascot.svg('happy', 'width="84" height="84"') });
+    document.body.appendChild(cat);
+    const W = window.innerWidth, cx = (W - 84) / 2, y = window.innerHeight * 0.4;
+    const T = 0.9, dur = 3.6, t0 = performance.now();
+    setTimeout(function () { cat.remove(); }, (dur + 0.3) * 1000);
+    (function frame(now) {
+      const t = (now - t0) / 1000;
+      if (t >= dur) { cat.remove(); return; }
+      const A = (W / 2 - 42) * Math.exp(-0.7 * t);
+      cat.style.transform = `translate(${cx + A * Math.cos((2 * Math.PI * t) / T)}px, ${y}px)`;
+      requestAnimationFrame(frame);
+    })(t0);
+  }
+  PHY.mascot.easterEgg([
+    { text: "מיאו. ושוב מיאו, בדיוק 2 ש' אחרי.", pose: 'standing' },
+    { text: 'הקשה שנייה. המשרעת גדלה, הזמן לא.', pose: 'thinking' },
+    { text: 'בקצה הסבלנות שלי המהירות 0 והתאוצה מרבית.', pose: 'dizzy' },
+    { text: 'עוד הקשה אחת, ואני כוח מחזיר.', pose: 'thinking' },
+    { text: 'תהודה! פגעת בדיוק בקצב הטבעי שלי!', pose: 'happy', spin: true, rain: true, action: springCat },
+  ]);
+
+  U.initChapter({ id: CH });
+})();
+</script>
+</body>
+</html>

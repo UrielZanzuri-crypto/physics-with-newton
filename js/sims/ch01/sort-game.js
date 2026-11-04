@@ -76,7 +76,7 @@
     }
 
     function done() {
-      status.textContent = errors === 0 ? 'מיון מושלם, בלי טעות אחת!' : 'הכל במקום. טעית ' + (errors === 1 ? 'פעם אחת' : errors + ' פעמים') + ' בדרך, וזה בדיוק איך שלומדים.';
+      status.textContent = errors === 0 ? 'מיון מושלם, בלי טעות אחת!' : 'הכול במקום. טעית ' + (errors === 1 ? 'פעם אחת' : errors + ' פעמים') + ' בדרך, וזה בדיוק איך שלומדים.';
       U.burst(status, 26);
       PHY.mascot.say(errors === 0 ? 'אפילו אני טעיתי במסה בפעם הראשונה.' : 'מיון גמור. תפוח הוא עדיין סקלר טעים.', 'happy');
       if (opts.chapter && opts.section) PHY.progress.markSection(opts.chapter, opts.section);

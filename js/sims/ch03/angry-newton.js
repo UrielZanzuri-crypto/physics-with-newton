@@ -9,7 +9,7 @@
   const PHY = window.PHY;
   const F = PHY.fmt, U = PHY.ui, C = PHY.colors, B = PHY.ballistics;
 
-  const NAMES = ['שלב 1: הכל פתוח', 'שלב 2: רק זווית', 'שלב 3: מהצוק'];
+  const NAMES = ['שלב 1: הכול פתוח', 'שלב 2: רק זווית', 'שלב 3: מהצוק'];
   const WORLDS = [
     { xMin: -5, xMax: 66, yMin: -4, yMax: 33 },
     { xMin: -5, xMax: 66, yMin: -4, yMax: 33 },
@@ -181,7 +181,7 @@
       G.phase = 'won';
       G.caption = 'נכנס! ' + pts + ' מתוך 3 נקודות';
       const extra = G.i === 1 && isHit(G.level, f.v, 90 - f.a) ? ' גם ' + F.deg(90 - f.a) + ' הייתה נכנסת: זו הזווית המשלימה.' : '';
-      feedback('בול בתוך הסל, ב-' + (G.attempts === 1 ? 'ניסיון ראשון' : G.attempts + ' ניסיונות') + '.' + extra, 'good');
+      feedback('בול בתוך הסל, ' + (G.attempts === 1 ? 'בניסיון הראשון' : 'ב-' + G.attempts + ' ניסיונות') + '.' + extra, 'good');
       U.burst(canvasEl, 26);
       PHY.mascot.say(G.i === 2 ? 'מצוק. מצוק! ובכל זאת, תפוחים.' : 'סל של תפוחים. הכאב עבר.', 'happy');
       paintPips();
@@ -201,7 +201,7 @@
       hud.final.hidden = false;
       hud.final.innerHTML = '';
       U.StarScore(hud.final, { value: stars, animate: true });
-      hud.final.appendChild(U.h('div', { class: 'game-task', text: 'צברת ' + total + ' מתוך 9 נקודות. ' + (stars === 3 ? 'ניוטון ממנה אותך לתותחן הראשי, ומבקש לדבר עם העורך דין שלו.' : stars === 2 ? 'יפה מאוד. עוד סיבוב ואתה בשלושה כוכבים.' : 'כל הסלים נכבשו. בסיבוב הבא תכבוש אותם בפחות ניסיונות.') }));
+      hud.final.appendChild(U.h('div', { class: 'game-task', text: 'צברת ' + total + ' מתוך 9 נקודות. ' + (stars === 3 ? 'ניוטון ממנה אותך לתותחן הראשי, ומבקש לדבר עם עורך הדין שלו.' : stars === 2 ? 'יפה מאוד. עוד סיבוב ואתה בשלושה כוכבים.' : 'כל הסלים נכבשו. בסיבוב הבא תכבוש אותם בפחות ניסיונות.') }));
       U.Button(hud.final, 'שחק שוב (סלים חדשים)', restart, { primary: true });
       U.burst(hud.final, 30);
       if (opts.onDone) opts.onDone(stars, total);
@@ -261,7 +261,7 @@
       drawBasket(L);
 
       G.traces.forEach(function (t) {
-        view.poly(B.path(t.v, t.a, t.h0), { color: t.hit ? C.good : C.soft, width: 1.8, alpha: 0.65, dash: t.hit ? null : [3, 5] });
+        view.poly(B.path(t.v, t.a, t.h0), { color: t.hit ? C.accent : C.soft, width: 1.8, alpha: 0.65, dash: t.hit ? null : [3, 5] });
         if (!t.hit) view.circle(t.R, 0, 4, { px: true, fill: C.soft });
       });
 

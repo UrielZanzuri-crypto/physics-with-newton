@@ -59,7 +59,7 @@ Factory signature: `PHY.sims.name(canvasEl, controlsEl, opts)` returns `{start, 
 ## Adding a chapter
 
 1. Copy the head, top bar, footer scripts and section markup from `chapters/01-vectors.html`.
-2. In `js/core/progress.js`, in `PHY.course`, set the chapter's `status: 'active'`. Home and nav update themselves. Chapters 02 and 03 are already active, so their filenames must stay `02-kinematics.html` and `03-projectiles.html`.
+2. `PHY.course` in `js/core/progress.js` is the chapter list, and every chapter is `active`. Filenames must match it. Home and nav update themselves.
 3. Every `<section class="section wrap" data-section="name">` counts toward progress. Add `data-passive` for sections with no interaction (they are marked when seen for 1 s). The rest are marked by passing `{chapter, section}` to the component, or by calling `PHY.progress.markSection`.
 4. Use `\(inline\)` and `\[display\]` for math. In a JS string that is `\\(` and `\\[`. `PHY.ui.renderMath` runs automatically and sets `dir="ltr"`.
 5. End the inline script with `PHY.mascot.easterEgg([...])` and `PHY.ui.initChapter({id: 'NN'})`.
@@ -67,10 +67,14 @@ Factory signature: `PHY.sims.name(canvasEl, controlsEl, opts)` returns `{start, 
 
 ## Components (`PHY.ui`)
 
-- `PredictCard(host, {chapter, id, section, tag, question, options: [{text, correct, why}], onRun(i, opt) -> Promise, steps, explanation, sayRight, sayWrong, onDone})`. `explanation` stays open under the solution, so keep it to calls to action. Children already inside `host` (the `<figure class="sim">`) become the stage. **The reveal waits for the promise that `onRun` returns.** Put your own data on options (see `F` in the tug-of-war card).
+- `PredictCard(host, {chapter, id, section, tag, question, options: [{text, correct, why}], onRun(i, opt) -> Promise, steps, explanation, sayRight, sayWrong, onDone})`. `explanation` stays open under the solution, so keep it to calls to action. Children already inside `host` (the `<figure class="sim">`) become the stage. **The reveal waits for the promise that `onRun` returns.** Put your own data on options (see `F` in the tug-of-war card). Text right after a card stays closed until the reveal: `initChapter` holds following siblings up to the next card, a `<nav>`, or an element with `data-no-hold`. A card answered on an earlier visit holds nothing back.
 - `Quiz(host, {chapter, section, questions: [{type: 'mc', q, options, answer, steps} | {type: 'num', q, answer, unit, tol, steps}]})`. Each question has its own check button. ±3% default tolerance.
 - `Problem(host, {chapter, section, tag, text, fields: [{label, answer, unit, tol}], steps: [...]})` wraps `StepSolution`.
 - `StepSolution(host, {steps: [{hint, work}], open, startLabel, onDone})`: shows the hint, and the work only after a click. `open` shows the first hint at once. `StarScore(host, {value, size, animate})`, `Slider(host, {...})`, `Toggle`, `Button(host, text, fn, {primary, ghost})`, `Readouts(host, [{key, label, color}])`, `burst(el, n)`, `h(tag, attrs, children)`.
+
+## A card must not answer itself
+
+While a card's sim is locked in its ready state, nothing on the stage may show the value or the outcome the card asks about: no readout, label, result arrow, bar, graph, caption or color. Show `?` until the run starts, and bring everything back in free play after the reveal. Things the question itself gives are fine. A card's tag must not name one of its options as the mistake either.
 
 ## Staged solutions
 
@@ -95,7 +99,19 @@ Serve with `python3 -m http.server 8080`. Click through every predict card, fini
 
 ## Testing
 
-- **Physics:** open `tests/physics.html`. It runs the real sims on a manual clock, so tab visibility does not matter, and the page title reads `PASS n/n`. Add a line for every new sim's key numbers. It works headless:
+- **Whole chapter:** `node tests/chapter-check.mjs 04-newton.html [--shots dir] [--no-cards]`. It runs in a real headless Chrome over `file://`: source lint, console and KaTeX errors, every predict card, every staged solution, the quiz wrong and then right, held text, flipped symbols, reload, and 375px. Exit code 0 means no failures. `--shots` saves each section at desktop and phone width, for looking at. It does not play games.
+- **Per-chapter physics:** from chapter 4, each chapter owns `tests/chNN.js`, and `tests/physics.html?only=NN` runs just that chapter:
+  ```js
+  PHY_T.load(['ch04/plot-helper.js', 'ch04/puck.js']);   // sims, relative to js/sims, in load order
+  PHY_T.add(async function (T) {                         // T: near, same, row, make, run, settle, test, stage
+    await T.test('פרק 4: הדיסקית', async function () {
+      var sim = T.make(PHY.sims.puck, { mu: 0 });
+      await T.run(sim.play());
+      T.near('מהירות בלי חיכוך', 5, sim.getState().v, 0.01);
+    });
+  });
+  ```
+- **Physics page:** open `tests/physics.html`. It runs the real sims on a manual clock, so tab visibility does not matter, and the page title reads `PASS n/n`. It works headless:
   `"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" --headless=new --virtual-time-budget=60000 --dump-dom "file://<project path, URL-encoded>/tests/physics.html"`
 - **Real browser run:** headless Chrome reports `visibilityState: visible`, so rAF and IntersectionObserver are real. It also opens `file://`, which the Chrome extension refuses. Prefer it for animation timing and for touch through `Input.dispatchTouchEvent`.
 
@@ -104,5 +120,7 @@ Serve with `python3 -m http.server 8080`. Click through every predict card, fini
 - `[hidden]` is forced to `display: none` globally, so `hidden` is safe on any component.
 - Chapter-local helpers live next to the sims and load first: `js/sims/ch02/plot.js` (`PHY.ch02`), `js/sims/ch03/ballistics.js` (`PHY.ballistics`). Reuse them rather than writing new ones.
 - Do not leave debug handles on `window`.
+- Inside Hebrew text `×` and `·` between numbers flip, so `7.3×10²²` needs an LRM mark on each side. `°` does not flip, because its bidi class joins it to the number. The gate fails on a flip of any of the three.
+- Keep helper scripts for a chapter in that chapter's own scratch folder: parallel agents overwrite generic names in a shared one.
 - Section numbers restart in every chapter. Write "מסעיף N" for a section and "מפרק N" for a chapter.
 - A passive section counts as read after 1 s with 25% of it visible, or with it filling half the screen. No per-chapter workaround is needed.

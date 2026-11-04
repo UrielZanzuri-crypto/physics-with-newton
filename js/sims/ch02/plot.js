@@ -254,7 +254,7 @@
         final.innerHTML = '';
         U.StarScore(final, { value: stars, animate: true });
         final.appendChild(U.h('div', { class: 'game-task', text: text }));
-        U.Button(final, 'שחק שוב', again, { primary: true });
+        U.Button(final, 'עוד סיבוב', again, { primary: true });
         U.burst(final, 30);
       },
       showMain() { main.hidden = false; final.hidden = true; },

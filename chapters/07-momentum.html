@@ -1,0 +1,904 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>פרק 7: מתקף, תנע ומרכז מסה | פיזיקה עם ניוטון החתול</title>
+<meta name="description" content="איך חתול חוזר לחללית עם מפתח ברגים בלבד: מדריך אינטראקטיבי למתקף, לתנע, להתנגשויות ולמרכז מסה.">
+<script>try{var t=localStorage.getItem('phy-theme');document.documentElement.setAttribute('data-theme',t||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'))}catch(e){document.documentElement.setAttribute('data-theme','light')}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700&family=Rubik:wght@500;600;700;800&display=swap">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.11/katex.min.css">
+<link rel="stylesheet" href="../css/style.css">
+<style>
+  /* Chapter 7 only. */
+  .toggle { min-height: 44px; }
+  .sim-row .btn { min-height: 44px; }
+  .egg-apple, .egg-cat { position: fixed; left: 0; top: 0; z-index: 61; pointer-events: none; }
+  .egg-cat { width: 84px; height: 84px; }
+  .egg-apple { width: 34px; height: 34px; }
+  .steps-list { margin: 10px 0 0; padding-inline-start: 22px; display: grid; gap: 6px; }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-in">
+    <a class="brand" href="../index.html" aria-label="חזרה לדף הבית"><span data-brand-cat></span><span class="brand-name">ניוטון החתול</span></a>
+    <span class="topbar-spacer"></span>
+    <span class="topbar-title">פרק 7: מתקף ותנע</span>
+    <span data-theme-slot></span>
+  </div>
+  <div class="chapter-bar"><span data-chapter-bar></span></div>
+</header>
+
+<main>
+
+<!-- 1. HOOK -->
+<section class="section wrap" data-section="hook" id="hook">
+  <span class="kicker">פרק 7: מתקף, תנע ומרכז מסה</span>
+  <h1 class="hero-title">10 מ' מהבית</h1>
+  <div data-mascot="flying" data-size="118" data-say="אמרו לי: חמש דקות בחוץ, רק לנגב את האנטנה. אמרו גם שהחבל חדש."></div>
+  <p class="lead">ניוטון יצא לנגב את האנטנה של החללית. החבל נקרע, ועכשיו הוא מרחף 10 מ' ממנה, בלי לזוז ובלי שום דבר לדרוך עליו.</p>
+  <p>ביד שלו מפתח ברגים של 2 ק"ג. הוא עצמו, עם החליפה, 10 ק"ג. אין אוויר, אין קרקע, ואין מי שיבוא.</p>
+  <div id="pc-hook">
+    <figure class="sim"><canvas id="c-hook"></canvas><div class="sim-controls" id="ctl-hook"></div></figure>
+  </div>
+  <h3 class="block-gap">מה בדיוק היה שווה אצל שניהם?</h3>
+  <p>המפתח וניוטון דחפו זה את זה באותו כוח, באותו זמן ובכיוונים הפוכים. מה שיצא שווה אצל שניהם הוא מסה כפול מהירות: 2 ק"ג כפול 10 מ/ש למפתח, ו-10 ק"ג כפול 2 מ/ש לניוטון.</p>
+  <p>למכפלה הזאת קוראים <b class="c-vel">תנע</b>, ומסמנים אותה \(p = mv\). היחידה שלה ק"ג·מ/ש, ויש לה כיוון, כמו למהירות. לכן בפרק הזה תנע הוא חץ <span class="c-vel">כחול</span> עם האות p.</p>
+  <p>תנע הוא בערך "כמה קשה לעצור את זה". משאית איטית וקליע מהיר יכולים לשאת בדיוק אותו תנע, וזה לא מנחם אף אחד שעומד בדרך.</p>
+</section>
+
+<!-- 2. IMPULSE -->
+<section class="section wrap" data-section="impulse" id="impulse">
+  <div class="section-head"><span class="section-num">2</span><h2>ביצה על בטון, ביצה על כרית</h2></div>
+  <p>למה ביצה נשברת על בטון ולא על כרית? "כי כרית רכה" היא תשובה נכונה. עכשיו נראה מה "רכה" עושה במספרים.</p>
+  <p>שתי ביצים של 50 גרם נופלות מ-5 מ', ולכן פוגעות ב-10 מ/ש. הגרף מצייר בהילוך איטי את הכוח שהמשטח מפעיל על כל ביצה, רגע אחרי רגע.</p>
+  <div id="pc-egg">
+    <figure class="sim"><canvas id="c-egg"></canvas><div class="sim-controls" id="ctl-egg"></div></figure>
+  </div>
+  <p class="block-gap">לשטח מתחת לגרף כוח-זמן קוראים <b>מתקף</b>, ומסמנים אותו \(J\). הוא הכוח הממוצע כפול הזמן שבו הכוח פעל, והוא שווה בדיוק לשינוי בתנע: \(J = F\,\Delta t = \Delta p\). משקל הביצה, 0.5 ניוטון, קטן כל כך שלא ספרנו אותו.</p>
+  <p>היחידה של מתקף היא ניוטון·שנייה, וזה בדיוק אותו דבר כמו ק"ג·מ/ש. את התנע שצריך לעצור אי אפשר לשנות. אפשר רק לבחור על כמה זמן למרוח אותו.</p>
+  <h3 class="block-gap">כריות אוויר, ברכיים, וחתולים</h3>
+  <p>כרית אוויר עושה לראש מה שהכרית עשתה לביצה: מאריכה את הזמן. ברכיים כפופות עושות אותו דבר, ואפשר לחשב כמה.</p>
+  <p>אדם של 60 ק"ג נוחת ב-5 מ/ש, כלומר 300 ק"ג·מ/ש. בברכיים נעולות הוא נעצר ב-0.01 ש', וזה 30,000 ניוטון. בברכיים כפופות הוא נעצר ב-0.3 ש', וזה 1,000 ניוטון.</p>
+  <p>ניוטון נוחת באותה שיטה: ארבע רגליים מתקפלות ועוצרות אותו לאט. למה הן תמיד למטה זה כבר סיפור אחר, והוא מחכה בסעיף 8.</p>
+</section>
+
+<!-- 3. CONSERVATION -->
+<section class="section wrap" data-section="conservation" id="conservation">
+  <div class="section-head"><span class="section-num">3</span><h2>קפיץ בין שני קרונות</h2></div>
+  <p>נחזור לרעיון של המפתח, הפעם במעבדה. שני קרונות עומדים על מסילה חלקה, 1 ק"ג ו-3 ק"ג, ביניהם קפיץ דחוס, וחוט מחזיק אותם יחד.</p>
+  <p>ניוטון יושב על הקרון הקל, והמסה כוללת אותו: לטובת המדע הוא עשה דיאטה.</p>
+  <div id="pc-spring">
+    <figure class="sim"><canvas id="c-spring"></canvas><div class="sim-controls" id="ctl-spring"></div></figure>
+  </div>
+  <p class="block-gap">מה שראינו נכון לכל קבוצת גופים שאין עליה כוח מבחוץ. כוחות פנימיים תמיד באים בזוגות שווים והפוכים, לפי החוק השלישי מפרק 4, ולכן כל תנע שגוף אחד מקבל, גוף אחר מאבד.</p>
+  <p>זה <b>חוק שימור התנע</b>: התנע הכולל של הקבוצה לא משתנה. זה כמו כסף שעובר בין שני כיסים של אותם מכנסיים: הסכום נשאר, גם אם כיס אחד התרוקן.</p>
+</section>
+
+<!-- 4. COLLISIONS -->
+<section class="section wrap" data-section="collisions" id="collisions">
+  <div class="section-head"><span class="section-num">4</span><h2>מעבדת ההתנגשויות</h2></div>
+  <p>התנגשות היא אותו סיפור בתוך חלקיק שנייה: שני גופים דוחפים זה את זה בכוחות שווים והפוכים. לכן התנע הכולל נשמר בכל התנגשות, כל עוד אין כוח מבחוץ.</p>
+  <p>מה שמשתנה מהתנגשות להתנגשות הוא האנרגיה הקינטית, \(\tfrac12 mv^2\), מפרק 5. שם מתחילות ההפתעות.</p>
+  <h3 class="block-gap">נדבקים</h3>
+  <p>בין הקרונות יש סקוטש. ניוטון, על הקרון של 2 ק"ג, נוסע ב-6 מ/ש אל קרון של 1 ק"ג שעומד.</p>
+  <div id="pc-stick">
+    <figure class="sim"><canvas id="c-stick"></canvas><div class="sim-controls" id="ctl-stick"></div></figure>
+  </div>
+  <p class="block-gap">התנגשות שבה הגופים נדבקים נקראת <b>פלסטית</b>, כמו פלסטלינה שלא חוזרת לצורתה. חלק מהאנרגיה הקינטית הופך לחום, לרעש ולמעיכה, וזה האובדן הגדול ביותר שתנע מאפשר. אם הגופים נפרדים ובכל זאת אנרגיה קינטית אובדת, ההתנגשות נקראת אי-אלסטית.</p>
+
+  <h3 class="block-gap">קופצים</h3>
+  <p>מחליפים את הסקוטש בקפיץ קצר. עכשיו שני הקרונות שווים, 2 ק"ג כל אחד. הראשון נוסע ב-5 מ/ש, והשני עומד.</p>
+  <div id="pc-swap">
+    <figure class="sim"><canvas id="c-swap"></canvas><div class="sim-controls" id="ctl-swap"></div></figure>
+  </div>
+  <p class="block-gap">התנגשות שבה האנרגיה הקינטית חוזרת במלואה נקראת <b>אלסטית</b>, כמו גומי טוב. בזמן המגע האנרגיה יושבת לרגע בקפיץ, וזה הקטע האפור בפס האנרגיה.</p>
+
+  <h3 class="block-gap">כבד מול קל</h3>
+  <p>עכשיו מסות שונות מאוד: 19 ק"ג ו-1 ק"ג, עם קפיץ. אותה מהירות פגיעה בשני הניסויים, \(v = 4\) מ/ש, רק שמחליפים מי פוגע במי.</p>
+  <div id="pc-ratio">
+    <figure class="sim"><canvas id="c-ratio"></canvas><div class="sim-controls" id="ctl-ratio"></div></figure>
+  </div>
+  <p class="block-gap">שלושה כללי אצבע להתנגשות אלסטית. מסות שוות מחליפות מהירויות. כבד שפוגע בקל שעומד שולח אותו בערך פי 2 מהמהירות שלו, וקל שפוגע בכבד שעומד חוזר כמעט באותה מהירות.</p>
+</section>
+
+<!-- 5. CRADLE -->
+<section class="section wrap" data-section="cradle" id="cradle">
+  <div class="section-head"><span class="section-num">5</span><h2>עריסת ניוטון</h2></div>
+  <p>חמישה כדורי מתכת של 0.1 ק"ג תלויים בשורה. הצעצוע הזה נקרא עריסת ניוטון, והחתול בטוח שזה על שמו. הוא יכול לבהות בו שעות.</p>
+  <p>כדור שמושכים לגובה של 0.2 מ' מגיע לתחתית ב-2 מ/ש. מושכים כדור אחד, ומהצד השני יוצא אחד. עד כאן אין הפתעות.</p>
+  <div id="pc-cradle">
+    <figure class="sim"><canvas id="c-cradle"></canvas><div class="sim-controls" id="ctl-cradle"></div></figure>
+  </div>
+</section>
+
+<!-- 6. CENTER OF MASS -->
+<section class="section wrap" data-section="com" id="com">
+  <div class="section-head"><span class="section-num">6</span><h2>הנקודה שלא מתרגשת</h2></div>
+  <p>זורקים פטיש באוויר, והוא מסתובב בפראות. הראש מצייר גלים, והקצה של הידית מצייר לולאות.</p>
+  <p>ובכל זאת, יש בפטיש נקודה אחת שלא שמעה על הסיבוב בכלל. לפטיש שלנו ראש של 3 ק"ג, ובקצה הידית עוד 1 ק"ג.</p>
+  <div id="pc-hammer">
+    <figure class="sim"><canvas id="c-hammer"></canvas><div class="sim-controls" id="ctl-hammer"></div></figure>
+  </div>
+  <p class="block-gap">הנקודה הזהובה נקראת <b>מרכז המסה</b>. היא ממוצע של המיקומים, שבו כל חלק נספר לפי המסה שלו, כמו ממוצע ציונים שבו למבחן הגדול יש יותר משקל.</p>
+  <div class="formula">
+    <div class="formula-main">\[x_{cm} = \frac{m_1 x_1 + m_2 x_2 + m_3 x_3}{m_1 + m_2 + m_3}\]</div>
+    <p>זו גם נקודת האיזון: מוט שנשען על מרכז המסה לא נוטה לשום צד. כאן הטריז הזהוב תמיד עומד שם.</p>
+  </div>
+  <figure class="sim block-gap"><canvas id="c-comlab"></canvas><div class="sim-controls" id="ctl-comlab"></div></figure>
+
+  <h3 class="block-gap">זיקוק שמתפוצץ</h3>
+  <p>פיצוץ הוא כוחות פנימיים בלבד: הרסיסים דוחפים זה את זה בזוגות. לכן מרכז המסה לא אמור לשים לב שמשהו קרה.</p>
+  <p>נבדוק: פגז של 12 ק"ג נורה, ובשיא מתפרק ל-8 רסיסים לא שווים. הקו המקווקו הוא הפרבולה של הפגז כאילו לא התפוצץ.</p>
+  <figure class="sim"><canvas id="c-firework"></canvas><div class="sim-controls" id="ctl-firework"></div></figure>
+
+  <h3 class="block-gap">ניוטון מטייל על סירה</h3>
+  <p>חתול של 5 ק"ג הולך 5 מ' על סירה של 20 ק"ג. נניח שהמים לא מפריעים, כך שאין כוח אופקי מבחוץ. הם גם עמדו בהתחלה, ולכן מרכז המסה שלהם לא זז.</p>
+  <p>אז אם החתול הולך קדימה, מישהו חייב ללכת אחורה. הקו הזהוב הוא מרכז המסה, והחץ הסגול הוא כמה הסירה זזה.</p>
+  <figure class="sim"><canvas id="c-boat"></canvas><div class="sim-controls" id="ctl-boat"></div></figure>
+  <p class="block-gap">בריצה הסירה זזה 1 מ' אחורה, והחתול התקדם רק 4 מ' ביחס למים. 5 ק"ג כפול 4 מ' שווה 20 ק"ג כפול 1 מ', וזה כל הסוד. ככה גם יוצאים מסירה קטנה לתוך המים, במקום לרציף.</p>
+</section>
+
+<!-- 7. ROCKET -->
+<section class="section wrap" data-section="rocket" id="rocket">
+  <div class="section-head"><span class="section-num">7</span><h2>טיל בלי כביש</h2></div>
+  <p>מכונית נדחפת מהכביש, וספינה נדחפת מהמים. בחלל אין כלום, אז ממה נדחף טיל? מהדלק של עצמו, בדיוק כמו ניוטון והמפתח.</p>
+  <p>הטיל הזה זורק תפוחים במקום גזים: 20 ק"ג של טיל ו-10 תפוחים של 1 ק"ג, כל אחד נזרק אחורה ב-20 מ/ש ביחס לטיל, רגע לפני הזריקה. ניוטון מחה, בעיקר על התפוחים.</p>
+  <figure class="sim"><canvas id="c-rocket"></canvas><div class="sim-controls" id="ctl-rocket"></div></figure>
+  <p class="block-gap">אחרי כל התפוחים הטיל נע בערך ב-8.3 מ/ש, והתנע הכולל עדיין 0 ק"ג·מ/ש. כל תפוח דוחף בדיוק אותו דבר, אבל מוסיף קצת יותר מהירות מקודמו, כי הטיל נהיה קל יותר. טיל אמיתי זורק טונות של גז בכל שנייה, אבל החשבון אותו חשבון.</p>
+</section>
+
+<!-- 8. THE FALLING CAT -->
+<section class="section wrap" data-section="fallingcat" id="fallingcat">
+  <div class="section-head"><span class="section-num">8</span><h2>למה ניוטון תמיד נוחת על הרגליים</h2></div>
+  <div data-mascot="falling" data-size="104" data-say="סוד מקצועי. אבל עכשיו, אחרי שזרקתי מפתח, כבר אין לי מה להסתיר."></div>
+  <p>כבר כמה פרקים החתול נופל ונוחת על הרגליים, ואף פעם לא הסברנו למה. הגיע הזמן.</p>
+  <p>הבעיה: הוא נופל על הגב, לא מסתובב, ואין לו שום דבר לדחוף. אין לו אפילו מפתח ברגים. אז איך הוא מתהפך?</p>
+  <p>התשובה: הוא משתמש בעצמו בתור מפתח. הוא מסובב את החצי הקדמי ואת החצי האחורי זה נגד זה, ומשחק במה קל לסובב.</p>
+  <figure class="sim"><canvas id="c-cat"></canvas><div class="sim-controls" id="ctl-cat"></div></figure>
+  <ol class="steps-list">
+    <li><b>שלב ראשון:</b> מקפל את הידיים ומותח את הרגליים. החצי הקדמי קל לסיבוב והאחורי קשה לסיבוב, אז הקדמי מסתובב הרבה והאחורי מעט, לכיוון ההפוך.</li>
+    <li><b>שלב שני:</b> מחליף. מותח את הידיים ומקפל את הרגליים, ועכשיו האחורי מסתובב הרבה והקדמי מעט.</li>
+    <li><b>בסוף:</b> שני החצאים הפוכים למה שהיו, והרגליים למטה. בסעיפים הקודמים אלה היו המפתח וניוטון, וכאן אלה שני חצאים של אותו חתול.</li>
+  </ol>
+  <p class="block-gap">זה הרעיון של ניוטון והמפתח, רק בסיבוב: כל חצי דוחף את השני, ובכל רגע הקל לסיבוב זז יותר. הזוויות לא מתקזזות: בסוף כל חצי הסתובב 180°. מה שנשאר אפס הוא גודל אחר, שנקרא תנע זוויתי.</p>
+  <p>אפשר לסמן "בלי לקפל כפות" ולראות שאז השלב השני מבטל את הראשון, והנחיתה על הגב.</p>
+  <p class="muted small">זה מודל פשוט של שני חצאים, בלי נוסחה ובכוונה. הטיפול המלא בתנע זוויתי הוא מעבר לקורס הזה. הנפילה כאן נמשכת 0.5 ש' בזמן אמיתי, ומוצגת בהילוך איטי.</p>
+</section>
+
+<!-- 9. EARNED FORMULAS -->
+<section class="section wrap" data-section="formula" data-passive id="formula">
+  <div class="section-head"><span class="section-num">9</span><h2>הנוסחאות שהרווחנו</h2></div>
+  <p>רוב מה שבפרק נבנה מדבר אחד: החוק השלישי מפרק 4. כוחות שווים והפוכים, לאותו זמן, נותנים תנע שווה והפוך.</p>
+
+  <div class="formula">
+    <h3>תנע</h3>
+    <div class="formula-main">\[\vec p = m\vec v\]</div>
+    <ul class="legend-list">
+      <li><span class="sym">\(\vec p\)</span><span><span class="c-vel">תנע</span>, בק"ג·מ/ש. וקטור: פונה לאן שהמהירות פונה, וסימן הפוך פירושו כיוון הפוך.</span></li>
+      <li><span class="sym">\(m\)</span><span>מסה, בק"ג.</span></li>
+      <li><span class="sym">\(\vec v\)</span><span><span class="c-vel">מהירות</span>, במ/ש.</span></li>
+    </ul>
+  </div>
+
+  <div class="formula">
+    <h3>מתקף: מה ששינה את התנע</h3>
+    <div class="formula-main">\[J = F\,\Delta t = \Delta p\]</div>
+    <p>מגיע ישר מהחוק השני: \(F = ma = m\,\Delta v / \Delta t\). כופלים ב-\(\Delta t\), ומקבלים \(F\,\Delta t = m\,\Delta v\).</p>
+    <ul class="legend-list">
+      <li><span class="sym">\(J\)</span><span>מתקף, בניוטון·שנייה, שהם ק"ג·מ/ש. השטח מתחת לגרף כוח-זמן.</span></li>
+      <li><span class="sym">\(F\)</span><span><span class="c-force">הכוח</span> הממוצע, בניוטון. הביצה ראתה 50 ניוטון בממוצע על בטון ו-5 ניוטון על כרית.</span></li>
+      <li><span class="sym">\(\Delta t\)</span><span>כמה זמן הכוח פעל, בשניות.</span></li>
+      <li><span class="sym">\(\Delta p\)</span><span>השינוי בתנע: הסוף פחות ההתחלה, עם הסימנים.</span></li>
+    </ul>
+  </div>
+
+  <div class="formula">
+    <h3>שימור תנע</h3>
+    <div class="formula-main">\[m_1 u_1 + m_2 u_2 = m_1 v_1 + m_2 v_2\]</div>
+    <p>\(u\) היא המהירות לפני, ו-\(v\) היא המהירות אחרי. נכון כשאין כוח מבחוץ, עם סימן לכל מהירות לפי הכיוון.</p>
+  </div>
+
+  <div class="formula">
+    <h3>התנגשות פלסטית</h3>
+    <div class="formula-main">\[v = \frac{m_1 u_1 + m_2 u_2}{m_1 + m_2}\]</div>
+    <p>כשהגופים נדבקים, נשארת מהירות אחת. האנרגיה הקינטית שנעלמה הפכה לחום: \(36 - 24 = 12\) ג'ול בקרונות מסעיף 4.</p>
+  </div>
+
+  <div class="formula">
+    <h3>התנגשות אלסטית</h3>
+    <div class="formula-main">\[u_1 - u_2 = v_2 - v_1\]</div>
+    <p>מהירות ההתקרבות שווה למהירות ההתרחקות. זה מה שיוצא משתי משוואות השימור, של תנע ושל אנרגיה קינטית, ויחד עם שימור התנע זה פותר כל התנגשות אלסטית בלי ריבועים.</p>
+    <p>אם הגוף השני עומד בהתחלה, יוצאות שתי נוסחאות מוכנות. בדיקה: 19 ק"ג ב-4 מ/ש על 1 ק"ג נותן 3.6 מ/ש ו-7.6 מ/ש.</p>
+    <div class="formula-main">\[v_1 = \frac{m_1 - m_2}{m_1 + m_2}\,u_1 \qquad v_2 = \frac{2 m_1}{m_1 + m_2}\,u_1\]</div>
+  </div>
+
+  <div class="formula">
+    <h3>מרכז מסה</h3>
+    <div class="formula-main">\[x_{cm} = \frac{\sum m_i x_i}{\sum m_i}\]</div>
+    <ul class="legend-list">
+      <li><span class="sym">\(m_i\)</span><span>המסה של כל חלק, בק"ג.</span></li>
+      <li><span class="sym">\(x_i\)</span><span>המיקום של אותו חלק, במטרים.</span></li>
+    </ul>
+    <p class="block-gap">מרכז המסה נע כאילו כל המסה מרוכזת בו וכל הכוחות החיצוניים פועלים עליו. בלי כוח חיצוני הוא נע במהירות קבועה או לא זז בכלל, כמו בסירה. עם כבידה בלבד הוא מצייר פרבולה, כמו הפטיש והזיקוק.</p>
+  </div>
+</section>
+
+<!-- 10. PLAYGROUND -->
+<section class="section wrap-wide" data-section="playground" id="playground">
+  <div class="section-head"><span class="section-num">10</span><h2>מגרש ההתנגשויות</h2></div>
+  <p>הכול פתוח: מסות, מהירויות, דבק או קפיץ. הכפתורים למטה מריצים את הניסויים מהפרק, ואפשר לבנות גם ניסויים משלנו.</p>
+  <p>שתי שאלות שאפשר לחקור כאן. מתי הקרון הראשון נשאר בדיוק במקום אחרי הפגיעה? ואיך גורמים לשני קרונות לעצור לגמרי?</p>
+  <figure class="sim"><canvas id="c-play"></canvas><div class="sim-controls" id="ctl-play"></div></figure>
+</section>
+
+<!-- 11. GAME -->
+<section class="section wrap-wide" data-section="game" id="game">
+  <div class="section-head"><span class="section-num">11</span><h2>משחקון: חזרה לחללית</h2></div>
+  <p>הפעם יש לניוטון שלושה פריטים, וכל אחד מהם הוא גם ציוד וגם דלק. צריך להגיע לדלת לפני שהאוויר נגמר, ובמהירות שהדלת סופגת.</p>
+  <p>הכלל: ניוטון נע הפוך לפריט, ושינוי המהירות שלו הוא \(\Delta v = m u / M\). כאן \(m\) היא מסת הפריט, \(u\) היא מהירות הזריקה ביחס לניוטון רגע לפני הזריקה, ו-\(M\) היא המסה שנשארה לניוטון.</p>
+  <p class="muted small">כל פריט שנשאר אצל ניוטון שווה נקודה, וניסיון ראשון שווה עוד נקודה, עד 3 נקודות בשלב. השעון מתחיל רק בזריקה הראשונה. פריט שנזרק אל החללית בולם.</p>
+  <figure class="sim"><canvas id="c-game"></canvas><div class="sim-controls" id="ctl-game"></div></figure>
+</section>
+
+<!-- 12. TRAPS -->
+<section class="section wrap" data-section="traps" id="traps">
+  <div class="section-head"><span class="section-num">12</span><h2>מלכודות</h2></div>
+  <p>ארבע טעויות שחוזרות בכל מבחן מכינה. כאן אפשר ליפול בהן בלי שזה יעלה נקודות.</p>
+  <div id="pc-trap1">
+    <figure class="sim"><canvas id="c-trap1"></canvas><div class="sim-controls" id="ctl-trap1"></div></figure>
+  </div>
+  <div id="pc-trap2">
+    <figure class="sim"><canvas id="c-trap2"></canvas><div class="sim-controls" id="ctl-trap2"></div></figure>
+  </div>
+  <div id="pc-trap3">
+    <figure class="sim"><canvas id="c-trap3"></canvas><div class="sim-controls" id="ctl-trap3"></div></figure>
+  </div>
+  <div id="pc-trap4">
+    <figure class="sim"><canvas id="c-trap4"></canvas><div class="sim-controls" id="ctl-trap4"></div></figure>
+  </div>
+</section>
+
+<!-- 13. EXAM PROBLEMS -->
+<section class="section wrap" data-section="problems" id="problems">
+  <div class="section-head"><span class="section-num">13</span><h2>שאלות מכינה</h2></div>
+  <p>ככה זה נראה במבחן. כדאי לנסות לבד קודם, ואם נתקעים יש רמז לפני כל שלב של הפתרון. אין פה שיפוט.</p>
+  <div id="problems-host"></div>
+</section>
+
+<!-- 14. QUIZ -->
+<section class="section wrap" data-section="quiz" id="quiz">
+  <div class="section-head"><span class="section-num">14</span><h2>בוחן</h2></div>
+  <p>חמש שאלות על הפרק ועוד שתיים שחוזרות לפרקים הקודמים. הציון הטוב ביותר נשמר, ואפשר לנסות שוב כמה פעמים שרוצים.</p>
+  <div id="quiz-host" class="block-gap"></div>
+</section>
+
+<!-- 15. POCKET CARD -->
+<section class="section wrap" data-section="pocket" data-passive id="pocket">
+  <div class="section-head"><span class="section-num">15</span><h2>כרטיס כיס</h2></div>
+  <div class="pocket">
+    <h3>תנע על רגל אחת</h3>
+    <div class="pocket-grid">
+      <div class="pocket-item"><b class="c-vel">תנע:</b> \(\vec p = m\vec v\), בק"ג·מ/ש. וקטור: אותו תנע ימינה ושמאלה נותן יחד 0 ק"ג·מ/ש.</div>
+      <div class="pocket-item"><b>מתקף:</b> \(J = F\,\Delta t = \Delta p\). השטח מתחת לגרף כוח-זמן. יותר זמן, פחות כוח.</div>
+      <div class="pocket-item"><b>שימור:</b> בלי כוח מבחוץ, \(m_1 u_1 + m_2 u_2 = m_1 v_1 + m_2 v_2\). תמיד, בכל התנגשות.</div>
+      <div class="pocket-item"><b>פלסטית:</b> נדבקים, \(v = \frac{m_1 u_1 + m_2 u_2}{m_1 + m_2}\). אנרגיה קינטית הופכת לחום.</div>
+      <div class="pocket-item"><b>אלסטית:</b> גם אנרגיה קינטית נשמרת, ו-\(u_1 - u_2 = v_2 - v_1\).</div>
+      <div class="pocket-item"><b>אלסטית, כללי אצבע:</b> מסות שוות מחליפות מהירויות. כבד על קל: בערך \(2v\). קל על כבד: חוזר בערך ב-\(v\).</div>
+      <div class="pocket-item"><b>מרכז מסה:</b> \(x_{cm} = \sum m_i x_i / \sum m_i\). נע כאילו כל המסה בו, ויכול לשבת גם באוויר.</div>
+      <div class="pocket-item"><b>שני גופים, אותו כוח:</b> המשאית והאופניים. מה ששונה הוא שינוי המהירות.</div>
+    </div>
+    <div class="pocket-quote">"תנע לא הולך לאיבוד. הוא רק עובר למפתח הברגים."</div>
+  </div>
+</section>
+
+</main>
+
+<div data-chapter-nav></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.11/katex.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.11/contrib/auto-render.min.js"></script>
+<script src="../js/core/fmt.js"></script>
+<script src="../js/core/vec.js"></script>
+<script src="../js/core/progress.js"></script>
+<script src="../js/core/canvas.js"></script>
+<script src="../js/core/loop.js"></script>
+<script src="../js/core/mascot.js"></script>
+<script src="../js/core/ui.js"></script>
+<script src="../js/sims/ch02/plot.js"></script>
+<script src="../js/sims/ch07/kit.js"></script>
+<script src="../js/sims/ch07/astronaut.js"></script>
+<script src="../js/sims/ch07/egg-drop.js"></script>
+<script src="../js/sims/ch07/spring-carts.js"></script>
+<script src="../js/sims/ch07/collision-lab.js"></script>
+<script src="../js/sims/ch07/cradle.js"></script>
+<script src="../js/sims/ch07/com-lab.js"></script>
+<script src="../js/sims/ch07/com-flight.js"></script>
+<script src="../js/sims/ch07/boat-walk.js"></script>
+<script src="../js/sims/ch07/rocket.js"></script>
+<script src="../js/sims/ch07/falling-cat.js"></script>
+<script src="../js/sims/ch07/space-return.js"></script>
+<script>
+(function () {
+  'use strict';
+  const CH = '07';
+  const U = PHY.ui;
+  const $ = (id) => document.getElementById(id);
+  const TAG = 'קודם ניחוש';
+
+  /* ---------- 1. Hook ---------- */
+  const hook = PHY.sims.astronaut($('c-hook'), $('ctl-hook'), { locked: true });
+  hook.start();
+  const HOOK_MODES = ['swim', 'toward', 'away', 'wait'];
+  U.PredictCard($('pc-hook'), {
+    chapter: CH, id: 'hook', section: 'hook', tag: TAG,
+    question: `איך ניוטון חוזר לחללית?`,
+    options: [
+      { text: `שוחה. תנועות חזה נמרצות, וזהו.`, why: `בבריכה הידיים דוחפות מים אחורה, והמים דוחפים את השוחה קדימה. בחלל אין מה לדחוף, אז הוא רק מתפתל במקום.` },
+      { text: `זורק את המפתח אל החללית, והולך בעקבותיו.`, why: `זה הניחוש של כמעט כולם, וגם שלי. המפתח באמת מגיע, אבל ניוטון נדחף לכיוון ההפוך. עכשיו הוא גם רחוק יותר וגם בלי מפתח.` },
+      { text: `זורק את המפתח הרחק מהחללית.`, correct: true },
+      { text: `אין דרך. מחכים שמישהו יבוא.`, why: `אין צורך להתייאש. יש לו מפתח ביד, וזה כל מה שצריך.` },
+    ],
+    onRun: async (i) => {
+      hook.setParam('locked', true);
+      await hook.play(HOOK_MODES[i]);
+      hook.setParam('locked', false);
+    },
+    steps: [
+      { hint: `מה ניוטון יכול לדחוף בחלל, אם אין אוויר ואין קרקע?`,
+        work: `רק דבר אחד: את המפתח. וכשהוא דוחף את המפתח, המפתח דוחף אותו בחזרה באותו כוח, לפי החוק השלישי מפרק 4.` },
+      { hint: `אם המפתח נדחף לכיוון אחד, לאן נדחף ניוטון?`,
+        work: `לכיוון ההפוך. לכן כדי לנוע אל החללית צריך לזרוק את המפתח הרחק ממנה.` },
+      { hint: `הכוח שווה והזמן שווה. מה יוצא שווה אצל שניהם?`,
+        work: `מסה כפול מהירות. למפתח: \\(2 \\cdot 10 = 20\\) ק"ג·מ/ש. לכן ניוטון מקבל 20 ק"ג·מ/ש לצד השני.` },
+      { hint: `באיזו מהירות זה מזיז את ניוטון, ומתי הוא מגיע?`,
+        work: `\\(v = 20 / 10 = 2\\) מ/ש, ו-10 מ' ב-2 מ/ש לוקחים 5 ש'. התשובה: זורקים את המפתח הרחק מהחללית, והוא בבית אחרי 5 ש'.` },
+    ],
+    explanation: `<p><b>עכשיו תורך:</b> לשנות את מסת המפתח ואת מהירות הזריקה, ולראות את שני החיצים הכחולים. הם תמיד שווים והפוכים.</p>`,
+    sayRight: 'נכון. מי צריך מפתח ברגים, כשיש בית.',
+    sayWrong: 'גם אני ניחשתי ככה. זו הסיבה שאני עדיין כאן בחוץ.',
+  });
+
+  /* ---------- 2. Eggs ---------- */
+  const egg = PHY.sims.eggDrop($('c-egg'), $('ctl-egg'), { locked: true });
+  egg.start();
+  U.PredictCard($('pc-egg'), {
+    chapter: CH, id: 'egg', section: 'impulse', tag: TAG,
+    question: `שתי הביצים נעצרות מאותה מהירות. הבטון שובר, והכרית לא. מה ההבדל בין שתי המכות?`,
+    options: [
+      { text: `הבטון נותן מכה גדולה יותר בסך הכול. לכן הביצה נשברת.`, why: `ככה זה מרגיש. אבל שתי הביצים איבדו בדיוק אותו תנע, ולכן "בסך הכול" זו אותה מכה. הבטון פשוט דוחס אותה לרגע.` },
+      { text: `בסך הכול זו אותה מכה. הבטון דוחס אותה לרגע, והכרית מורחת אותה.`, correct: true },
+      { text: `הכרית לא באמת עוצרת את הביצה, רק מאטה אותה קצת.`, why: `הביצה עצרה לגמרי, ואם לא, יש לנו שאלות על הכרית. מ-10 מ/ש ל-0 מ/ש, בדיוק כמו על הבטון.` },
+    ],
+    onRun: async () => {
+      egg.setParam('locked', true);
+      await egg.play();
+      egg.setParam('locked', false);
+    },
+    steps: [
+      { hint: `כמה תנע יש לביצה אחת רגע לפני הפגיעה?`,
+        work: `50 גרם הם 0.05 ק"ג, ולכן \\(p = mv = 0.05 \\cdot 10 = 0.5\\) ק"ג·מ/ש.` },
+      { hint: `כמה מהתנע הזה צריך לקחת ממנה כדי לעצור אותה?`,
+        work: `את כולו, מ-0.5 ק"ג·מ/ש ל-0 ק"ג·מ/ש. זה נכון גם על בטון וגם על כרית.` },
+      { hint: `מה בגרף נשאר שווה, אם הגובה והרוחב שונים?`,
+        work: `השטח. מהחוק השני, \\(F = ma = m\\,\\Delta v / \\Delta t\\), ולכן \\(F\\,\\Delta t = m\\,\\Delta v = \\Delta p\\). השטח מתחת לגרף הוא השינוי בתנע, 0.5 ק"ג·מ/ש בשניהם.` },
+      { hint: `מה הכוח הממוצע, אם הבטון עוצר ב-0.01 ש' והכרית ב-0.1 ש'?`,
+        work: `בטון: \\(0.5 / 0.01 = 50\\) ניוטון, וכרית: \\(0.5 / 0.1 = 5\\) ניוטון. בגרף רואים את השיאים, בערך 79 ניוטון ו-8 ניוטון, והקליפה נשברת בסביבות 30 ניוטון. התשובה: אותה מכה בסך הכול, על זמן אחר.` },
+    ],
+    explanation: `<p><b>עכשיו תורך:</b> להזיז את זמן העצירה על הכרית, ולמצוא מאיזה זמן הביצה נשארת שלמה.</p>`,
+    sayRight: 'בדיוק. ואני ממליץ לכרית גם בלי פיזיקה.',
+    sayWrong: 'גם אני חשבתי שהבטון פשוט מכה יותר. הוא רק ממהר יותר.',
+  });
+
+  /* ---------- 3. Spring between carts ---------- */
+  const spring = PHY.sims.springCarts($('c-spring'), $('ctl-spring'), { locked: true });
+  spring.start();
+  U.PredictCard($('pc-spring'), {
+    chapter: CH, id: 'spring', section: 'conservation', tag: TAG,
+    question: `החוט נקרע, והקפיץ דוחף את שני הקרונות. באיזו מהירות יוצא כל אחד?`,
+    options: [
+      { text: `אותה מהירות. אותו קפיץ, אותו כוח.`, why: `הכוח באמת שווה, וגם הזמן. אבל אותו כוח על מסה קטנה פי 3 נותן תאוצה גדולה פי 3.` },
+      { text: `הקל מהיר פי 3.`, correct: true },
+      { text: `הכבד מהיר פי 3. יש לו יותר מסה, אז הוא מקבל יותר.`, why: `יותר מסה פירושו פחות תאוצה, לא יותר. הכבד מקבל אותו תנע, ואצלו זה נגמר במהירות קטנה.` },
+    ],
+    onRun: async () => {
+      spring.setParam('locked', true);
+      await spring.play();
+      spring.setParam('locked', false);
+    },
+    steps: [
+      { hint: `מה אפשר לומר על שני הכוחות שהקפיץ מפעיל על הקרונות?`,
+        work: `הקפיץ קל מאוד, ולכן הוא דוחף את שני הקרונות בכוחות שווים בגודל והפוכים בכיוון בכל רגע: כל קרון דוחף את השני דרך הקפיץ, וזה החוק השלישי מפרק 4. והם פועלים אותו זמן בדיוק.` },
+      { hint: `אותו כוח, אותו זמן. מה יוצא שווה?`,
+        work: `המתקף \\(F\\,\\Delta t\\), ולכן גם השינוי בתנע. קרון אחד מקבל \\(+p\\), והשני \\(-p\\).` },
+      { hint: `אם התנע שווה בגודלו, מה יחס המהירויות?`,
+        work: `\\(1 \\cdot v_1 = 3 \\cdot v_2\\), ולכן הקל מהיר פי 3. בריצה: 3 מ/ש שמאלה ו-1 מ/ש ימינה.` },
+      { hint: `כמה התנע הכולל, לפני ואחרי?`,
+        work: `לפני: 0 ק"ג·מ/ש, כי הכול עמד, ואחרי: \\(1 \\cdot (-3) + 3 \\cdot 1 = 0\\) ק"ג·מ/ש. בגרף הקו של סך הכול לא זז מאפס בשום רגע. התשובה: הקל מהיר פי 3.` },
+    ],
+    explanation: `<p><b>עכשיו תורך:</b> לשנות את המסות ולשחרר שוב. התנע של כל קרון משתנה, וסך הכול נשאר 0 ק"ג·מ/ש.</p>`,
+    sayRight: 'נכון. אני על הקל, ומרגיש כל מטר.',
+    sayWrong: 'זה מרגיש הוגן שיקבלו אותה מהירות. הקפיץ לא הוגן, הוא שווה.',
+  });
+
+  /* ---------- 4. Collisions ---------- */
+  const stick = PHY.sims.collisionLab($('c-stick'), $('ctl-stick'), { m1: 2, m2: 1, u1: 6, u2: 0, type: 'plastic' });
+  stick.start();
+  U.PredictCard($('pc-stick'), {
+    chapter: CH, id: 'stick', section: 'collisions', tag: TAG,
+    question: `הם נדבקים וממשיכים יחד. באיזו מהירות?`,
+    options: [
+      { text: `3 מ/ש. שני קרונות, אז חצי מהמהירות.`, why: `זה היה נכון אם המסות היו שוות. כאן 12 ק"ג·מ/ש מתחלקים על 3 ק"ג.` },
+      { text: `4 מ/ש.`, correct: true },
+      { text: `6 מ/ש. קרון קטן לא יעצור קרון כבד.`, why: `אם שניהם נעים ב-6 מ/ש, התנע הוא 18 ק"ג·מ/ש. אבל היו רק 12 ק"ג·מ/ש, ומאיפה יבוא השאר?` },
+    ],
+    onRun: () => stick.play({ m1: 2, m2: 1, u1: 6, u2: 0, type: 'plastic', endCaption: 'מהירות 4 מ/ש. ומה קרה ל-12 ג\'ול?' }),
+    steps: [
+      { hint: `מה נשמר בכל התנגשות? כמה ממנו יש בהתחלה?`,
+        work: `התנע הכולל: \\(2 \\cdot 6 + 1 \\cdot 0 = 12\\) ק"ג·מ/ש.` },
+      { hint: `אחרי ההידבקות, איזו מסה נעה?`,
+        work: `3 ק"ג כגוף אחד, ולכן \\(3v = 12\\), כלומר \\(v = 4\\) מ/ש.` },
+      { hint: `נבדוק את האנרגיה הקינטית. כמה הייתה, וכמה יש עכשיו?`,
+        work: `לפני: \\(\\tfrac12 \\cdot 2 \\cdot 6^2 = 36\\) ג'ול. אחרי: \\(\\tfrac12 \\cdot 3 \\cdot 4^2 = 24\\) ג'ול. חסרים 12 ג'ול.` },
+      { hint: `לאן נעלמו אותם ג'ולים? רמז מפרק 5: אנרגיה לא נעלמת.`,
+        work: `הם הפכו לחום, לרעש ולמעיכה של הסקוטש. בפס האנרגיה זה הקטע האדום. התשובה: 4 מ/ש, ו-12 ג'ול הפכו לחום.` },
+    ],
+    sayRight: 'נכון. 4 מ/ש, וסקוטש על הזנב.',
+    sayWrong: 'גם אני חילקתי בשתיים. המסות לא התרשמו.',
+  });
+
+  const swap = PHY.sims.collisionLab($('c-swap'), $('ctl-swap'), { m1: 2, m2: 2, u1: 5, u2: 0, type: 'elastic' });
+  swap.start();
+  U.PredictCard($('pc-swap'), {
+    chapter: CH, id: 'swap', tag: TAG,
+    question: `מה קורה אחרי ההתנגשות, עם קפיץ ומסות שוות?`,
+    options: [
+      { text: `שניהם ממשיכים ב-2.5 מ/ש. מתחלקים בצדק.`, why: `התנע מסתדר, אבל האנרגיה יורדת מ-25 ג'ול ל-12.5 ג'ול. בקפיץ טוב אין לאן שהיא תיעלם.` },
+      { text: `הראשון עוצר, והשני יוצא ב-5 מ/ש.`, correct: true },
+      { text: `הראשון נרתע אחורה ב-5 מ/ש, והשני נשאר במקום.`, why: `זה קרון שפוגע בקיר. כאן התנע היה הופך סימן, מ-10 ק"ג·מ/ש ל-10 ק"ג·מ/ש בכיוון ההפוך, ואסור לו.` },
+    ],
+    onRun: () => swap.play({ m1: 2, m2: 2, u1: 5, u2: 0, type: 'elastic', endCaption: 'הם החליפו מהירויות' }),
+    steps: [
+      { hint: `אילו שני דברים נשמרים כשיש קפיץ טוב?`,
+        work: `גם התנע וגם האנרגיה הקינטית, כי הקפיץ מחזיר את כל מה שקיבל.` },
+      { hint: `מה נותן שימור התנע, אחרי שמצמצמים את המסה?`,
+        work: `\\(2 \\cdot 5 = 2v_1 + 2v_2\\), כלומר \\(v_1 + v_2 = 5\\) מ/ש.` },
+      { hint: `ומה נותן שימור האנרגיה?`,
+        work: `\\(\\tfrac12 \\cdot 2 \\cdot 5^2 = \\tfrac12 \\cdot 2 \\cdot v_1^2 + \\tfrac12 \\cdot 2 \\cdot v_2^2\\), כלומר \\(v_1^2 + v_2^2 = 25\\) מ²/ש².` },
+      { hint: `אילו שני מספרים מקיימים את שתי המשוואות? (הקרון הראשון לא יכול לעבור דרך השני.)`,
+        work: `\\(v_1 = 0\\) מ/ש ו-\\(v_2 = 5\\) מ/ש. למשל, 2.5 מ/ש ו-2.5 מ/ש נותנים 5 מ/ש, אבל הריבועים נותנים רק 12.5 מ²/ש². התשובה: הראשון עוצר והשני יוצא ב-5 מ/ש, כמו מקל במרוץ שליחים.` },
+    ],
+    sayRight: 'נכון. אני עצרתי. הקרון השני קיבל את כל הכיף.',
+    sayWrong: 'גם אני חילקתי חצי-חצי. הקפיץ לא חושב ככה.',
+  });
+
+  const ratio = PHY.sims.collisionLab($('c-ratio'), $('ctl-ratio'), { m1: 19, m2: 1, u1: 4, u2: 0, type: 'elastic' });
+  ratio.start();
+  U.PredictCard($('pc-ratio'), {
+    chapter: CH, id: 'ratio', tag: TAG,
+    question: `מה עושה הקרון הקל, כשהכבד פוגע בו ב-\\(v\\), וכשהוא פוגע בכבד ב-\\(v\\)?`,
+    options: [
+      { text: `בשתי ההתנגשויות הוא נע ב-\\(v\\) בערך. מה שנכנס יוצא.`, why: `במסות שוות הקרון שנפגע באמת יוצא ב-\\(v\\), אבל הקרון שפוגע נעצר, אז גם שם זה לא קורה בשתיהן. כאן נכון רק החצי השני: קל שפוגע בכבד חוזר בערך ב-\\(v\\). כשהכבד פוגע בקל ובקושי מרגיש אותו, הקל צריך גם להתרחק ממנו וגם להדביק אותו.` },
+      { text: `כשהכבד פוגע בו, הוא טס בערך ב-\\(2v\\). כשהוא פוגע בכבד, הוא חוזר אחורה בערך ב-\\(v\\).`, correct: true },
+      { text: `כשהכבד פוגע בו, הוא טס ב-\\(19v\\). כשהוא פוגע בכבד, הוא נעצר.`, why: `תנע לבד היה מרשה את זה. אבל 1 ק"ג ב-76 מ/ש זה 2,888 ג'ול, וכל מה שהיה הוא 152 ג'ול.` },
+    ],
+    onRun: async () => {
+      await ratio.play({ m1: 19, m2: 1, u1: 4, u2: 0, type: 'elastic', caption: 'כבד פוגע בקל', endCaption: 'הקל טס ב-7.6 מ/ש, כמעט פי 2' });
+      await ratio.play({ m1: 1, m2: 19, u1: 4, u2: 0, type: 'elastic', caption: 'קל פוגע בכבד', endCaption: 'הקל חוזר ב-3.6 מ/ש, והכבד בקושי זז' });
+    },
+    steps: [
+      { hint: `בואו נעמוד בדמיון על הקרון הכבד, בהתנגשות הראשונה. איך הקל נראה משם?`,
+        work: `כאילו הוא מתקרב אלינו במהירות \\(v\\), והכבד הוא קיר. זו התנועה היחסית מפרק 2.` },
+      { hint: `מה עושה כדור שפוגע בקיר כבד, בלי לאבד אנרגיה?`,
+        work: `חוזר באותה מהירות, \\(v\\), בכיוון ההפוך.` },
+      { hint: `נחזור לעמוד על הקרקע. מה מהירות הקל עכשיו?`,
+        work: `הקיר עצמו נע ב-\\(v\\), והקל מתרחק ממנו עוד \\(v\\), כלומר בערך \\(2v = 8\\) מ/ש. במדויק יוצא 7.6 מ/ש, כי הכבד האט ל-3.6 מ/ש.` },
+      { hint: `ובהתנגשות השנייה, כשהכבד עומד במקום?`,
+        work: `הכבד הוא קיר שעומד, ולכן הקל חוזר בערך ב-\\(v\\). במדויק: 3.6 מ/ש אחורה, והכבד זז ב-0.4 מ/ש. התשובה: בערך \\(2v\\) קדימה, ובערך \\(v\\) אחורה.` },
+    ],
+    explanation: `<p><b>עכשיו תורך:</b> במגרש ההתנגשויות בסעיף 10 אפשר להריץ כל שילוב של מסות ומהירויות.</p>`,
+    sayRight: 'נכון. ואני תמיד על הקרון שהולך לחטוף.',
+    sayWrong: 'גם אני חשבתי פי 19. האנרגיה עשתה לי בירור קצר.',
+  });
+
+  /* ---------- 5. Cradle ---------- */
+  const cradle = PHY.sims.cradle($('c-cradle'), $('ctl-cradle'), { locked: true });
+  cradle.start();
+  U.PredictCard($('pc-cradle'), {
+    chapter: CH, id: 'cradle', section: 'cradle', tag: TAG,
+    question: `מושכים 2 כדורים ומשחררים. מה יוצא מהצד השני?`,
+    options: [
+      { text: `כדור אחד, במהירות כפולה. אותו תנע, אז למה לא?`, why: `התנע באמת מסתדר. האנרגיה לא: כדור אחד ב-4 מ/ש נושא פי 2 אנרגיה ממה שנכנס, ואין לה מאיפה לבוא.` },
+      { text: `2 כדורים, באותה מהירות.`, correct: true },
+      { text: `כל חמשת הכדורים נעים יחד, לאט.`, why: `זו הייתה התנגשות שנדבקת: תנע בסדר, 0.8 מ/ש, אבל רק 0.16 ג'ול מתוך 0.4 ג'ול. כדורי מתכת קפיציים לא מפסידים כל כך הרבה.` },
+    ],
+    onRun: async () => {
+      cradle.setParam('locked', true);
+      await cradle.play({ n: 2 });
+      cradle.setParam('locked', false);
+    },
+    steps: [
+      { hint: `כמה תנע וכמה אנרגיה נכנסים עם 2 כדורים?`,
+        work: `\\(p = 0.2 \\cdot 2 = 0.4\\) ק"ג·מ/ש, ו-\\(E = \\tfrac12 \\cdot 0.2 \\cdot 2^2 = 0.4\\) ג'ול.` },
+      { hint: `נבדוק כדור אחד במהירות כפולה. האם התנע מסתדר?`,
+        work: `\\(0.1 \\cdot 4 = 0.4\\) ק"ג·מ/ש, בדיוק כמו שנכנס. תנע לבד לא פוסל אותו.` },
+      { hint: `ומה עם האנרגיה שלו?`,
+        work: `\\(\\tfrac12 \\cdot 0.1 \\cdot 4^2 = 0.8\\) ג'ול: כפול ממה שנכנס. אנרגיה לא נוצרת מאפס, ולכן זה אסור. זו השורה האדומה בלוח.` },
+      { hint: `אז מה כן מקיים את שני החוקים? ומה קורה בתוך השורה?`,
+        work: `כל כדור מעביר את המהירות שלו לשכן, כמו המסות השוות מסעיף 4. המהירות עוברת לאורך השורה, ובקצה יוצא אותו מספר כדורים. התשובה: 2 כדורים, ב-2 מ/ש.` },
+    ],
+    explanation: `<p><b>עכשיו תורך:</b> למשוך 1, 3 או 4 כדורים בכפתורים, או לגרור כדור ביד. כמה שנכנסים, כך יוצאים.</p>`,
+    sayRight: 'נכון. ועכשיו אני לא מצליח להפסיק להסתכל.',
+    sayWrong: 'גם אני רציתי כדור אחד מהיר. זה נראה יותר דרמטי.',
+  });
+
+  /* ---------- 6. Center of mass ---------- */
+  const hammer = PHY.sims.comFlight($('c-hammer'), $('ctl-hammer'), { shape: 'hammer', locked: true });
+  hammer.start();
+  U.PredictCard($('pc-hammer'), {
+    chapter: CH, id: 'hammer', section: 'com', tag: TAG,
+    question: `איזו נקודה בפטיש המסתובב מציירת פרבולה נקייה, כמו של קליע מפרק 3?`,
+    options: [
+      { text: `קצה הידית. ממנו אוחזים.`, why: `הקצה דווקא מצייר לולאות, כי הוא מסתובב הכי רחוק מהמרכז. ברגע שהפטיש עוזב את היד, לאחיזה כבר אין משמעות.` },
+      { text: `אמצע הידית. האמצע הוא האמצע.`, why: `זה היה נכון אם שני הצדדים היו שוקלים אותו דבר. כאן הראש שוקל פי 3.` },
+      { text: `נקודה קרובה לראש, במקום שבו המסה מתאזנת.`, correct: true },
+      { text: `אף נקודה. הכול מסתובב, אז הכול מתפתל.`, why: `זה מה שרואים בעין, ולכן הטעות טבעית. אבל הקו הזהוב יוצא נקי לגמרי.` },
+    ],
+    onRun: async () => {
+      hammer.setParam('locked', true);
+      await hammer.play();
+      hammer.setParam('locked', false);
+    },
+    steps: [
+      { hint: `אילו כוחות פועלים על הפטיש באוויר?`,
+        work: `הכבידה על כל חלק, ובתוך הפטיש כוחות בין החלקים. הכוחות הפנימיים באים בזוגות שווים והפוכים, כמו בקפיץ מסעיף 3, אז בחשבון הכולל הם מתבטלים.` },
+      { hint: `מה נשאר לשנות את התנע הכולל של הפטיש?`,
+        work: `רק הכבידה: \\(4 \\cdot 10 = 40\\) ניוטון למטה. התנע הכולל משתנה בדיוק כמו של גוף אחד בן 4 ק"ג שנזרק.` },
+      { hint: `איזו נקודה מתנהגת כמו אותו גוף אחד?`,
+        work: `ממוצע המיקומים לפי המסה, \\(x_{cm} = (3x_1 + 1x_2) / 4\\). הראש שוקל פי 3, ולכן הנקודה קרובה אליו: רבע מהדרך מהראש לקצה.` },
+      { hint: `מה מציירת הנקודה הזאת, ומה עושה כל השאר?`,
+        work: `היא מציירת פרבולה, הקו הזהוב, וכל השאר מסתובב סביבה. התשובה: הנקודה הקרובה לראש, ושמה מרכז המסה.` },
+    ],
+    explanation: `<p><b>עכשיו תורך:</b> להגביר את הסיבוב ולזרוק שוב. הגלים והלולאות של הראש והידית משתנים, והקו הזהוב נשאר אותו קו.</p>`,
+    sayRight: 'נכון. והפעם זרקו את הפטיש, ולא אותי. זו התקדמות.',
+    sayWrong: 'גם אני חיפשתי את האמצע. המסה לא מעוניינת באמצע.',
+  });
+
+  const comlab = PHY.sims.comLab($('c-comlab'), $('ctl-comlab'), { masses: [2, 3, 5], xs: [1, 4, 8] });
+  comlab.start();
+
+  const firework = PHY.sims.comFlight($('c-firework'), $('ctl-firework'), { shape: 'firework', locked: false });
+  firework.start();
+
+  const boat = PHY.sims.boatWalk($('c-boat'), $('ctl-boat'), { catMass: 5, boatMass: 20, walk: 5 });
+  boat.start();
+
+  /* ---------- 7. Rocket ---------- */
+  const rocket = PHY.sims.rocket($('c-rocket'), $('ctl-rocket'), { onFire: () => PHY.progress.markSection(CH, 'rocket') });
+  rocket.start();
+
+  /* ---------- 8. The falling cat ---------- */
+  const falling = PHY.sims.fallingCat($('c-cat'), $('ctl-cat'), { onFree: () => PHY.progress.markSection(CH, 'fallingcat') });
+  falling.start();
+
+  /* ---------- 10. Playground ---------- */
+  const play = PHY.sims.collisionLab($('c-play'), $('ctl-play'), { controls: true, locked: false, m1: 2, m2: 1, u1: 6, u2: 0, type: 'plastic', aspect: 2.1, onFree: () => PHY.progress.markSection(CH, 'playground') });
+  play.start();
+
+  /* ---------- 11. Game ---------- */
+  const game = PHY.sims.spaceReturn($('c-game'), $('ctl-game'), { chapter: CH, section: 'game' });
+  game.start();
+
+  /* ---------- 12. Traps ---------- */
+  const trapDone = {};
+  const trapFinished = (name) => {
+    trapDone[name] = true;
+    if (trapDone.a && trapDone.b && trapDone.c && trapDone.d) PHY.progress.markSection(CH, 'traps');
+  };
+
+  const trap1 = PHY.sims.collisionLab($('c-trap1'), $('ctl-trap1'), { m1: 3, m2: 1, u1: 4, u2: 0, type: 'elastic' });
+  trap1.start();
+  U.PredictCard($('pc-trap1'), {
+    chapter: CH, id: 'trap1', tag: 'מלכודת 1: הכול נשמר, או הכול הולך',
+    question: `אותו ניסוי פעמיים: 3 ק"ג ב-4 מ/ש פוגע ב-1 ק"ג שעומד. פעם עם קפיץ, ופעם עם סקוטש. מה נשמר?`,
+    options: [
+      { text: `תנע ואנרגיה קינטית נשמרים בשתיהן. חוק שימור זה חוק.`, why: `תנע כן. אנרגיה קינטית נשמרת רק כשדבר לא נמעך: בסקוטש 6 ג'ול הפכו לחום. האנרגיה הכוללת נשמרת, אבל היא כבר לא קינטית.` },
+      { text: `בקפיץ הכול נשמר. בסקוטש גם התנע וגם האנרגיה אובדים, כי הם האטו.`, why: `הם באמת האטו, אבל עכשיו זזה יותר מסה: 4 ק"ג ב-3 מ/ש הם בדיוק 12 ק"ג·מ/ש, כמו בהתחלה. בהתנגשות פלסטית שום תנע לא אובד.` },
+      { text: `תנע נשמר בשתיהן. אנרגיה קינטית רק בקפיץ.`, correct: true },
+    ],
+    onRun: async () => {
+      await trap1.play({ m1: 3, m2: 1, u1: 4, u2: 0, type: 'elastic', caption: 'עם קפיץ', endCaption: 'תנע 12 ק"ג·מ/ש, אנרגיה 24 ג\'ול: הכול חזר' });
+      await trap1.play({ m1: 3, m2: 1, u1: 4, u2: 0, type: 'plastic', caption: 'עם סקוטש', endCaption: 'תנע 12 ק"ג·מ/ש, אנרגיה 18 ג\'ול: 6 ג\'ול לחום' });
+    },
+    steps: [
+      { hint: `כמה תנע וכמה אנרגיה קינטית יש בהתחלה, בשני הניסויים?`,
+        work: `תנע: \\(3 \\cdot 4 = 12\\) ק"ג·מ/ש. אנרגיה: \\(\\tfrac12 \\cdot 3 \\cdot 4^2 = 24\\) ג'ול.` },
+      { hint: `בקפיץ יצאו 2 מ/ש ו-6 מ/ש. מה קרה לשני הגדלים?`,
+        work: `תנע: \\(3 \\cdot 2 + 1 \\cdot 6 = 12\\) ק"ג·מ/ש. אנרגיה: \\(\\tfrac12 \\cdot 3 \\cdot 2^2 + \\tfrac12 \\cdot 1 \\cdot 6^2 = 6 + 18 = 24\\) ג'ול. שניהם נשמרו.` },
+      { hint: `בסקוטש 4 ק"ג נעים יחד ב-3 מ/ש. מה קרה לשני הגדלים?`,
+        work: `תנע: \\(4 \\cdot 3 = 12\\) ק"ג·מ/ש, אותו דבר. אנרגיה: \\(\\tfrac12 \\cdot 4 \\cdot 3^2 = 18\\) ג'ול, וחסרים 6 ג'ול שהפכו לחום. התשובה: תנע נשמר בשתיהן, ואנרגיה קינטית רק בקפיץ.` },
+    ],
+    sayRight: 'נכון. תנע תמיד. אנרגיה קינטית, רק כשמתחשק לה.',
+    sayWrong: 'גם אני חשבתי ששימור זה שימור. הסקוטש חושב אחרת.',
+    onDone: () => trapFinished('a'),
+  });
+
+  const trap2 = PHY.sims.collisionLab($('c-trap2'), $('ctl-trap2'), { m1: 2, m2: 2, u1: 3, u2: -3, type: 'plastic', blind: true });
+  trap2.start();
+  U.PredictCard($('pc-trap2'), {
+    chapter: CH, id: 'trap2', tag: 'מלכודת 2: תנע הוא סתם מספר',
+    question: `שני קרונות של 2 ק"ג נוסעים זה מול זה, כל אחד ב-3 מ/ש, ונדבקים. כמה התנע הכולל והאנרגיה הקינטית הכוללת לפני הפגיעה?`,
+    options: [
+      { text: `תנע 12 ק"ג·מ/ש, אנרגיה 18 ג'ול. פשוט מחברים.`, why: `האנרגיה נכונה, כי אין לה כיוון. אבל תנע הוא וקטור: 6 ק"ג·מ/ש ימינה ו-6 ק"ג·מ/ש שמאלה נותנים 0 ק"ג·מ/ש.` },
+      { text: `תנע 0 ק"ג·מ/ש, אנרגיה 0 ג'ול. הכול מתקזז.`, why: `התנע כן. באנרגיה יש \\(v^2\\), שתמיד חיובי. כל קרון נושא 9 ג'ול, ואין מה שיקזז אותם.` },
+      { text: `תנע 0 ק"ג·מ/ש, אנרגיה 18 ג'ול.`, correct: true },
+    ],
+    onRun: () => trap2.play({ m1: 2, m2: 2, u1: 3, u2: -3, type: 'plastic', endCaption: 'תנע 0 ק"ג·מ/ש לפני ואחרי. 18 ג\'ול הפכו לחום' }),
+    steps: [
+      { hint: `נבחר ימינה כחיובי. מה התנע של כל קרון, ומה הסכום?`,
+        work: `\\(2 \\cdot 3 = 6\\) ק"ג·מ/ש ו-\\(2 \\cdot (-3) = -6\\) ק"ג·מ/ש. הסכום: 0 ק"ג·מ/ש.` },
+      { hint: `האם לאנרגיה קינטית יש כיוון?`,
+        work: `לא. כל קרון נושא \\(\\tfrac12 \\cdot 2 \\cdot 3^2 = 9\\) ג'ול, והסכום הוא 18 ג'ול.` },
+      { hint: `מה קורה אחרי שהם נדבקים, ואיזה תנע אבד?`,
+        work: `הם נעצרים, ושום תנע לא אבד: הוא היה 0 ק"ג·מ/ש כל הזמן. 18 ג'ול הפכו לחום ולמעיכה. התשובה: תנע 0 ק"ג·מ/ש, ואנרגיה 18 ג'ול.` },
+    ],
+    sayRight: 'נכון. אפס תנע, ועדיין מכה נהדרת.',
+    sayWrong: 'גם אני חיברתי. החצים לא מסכימים להיות מספרים.',
+    onDone: () => trapFinished('b'),
+  });
+
+  const trap3 = PHY.sims.collisionLab($('c-trap3'), $('ctl-trap3'), { m1: 1900, m2: 100, u1: 10, u2: 0, type: 'plastic', skin: 'truck', panel: 'force', tau: 0.1, world: 44 });
+  trap3.start();
+  U.PredictCard($('pc-trap3'), {
+    chapter: CH, id: 'trap3', tag: 'מלכודת 3: המשאית מרגישה פחות',
+    question: `משאית של 1900 ק"ג ב-10 מ/ש פוגעת באופניים עמוסים של 100 ק"ג, כולל ניוטון ותפוחים, שעומדים. הם נדבקים. על מי פועל כוח גדול יותר בזמן המגע?`,
+    options: [
+      { text: `על האופניים. המשאית בקושי הרגישה.`, why: `האופניים באמת שינו מהירות ב-9.5 מ/ש, והמשאית רק ב-0.5 מ/ש. אבל זה הבדל בתאוצה, לא בכוח: אותה דחיפה על מסה קטנה פי 19.` },
+      { text: `על המשאית. היא הרי דוחפת את כולם.`, why: `מי שדוחף גם נדחף, באותה מידה. אין כאן "דוחף" ו"נדחף", יש זוג כוחות אחד.` },
+      { text: `הכוח שווה. רק שינוי המהירות שונה מאוד.`, correct: true },
+    ],
+    onRun: () => trap3.play({ endCaption: 'אותו כוח. שינוי מהירות שונה פי 19.' }),
+    steps: [
+      { hint: `מה אומר החוק השלישי על שני כוחות בין שני גופים?`,
+        work: `הם שווים בגודל והפוכים בכיוון, תמיד. זה נכון גם למשאית.` },
+      { hint: `מה המהירות המשותפת אחרי ההתנגשות?`,
+        work: `\\(v = \\frac{1900 \\cdot 10}{1900 + 100} = 9.5\\) מ/ש.` },
+      { hint: `מה שינוי המהירות ושינוי התנע של כל אחד?`,
+        work: `משאית: \\(-0.5\\) מ/ש, כלומר \\(-950\\) ק"ג·מ/ש. אופניים: \\(+9.5\\) מ/ש, כלומר \\(+950\\) ק"ג·מ/ש. אותו תנע, בכיוונים הפוכים.` },
+      { hint: `אם המגע נמשך 0.1 ש', מה הכוח על כל אחד?`,
+        work: `\\(F = 950 / 0.1 = 9500\\) ניוטון, על שניהם. לאופניים זו תאוצה פי 19, ובגלל זה הם נפגעים יותר. התשובה: הכוח שווה.` },
+    ],
+    sayRight: 'נכון. אותו כוח. רק שאני הייתי צריך לעוף ממנו.',
+    sayWrong: 'גם אני הייתי בטוח. היה לי מספיק זמן לחשוב על זה באוויר.',
+    onDone: () => trapFinished('c'),
+  });
+
+  const trap4 = PHY.sims.comFlight($('c-trap4'), $('ctl-trap4'), { shape: 'ring', locked: true });
+  trap4.start();
+  U.PredictCard($('pc-trap4'), {
+    chapter: CH, id: 'trap4', tag: 'מלכודת 4: מרכז מסה הוא חתיכת חומר',
+    question: `זורקים טבעת מסתובבת. איפה מרכז המסה שלה?`,
+    options: [
+      { text: `על הטבעת עצמה. מרכז מסה חייב להיות בתוך החומר.`, why: `זה נשמע הגיוני, כי "מסה" מרגישה כמו משהו שאפשר לגעת בו. אבל מרכז מסה הוא ממוצע, והממוצע של נקודות מסביב נופל באמצע.` },
+      { text: `באמצע, בחור, במקום שאין בו כלום.`, correct: true },
+      { text: `אין לטבעת מרכז מסה.`, why: `לכל גוף יש מרכז מסה, גם לטבעת, לפרסה ולבומרנג. הנה הוא, על פרבולה.` },
+    ],
+    onRun: async () => {
+      trap4.setParam('locked', true);
+      await trap4.play();
+      trap4.setParam('locked', false);
+    },
+    steps: [
+      { hint: `נחלק את הטבעת לזוגות של נקודות, כל נקודה מול הנקודה שממול. מה הממוצע של זוג אחד?`,
+        work: `שתי מסות שוות, אז הממוצע שלהן בדיוק באמצע הקו ביניהן: במרכז הטבעת.` },
+      { hint: `מה יוצא כשעושים את זה לכל הזוגות?`,
+        work: `כל זוג נותן אותה נקודה, ולכן מרכז המסה של כל הטבעת נמצא במרכז שלה.` },
+      { hint: `איך הריצה מאשרת את זה?`,
+        work: `הנקודה הזהובה מציירת פרבולה, ורחוקה 1.05 מ' מכל חתיכת חומר. התשובה: באמצע, בחור. גם קופצי גובה עוברים ככה: הגוף מתעקל מעל הרף, ומרכז המסה מתחתיו.` },
+    ],
+    explanation: `<p><b>עכשיו תורך:</b> להגביר את הסיבוב ולזרוק שוב. הנקודה שמסומנת על הטבעת מציירת גלים ולולאות, והנקודה הזהובה לא.</p>`,
+    sayRight: 'נכון. מרכז מסה בלי שום מסה. אני רוצה כזה, בעיקר אחרי ארוחה.',
+    sayWrong: 'גם אני חיפשתי אותו על הטבעת. הוא היה באוויר, צוחק.',
+    onDone: () => trapFinished('d'),
+  });
+
+  /* ---------- 13. Problems ---------- */
+  const probs = $('problems-host');
+  U.Problem(probs, {
+    chapter: CH, section: 'problems', tag: 'שאלה 1: קליע בתוך בול עץ',
+    text: `קליע של 0.01 ק"ג נע ב-300 מ/ש ונתקע בבול עץ של 2.99 ק"ג, שתלוי על חוט ועומד במקום. באיזו מהירות נע הבול מיד אחרי הפגיעה, ולאיזה גובה הוא עולה?`,
+    fields: [
+      { label: 'המהירות אחרי הפגיעה', answer: 1, unit: 'מ/ש' },
+      { label: 'הגובה המרבי', answer: 0.05, unit: "מ'" },
+    ],
+    steps: [
+      { hint: `הפגיעה מהירה מאוד. מה נשמר בזמן שהקליע נתקע? במה מותר להשתמש כאן, ובמה אסור?`,
+        work: `תנע נשמר, כי החוט והכבידה לא מספיקים לעשות כלום בזמן קצר כל כך. אנרגיה קינטית לא נשמרת: זו התנגשות פלסטית.` },
+      { hint: `נכתוב שימור תנע. מי זז לפני, ואיזו מסה זזה אחרי?`,
+        work: `לפני: \\(0.01 \\cdot 300 = 3\\) ק"ג·מ/ש. אחרי: \\((0.01 + 2.99)\\,v = 3v\\). לכן \\(v = 1\\) מ/ש.` },
+      { hint: `מרגע שהבול נע, מה כן נשמר בעלייה?`,
+        work: `אנרגיה, כמו בפרק 5: אין יותר מעיכה, והחוט לא עושה עבודה. \\(\\tfrac12 m v^2 = m g h\\), והמסה מצטמצמת.` },
+      { hint: `נבודד את \\(h\\) ונציב.`,
+        work: `\\(h = \\frac{v^2}{2g} = \\frac{1^2}{2 \\cdot 10} = 0.05\\) מ'. התשובה: 1 מ/ש, ו-0.05 מ', שהם 5 ס"מ.` },
+    ],
+  });
+  U.Problem(probs, {
+    chapter: CH, section: 'problems', tag: 'שאלה 2: התנגשות אלסטית',
+    text: `כדור של 2 ק"ג נע ב-3 מ/ש ופוגע בכדור של 1 ק"ג שעומד, בהתנגשות אלסטית בקו ישר. מה מהירות כל כדור אחרי ההתנגשות?`,
+    fields: [
+      { label: 'הכדור של 2 ק"ג', answer: 1, unit: 'מ/ש' },
+      { label: 'הכדור של 1 ק"ג', answer: 4, unit: 'מ/ש' },
+    ],
+    steps: [
+      { hint: `באילו שני חוקים אפשר להשתמש כאן?`,
+        work: `שימור תנע, ובאלסטית גם שימור אנרגיה קינטית, או התוצאה שלו: מהירות התקרבות שווה למהירות התרחקות.` },
+      { hint: `נכתוב את שימור התנע.`,
+        work: `\\(2 \\cdot 3 + 1 \\cdot 0 = 2v_1 + 1v_2\\), כלומר \\(2v_1 + v_2 = 6\\) ק"ג·מ/ש.` },
+      { hint: `מה מהירות ההתקרבות, ומה זה אומר על ההתרחקות?`,
+        work: `הם מתקרבים ב-3 מ/ש, ולכן מתרחקים ב-3 מ/ש: \\(v_2 - v_1 = 3\\) מ/ש.` },
+      { hint: `יש שתי משוואות ושני נעלמים. נפתור.`,
+        work: `מציבים \\(v_2 = v_1 + 3\\) במשוואה הראשונה: \\(3v_1 + 3 = 6\\), ולכן \\(v_1 = 1\\) מ/ש ו-\\(v_2 = 4\\) מ/ש.` },
+      { hint: `נבדוק שהאנרגיה באמת נשמרה.`,
+        work: `לפני: \\(\\tfrac12 \\cdot 2 \\cdot 3^2 = 9\\) ג'ול. אחרי: \\(\\tfrac12 \\cdot 2 \\cdot 1^2 + \\tfrac12 \\cdot 1 \\cdot 4^2 = 1 + 8 = 9\\) ג'ול. התשובה: הכבד ב-1 מ/ש, והקל ב-4 מ/ש.` },
+    ],
+  });
+  U.Problem(probs, {
+    chapter: CH, section: 'problems', tag: 'שאלה 3: הכדור שחוזר',
+    text: `כדור של 0.5 ק"ג פוגע בקיר ב-20 מ/ש וחוזר באותו קו ב-10 מ/ש. המגע נמשך 0.05 ש'. מה גודל השינוי בתנע, ומה הכוח הממוצע של הקיר על הכדור?`,
+    fields: [
+      { label: 'גודל השינוי בתנע', answer: 15, unit: 'ק"ג·מ/ש' },
+      { label: 'הכוח הממוצע', answer: 300, unit: 'ניוטון' },
+    ],
+    steps: [
+      { hint: `תנע הוא וקטור. מה חייבים לבחור לפני שמציבים מספרים?`,
+        work: `כיוון חיובי. נבחר את הכיוון של הכדור אחרי ההחזרה, הרחק מהקיר. אז המהירות ההתחלתית היא \\(-20\\) מ/ש, והסופית \\(+10\\) מ/ש.` },
+      { hint: `השינוי הוא הסוף פחות ההתחלה. מה יוצא כאן? כאן נמצאת המלכודת.`,
+        work: `\\(\\Delta p = 0.5 \\cdot (10 - (-20)) = 0.5 \\cdot 30 = 15\\) ק"ג·מ/ש. לא \\(0.5 \\cdot 10 = 5\\) ק"ג·מ/ש: בלי הסימן מקבלים תשובה קטנה פי 3.` },
+      { hint: `איזה קשר יש בין השינוי בתנע, הזמן והכוח?`,
+        work: `\\(J = F\\,\\Delta t = \\Delta p\\), ולכן \\(F = \\Delta p / \\Delta t\\).` },
+      { hint: `נציב.`,
+        work: `\\(F = 15 / 0.05 = 300\\) ניוטון, הרחק מהקיר. התשובה: 15 ק"ג·מ/ש, ו-300 ניוטון.` },
+    ],
+  });
+  U.Problem(probs, {
+    chapter: CH, section: 'problems', tag: 'שאלה 4: בונוס, ניוטון על סירה',
+    text: `חתול של 5 ק"ג הולך 4 מ' לאורך סירה של 15 ק"ג, שעומדת על מים שקטים. כמה זזה הסירה, וכמה זז החתול ביחס למים? (לכתוב גדלים, בלי סימן.)`,
+    fields: [
+      { label: 'הסירה זזה', answer: 1, unit: "מ'" },
+      { label: 'החתול זז ביחס למים', answer: 3, unit: "מ'" },
+    ],
+    steps: [
+      { hint: `איזה כוח אופקי מבחוץ פועל על הסירה והחתול יחד? מה זה אומר על מרכז המסה?`,
+        work: `אין כוח כזה, אם המים לא מפריעים. הכול התחיל במנוחה, ולכן מרכז המסה לא זז.` },
+      { hint: `נסמן את תזוזת הסירה ב-\\(d\\), אחורה. מה תזוזת החתול ביחס למים, אם הוא עובר את כל האורך על הסירה?`,
+        work: `הוא עובר 4 מ' על הסירה, אבל הסירה נסוגה מתחתיו, ולכן ביחס למים הוא זז \\(4 - d\\) מטרים.` },
+      { hint: `מרכז המסה לא זז. איזו משוואה זה נותן?`,
+        work: `\\(5 \\cdot (4 - d) = 15 \\cdot d\\): מה שנע קדימה מאוזן על ידי מה שנע אחורה.` },
+      { hint: `נפתור.`,
+        work: `\\(20 = 20d\\), ולכן \\(d = 1\\) מ', והחתול זז \\(4 - 1 = 3\\) מ'. התשובה: הסירה 1 מ' אחורה, והחתול 3 מ' קדימה ביחס למים.` },
+    ],
+  });
+
+  /* ---------- 14. Quiz ---------- */
+  U.Quiz($('quiz-host'), {
+    chapter: CH, section: 'quiz',
+    questions: [
+      {
+        type: 'num',
+        q: `כוח של 20 ניוטון פועל במשך 3 ש' על עגלה של 10 ק"ג שעמדה במקום, בלי חיכוך. מה המהירות שלה בסוף?`,
+        answer: 6, unit: 'מ/ש',
+        steps: [
+          { hint: `איזה גודל קושר כוח וזמן לשינוי בתנע? כמה הוא כאן?`,
+            work: `המתקף: \\(J = F\\,\\Delta t = 20 \\cdot 3 = 60\\) ניוטון·שנייה, שהם 60 ק"ג·מ/ש.` },
+          { hint: `העגלה עמדה בהתחלה. מה המהירות שנותן לה התנע הזה?`,
+            work: `\\(v = p / m = 60 / 10 = 6\\) מ/ש.` },
+        ],
+      },
+      {
+        type: 'mc',
+        q: `כדור טניס פוגע בקיר ב-\\(v\\) וחוזר ב-\\(v\\). כדור בצק באותה מסה פוגע בקיר ב-\\(v\\) ונדבק. על איזה מהם הקיר הפעיל מתקף גדול יותר?`,
+        options: [`כדור הבצק, כי הוא נעצר לגמרי`, `כדור הטניס: פי 2 מהבצק`, `אותו מתקף, כי המהירות שווה`, `על שניהם המתקף 0, כי הקיר לא זז`],
+        answer: 1,
+        steps: [
+          { hint: `מתקף הוא השינוי בתנע. מה השינוי של הבצק?`,
+            work: `מ-\\(mv\\) ל-0, כלומר שינוי בגודל \\(mv\\).` },
+          { hint: `ומה השינוי של הטניס? כדאי לשים לב לכיוון.`,
+            work: `מ-\\(mv\\) ל-\\(-mv\\), כלומר שינוי בגודל \\(2mv\\). הטניס קיבל מתקף כפול: צריך גם לעצור אותו וגם לשלוח אותו בחזרה.` },
+        ],
+      },
+      {
+        type: 'num',
+        q: `ילד של 40 ק"ג עומד על גלגיליות וזורק כדור של 2 ק"ג ב-10 מ/ש. באיזו מהירות הוא נע לאחור? (בלי חיכוך.)`,
+        answer: 0.5, unit: 'מ/ש',
+        steps: [
+          { hint: `כמה תנע כולל היה לפני הזריקה? מה זה אומר על אחריה?`,
+            work: `0 ק"ג·מ/ש, כי הכול עמד. לכן גם אחרי הזריקה הסכום הוא 0 ק"ג·מ/ש, ותנע הילד שווה והפוך לתנע הכדור.` },
+          { hint: `כמה תנע יש לכדור, וכמה מהירות זה נותן לילד?`,
+            work: `\\(2 \\cdot 10 = 20\\) ק"ג·מ/ש, ולכן \\(v = 20 / 40 = 0.5\\) מ/ש, לאחור.` },
+        ],
+      },
+      {
+        type: 'mc',
+        q: `גוף של 2 ק"ג נע ימינה ב-3 מ/ש ופוגע חזיתית בגוף של 1 ק"ג שנע שמאלה ב-3 מ/ש. הם נדבקים. מה קורה אחרי ההתנגשות?`,
+        options: [`נעצרים, כי המהירויות שוות והפוכות`, `נעים ימינה ב-1 מ/ש`, `נעים ימינה ב-3 מ/ש`, `נעים שמאלה ב-1 מ/ש`],
+        answer: 1,
+        steps: [
+          { hint: `נבחר ימינה כחיובי. כמה התנע הכולל, עם הסימנים?`,
+            work: `\\(2 \\cdot 3 + 1 \\cdot (-3) = 6 - 3 = 3\\) ק"ג·מ/ש, ימינה.` },
+          { hint: `איזו מסה נעה אחרי ההידבקות, ובאיזו מהירות?`,
+            work: `3 ק"ג, ולכן \\(v = 3 / 3 = 1\\) מ/ש, ימינה. שוות המהירויות, אבל לא התנעים.` },
+        ],
+      },
+      {
+        type: 'num',
+        q: `מסה של 2 ק"ג נמצאת ב-\\(x = 0\\) מ', ומסה של 6 ק"ג נמצאת ב-\\(x = 4\\) מ'. איפה מרכז המסה?`,
+        answer: 3, unit: "מ'",
+        steps: [
+          { hint: `איזו נוסחה נותנת ממוצע של מיקומים לפי המסה?`,
+            work: `\\(x_{cm} = \\frac{m_1 x_1 + m_2 x_2}{m_1 + m_2}\\).` },
+          { hint: `נציב. לאיזה צד המסה הגדולה תמשוך את התוצאה?`,
+            work: `\\(x_{cm} = \\frac{2 \\cdot 0 + 6 \\cdot 4}{8} = \\frac{24}{8} = 3\\) מ', קרוב למסה הכבדה, כצפוי.` },
+        ],
+      },
+      {
+        type: 'num',
+        q: `<span class="chip">חזרה מפרק 5</span> ניוטון מחליק ממגלשה חלקה בגובה 5 מ'. מה המהירות שלו בתחתית?`,
+        answer: 10, unit: 'מ/ש',
+        steps: [
+          { hint: `אין חיכוך. איזה גודל נשמר, ואיזו משוואה הוא נותן?`,
+            work: `אנרגיה: \\(mgh = \\tfrac12 mv^2\\), והמסה מצטמצמת.` },
+          { hint: `נבודד את \\(v\\).`,
+            work: `\\(v = \\sqrt{2gh} = \\sqrt{2 \\cdot 10 \\cdot 5} = \\sqrt{100} = 10\\) מ/ש.` },
+        ],
+      },
+      {
+        type: 'num',
+        q: `<span class="chip">חזרה מפרק 4</span> כוח שקול של 12 ניוטון פועל על ארגז של 3 ק"ג. מה התאוצה של הארגז?`,
+        answer: 4, unit: 'מ/ש²',
+        steps: [
+          { hint: `איזה חוק קושר כוח שקול, מסה ותאוצה?`,
+            work: `החוק השני של ניוטון: \\(F = ma\\).` },
+          { hint: `נבודד את \\(a\\) ונציב.`,
+            work: `\\(a = F / m = 12 / 3 = 4\\) מ/ש².` },
+        ],
+      },
+    ],
+  });
+
+  /* ---------- Easter egg: click the cat ---------- */
+  /* The last step throws an apple one way and the cat the other: the apple is light and fast, he is heavy and slow. */
+  function recoil() {
+    if (U.reduced()) return;
+    const cat = U.h('div', { class: 'egg-cat', 'aria-hidden': 'true', html: PHY.mascot.svg('flying', 'width="84" height="84"') });
+    const apple = U.h('div', { class: 'egg-apple', 'aria-hidden': 'true', html: '<svg viewBox="-20 -22 40 42" width="34" height="34"><circle r="16" fill="#D9382E" stroke="#3B2A20" stroke-width="2"/><path d="M0 -15 L2 -21" stroke="#3B2A20" stroke-width="2"/></svg>' });
+    document.body.appendChild(cat);
+    document.body.appendChild(apple);
+    const x0 = window.innerWidth / 2 - 42, y0 = window.innerHeight / 2 - 42;
+    const T = 1.8, t0 = performance.now();
+    const vApple = (window.innerWidth * 0.7) / T, vCat = vApple / 6;
+    setTimeout(function () { cat.remove(); apple.remove(); }, (T + 0.3) * 1000);
+    (function frame(now) {
+      const t = (now - t0) / 1000;
+      if (t >= T) { cat.remove(); apple.remove(); return; }
+      cat.style.transform = `translate(${x0 + vCat * t}px, ${y0}px) rotate(${t * 40}deg)`;
+      apple.style.transform = `translate(${x0 + 25 - vApple * t}px, ${y0 + 25}px) rotate(${-t * 400}deg)`;
+      requestAnimationFrame(frame);
+    })(t0);
+  }
+  PHY.mascot.easterEgg([
+    { text: 'מיאו. התנע שלי 0 ק"ג·מ/ש, ואני מתכוון להישאר ככה.', pose: 'standing' },
+    { text: 'הקשה שנייה. האצבע הזאת נתנה לי מתקף קטן.', pose: 'thinking' },
+    { text: 'גם אני דחפתי את האצבע, באותו כוח. ככה זה בחוק השלישי.', pose: 'dizzy' },
+    { text: 'עוד הקשה אחת ואני זורק משהו. יש לי רק תפוח, אז בבקשה לא.', pose: 'thinking' },
+    { text: 'הנה! תפוח שמאלה, חתול ימינה. סך הכול: 0 ק"ג·מ/ש.', pose: 'flying', spin: true, rain: true, action: recoil },
+  ]);
+
+  U.initChapter({ id: CH });
+})();
+</script>
+</body>
+</html>

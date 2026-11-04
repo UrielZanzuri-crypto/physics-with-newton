@@ -14,7 +14,7 @@
     const view = PHY.canvas.create(canvasEl, { aspect: 1.5, minHeight: 370, maxHeight: 450 });
     const P = H2.pix(view);
     const plot = H2.Plot(view, { title: 'מהירות v (מ/ש)', titleColor: 'velocity' });
-    const S = { v0: opts.v0, freeze: opts.freeze, t: 0, running: false, frozen: false, landed: false, resolve: null, locked: opts.locked, hist: [], last: -1 };
+    const S = { v0: opts.v0, freeze: opts.freeze, t: 0, running: false, frozen: false, landed: false, resolve: null, locked: opts.locked, hist: [], last: -1, played: false };
 
     const peakT = () => S.v0 / G;
     const peakY = () => (S.v0 * S.v0) / (2 * G);
@@ -55,9 +55,10 @@
       out.set('t', F.unit(S.t, 's', 2));
       out.set('y', F.unit(yOf(S.t), 'm', 2));
       out.set('v', F.unit(vOf(S.t), 'ms', 1));
-      out.set('a', F.unit(-G, 'ms2', 0));
+      /* Before the first throw these are the answers to the guesses, so they stay hidden. */
+      out.set('a', S.played ? F.unit(-G, 'ms2', 0) : '?');
       out.set('dist', F.unit(distanceAt(S.t), 'm', 1));
-      out.set('disp', F.unit(yOf(S.t), 'm', 1));
+      out.set('disp', S.played ? F.unit(yOf(S.t), 'm', 1) : '?');
     }
     function finish() {
       S.running = false;
@@ -125,8 +126,10 @@
         P.arrow(px - 8, py, px - 8, py - v * vS, { color: C.velocity, width: 5 });
         view.screenText(px - 21, py - v * vS * 0.55, 'v', { color: C.velocity, weight: 800, size: 15, halo: true });
       }
-      P.arrow(px + 8, py, px + 8, py + 38, { color: C.acceleration, width: 5 });
-      view.screenText(px + 20, py + 26, 'a', { color: C.acceleration, weight: 800, size: 15, halo: true });
+      if (S.played) {
+        P.arrow(px + 8, py, px + 8, py + 38, { color: C.acceleration, width: 5 });
+        view.screenText(px + 20, py + 26, 'a', { color: C.acceleration, weight: 800, size: 15, halo: true });
+      }
       H2.drawApple(view, px, py, 11);
 
       /* v-t graph */
@@ -134,7 +137,7 @@
       plot.range({ tMin: 0, tMax: T, tTick: H2.niceStep(T, narrow ? 3 : 5), yMin: -S.v0 * 1.05, yMax: S.v0 * 1.05, yTick: H2.niceStep(S.v0, 2) });
       plot.box(sceneW + 4, 8, W - sceneW - 4, Hh - 14);
       plot.frame();
-      plot.curve([{ t: 0, y: S.v0 }, { t: T, y: -S.v0 }], { color: C.velocity, width: 1.5, dash: [4, 5], alpha: 0.4 });
+      if (S.played) plot.curve([{ t: 0, y: S.v0 }, { t: T, y: -S.v0 }], { color: C.velocity, width: 1.5, dash: [4, 5], alpha: 0.4 });
       plot.curve(S.hist.concat(S.hist.length ? [{ t: S.t, y: vOf(S.t) }] : []), { color: C.velocity, width: 3.2 });
       plot.dot(S.t, vOf(S.t), { color: C.velocity });
       if (S.frozen || S.t > peakT()) plot.vline(peakT(), { color: C.soft });
@@ -175,6 +178,7 @@
       },
       play(o) {
         o = o || {};
+        S.played = true;
         api.reset();
         if (o.freeze !== undefined) { S.freeze = !!o.freeze; freezeT.set(o.freeze); }
         S.running = true;

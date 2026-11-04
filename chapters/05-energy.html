@@ -1,0 +1,920 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>פרק 5: עבודה ואנרגיה | פיזיקה עם ניוטון החתול</title>
+<meta name="description" content="למה שלוש מגלשות שונות נותנות אותה מהירות, ולמה מזוודה לא עושה עבודה: מדריך אינטראקטיבי לעבודה ואנרגיה.">
+<script>try{var t=localStorage.getItem('phy-theme');document.documentElement.setAttribute('data-theme',t||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'))}catch(e){document.documentElement.setAttribute('data-theme','light')}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700&family=Rubik:wght@500;600;700;800&display=swap">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.11/katex.min.css">
+<link rel="stylesheet" href="../css/style.css">
+<style>
+  /* Chapter 5 only: the map of the chapter, the path buttons of the crate, and the small task lists. */
+  .ch-map { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 18px; }
+  .ch-map a { padding: 4px 12px; border-radius: 99px; background: var(--surface-2); color: var(--ink); text-decoration: none; font-size: 0.9rem; font-weight: 500; min-height: 44px; display: inline-flex; align-items: center; }
+  .ch-map a:hover { background: var(--accent-soft); }
+  .btn.lift-on { border-color: var(--accent); background: var(--accent-soft); }
+  .quest-list { display: grid; gap: 8px; padding-top: 4px; }
+  .quest { display: flex; gap: 10px; align-items: flex-start; font-weight: 500; line-height: 1.5; }
+  .quest-mark { flex: none; width: 24px; height: 24px; border-radius: 50%; border: 2px solid var(--line-strong); display: grid; place-items: center; font-size: 0.82rem; font-weight: 800; color: var(--good); }
+  .quest.is-done { color: var(--ink-soft); }
+  .quest.is-done .quest-mark { background: var(--good-soft); border-color: var(--good); }
+  .toggle { min-height: 44px; }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-in">
+    <a class="brand" href="../index.html" aria-label="חזרה לדף הבית"><span data-brand-cat></span><span class="brand-name">ניוטון החתול</span></a>
+    <span class="topbar-spacer"></span>
+    <span class="topbar-title">פרק 5: עבודה ואנרגיה</span>
+    <span data-theme-slot></span>
+  </div>
+  <div class="chapter-bar"><span data-chapter-bar></span></div>
+</header>
+
+<main>
+
+<!-- 1. HOOK -->
+<section class="section wrap" data-section="hook" id="hook">
+  <span class="kicker">פרק 5: עבודה ואנרגיה</span>
+  <h1 class="hero-title">שלוש מגלשות, חתול אחד</h1>
+  <div data-mascot="standing" data-size="118" data-say="התנדבתי פעם אחת. פעם אחת! ועכשיו יש לי שלושה עותקים."></div>
+  <p class="lead">ניוטון עומד על מגדל בגובה 5 מ'. משם יוצאות שלוש מגלשות חלקות לגמרי, בלי שום חיכוך: תלולה, מתפתלת ומתונה.</p>
+  <p>שולחים אותו בכל השלוש בבת אחת, ולא שואלים איך. השאלה: באיזו מגלשה המהירות שלו ברגע שהוא מגיע למטה הכי גדולה?</p>
+  <div id="pc-hook">
+    <figure class="sim"><canvas id="c-hook"></canvas><div class="sim-controls" id="ctl-hook"></div></figure>
+  </div>
+  <p class="block-gap">אז הדרך לא קובעת את המהירות בתחתית, ורק הגובה קובע. נראה כאילו משהו נשמר שם לאורך כל המגלשה, בלי קשר לצורה שלה.</p>
+  <p>לדבר הזה קוראים <b>אנרגיה</b>. כדי לתפוס אותו ביד, נתחיל במושג שלפניו: עבודה.</p>
+  <nav class="ch-map" aria-label="מפת הפרק">
+    <a href="#work">עבודה</a>
+    <a href="#kinetic">אנרגיה קינטית</a>
+    <a href="#potential">אנרגיית גובה</a>
+    <a href="#conservation">שימור</a>
+    <a href="#friction">חיכוך</a>
+    <a href="#spring">קפיץ</a>
+    <a href="#power">הספק</a>
+    <a href="#loop">הלולאה</a>
+    <a href="#formula">הנוסחאות</a>
+    <a href="#playground">רכבת הרים</a>
+    <a href="#game">מסלול ניוטון</a>
+    <a href="#traps">מלכודות</a>
+    <a href="#problems">שאלות מכינה</a>
+    <a href="#quiz">בוחן</a>
+  </nav>
+</section>
+
+<!-- 2. WORK -->
+<section class="section wrap" data-section="work" id="work">
+  <div class="section-head"><span class="section-num">2</span><h2>עבודה: מה שהזרוע לא מבינה</h2></div>
+  <p>בפיזיקה <b>עבודה</b> היא מילה בלי שום רגש: היא מודדת כמה אנרגיה כוח מכניס לגוף. היחידה שלה היא <b>ג'ול</b>: ג'ול אחד הוא כוח של ניוטון אחד לאורך מטר אחד.</p>
+  <p>והנה ניסוי קטן. ניוטון סוחב מזוודה של 20 ק"ג לאורך מסדרון של 10 מ', במהירות קבועה. היד שלו דוחפת למעלה ב-200 ניוטון, בדיוק כמו המשקל של המזוודה.</p>
+  <div id="pc-suitcase">
+    <figure class="sim"><canvas id="c-suitcase"></canvas><div class="sim-controls" id="ctl-suitcase"></div></figure>
+  </div>
+  <p class="block-gap">זו אחת המלכודות הכי ותיקות בנושא: עייפות היא לא עבודה. שרירים שורפים אנרגיה גם כשהם רק מחזיקים, וכך גם דחיפה של קיר למשך שעה נותנת 0 ג'ול של עבודה על הקיר.</p>
+  <p>עבודה נספרת רק כשיש כוח, תנועה, וגם משהו מהכוח נמצא בכיוון התנועה. מה קורה בזוויות שבין 0° ל-90°? בואו ננסה.</p>
+
+  <h3 class="block-gap">הצל של הכוח</h3>
+  <p>בפרק 1 ראינו את הצל של וקטור. כאן מושכים מזחלת לאורך 10 מ', ורק הצל של הכוח על כיוון התנועה נספר. אפשר לגרור את קצה החץ הירוק, או להזיז את הסליידרים.</p>
+  <figure class="sim"><canvas id="c-pull"></canvas><div class="sim-controls" id="ctl-pull"></div></figure>
+  <div class="card block-gap">
+    <b>שלוש משימות קטנות:</b>
+    <div class="quest-list">
+      <div class="quest"><span class="quest-mark">1</span><span>למצוא את הזווית שנותנת בדיוק חצי מהעבודה של משיכה ישרה.</span></div>
+      <div class="quest"><span class="quest-mark">2</span><span>למצוא את הזווית שנותנת 0 ג'ול, בכל גודל של כוח.</span></div>
+      <div class="quest"><span class="quest-mark">3</span><span>לעבור את הזווית הזאת, ולראות מה קורה לסימן של העבודה.</span></div>
+    </div>
+  </div>
+  <p class="block-gap">מה שראינו בסליידר הוא כל ההגדרה: הכוח כפול הדרך, כשהזווית מכניסה רק את הצל. \(\theta\) היא הזווית בין הכוח לכיוון התנועה.</p>
+  <div class="formula">
+    <div class="formula-main">\[W = F\, d \cos\theta\]</div>
+    <ul class="legend-list">
+      <li><span class="sym">\(W\)</span><span>העבודה, בג'ול. 1 ג'ול = 1 ניוטון · מ'. זה מספר בלי כיוון.</span></li>
+      <li><span class="sym">\(F\)</span><span><span class="c-force">גודל הכוח</span>, בניוטון.</span></li>
+      <li><span class="sym">\(d\)</span><span><span class="c-disp">גודל ההעתק</span>, במטרים.</span></li>
+      <li><span class="sym">\(\cos\theta\)</span><span>החלק של הכוח שבכיוון התנועה. ב-0° הוא \(1\), ב-90° הוא \(0\), וב-180° הוא \(-1\).</span></li>
+    </ul>
+  </div>
+  <p class="block-gap"><b>עבודה חיובית</b> פירושה שהכוח עוזר לתנועה ומכניס אנרגיה. <b>עבודה שלילית</b> פירושה שהכוח נגד התנועה ומוציא אנרגיה, כמו בלמים. במזוודה זה קל לבדוק: הרמה של מטר נותנת 200 ג'ול, והורדה של מטר נותנת \(-200\) ג'ול.</p>
+</section>
+
+<!-- 3. KINETIC ENERGY -->
+<section class="section wrap" data-section="kinetic" id="kinetic">
+  <div class="section-head"><span class="section-num">3</span><h2>למה מהירות עולה ביוקר</h2></div>
+  <p>מכונית נוסעת ב-20 מ/ש, בולמת בכל הכוח, ונעצרת אחרי 20 מ'. עכשיו אותה מכונית, אותם בלמים, אבל ב-40 מ/ש: פי 2 מהירות.</p>
+  <div id="pc-brake">
+    <figure class="sim"><canvas id="c-brake"></canvas><div class="sim-controls" id="ctl-brake"></div></figure>
+  </div>
+  <p class="block-gap">הבלמים הם כוח קבוע, אז עצירה היא עבודה: כוח כפול דרך. פי 4 דרך אומר פי 4 עבודה, כלומר במכונית המהירה היה פי 4 ממשהו שצריך להוציא ממנה.</p>
+  <p>המשהו הזה נקרא <b>אנרגיה קינטית</b>: האנרגיה שיש לגוף בגלל שהוא נע. כדי לקבל נוסחה, נעקוב אחרי כוח \(F\) שמאיץ גוף במסה \(m\) ממנוחה, לאורך דרך \(d\).</p>
+  <div class="formula">
+    <div class="formula-main">\[W = F d = (ma)\, d = m \cdot \frac{v^2}{2}\]</div>
+    <p>החלק \(ad = v^2/2\) הוא הנוסחה \(v^2 = 2ad\) מפרק 2, ו-\(F = ma\) הוא החוק השני מפרק 4. העבודה שהכוח השקיע נשמרת בגוף כאנרגיית תנועה:</p>
+    <div class="formula-main">\[E_k = \tfrac{1}{2} m v^2\]</div>
+    <ul class="legend-list">
+      <li><span class="sym">\(m\)</span><span>המסה, בק"ג.</span></li>
+      <li><span class="sym">\(v\)</span><span><span class="c-vel">המהירות</span>, במ/ש, והיא בריבוע. זה כל הסיפור של הפרק הזה.</span></li>
+    </ul>
+    <p class="block-gap">נבדוק על מכונית של 1000 ק"ג: ב-20 מ/ש יש לה 200 אלף ג'ול, וב-40 מ/ש יש לה 800 אלף ג'ול. הבלמים נותנים 10,000 ניוטון, ו-10,000 ניוטון כפול 20 מ', או כפול 80 מ', נותנים בדיוק את אותם מספרים.</p>
+  </div>
+  <p class="block-gap">בכל מצב, העבודה הכוללת של כל הכוחות על גוף שווה לשינוי באנרגיה הקינטית שלו: \(W_{\text{net}} = \Delta E_k\). לזה קוראים <b>משפט העבודה והאנרגיה</b>.</p>
+  <div data-mascot="thinking" data-size="96" data-say="אני כבר לא רץ למקרר. פי 2 מהירות, פי 4 מכה."></div>
+</section>
+
+<!-- 4. POTENTIAL ENERGY -->
+<section class="section wrap" data-section="potential" id="potential">
+  <div class="section-head"><span class="section-num">4</span><h2>אנרגיה ששמורה בגובה</h2></div>
+  <p>צריך להעלות ארגז של 10 ק"ג למדף בגובה 5 מ', לאט ובלי חיכוך. יש שלוש דרכים: ישר למעלה ואז הצידה, רמפה ארוכה, ומסלול גלים שעולה ויורד בדרך.</p>
+  <p>רמפות קיימות כדי לחסוך משהו, לא? לבחור מסלול, ולגרור את הארגז עד למדף (או להרים אוטומטית). העיקר לעקוב אחרי מד העבודה בכל אחד מהשלושה.</p>
+  <figure class="sim"><canvas id="c-lift"></canvas><div class="sim-controls" id="ctl-lift"></div></figure>
+  <p class="block-gap">בכל מסלול יוצאים אותם 500 ג'ול. הרמפה באמת חוסכת כוח, כ-45 ניוטון במקום 100 ניוטון, אבל הדרך ארוכה יותר בדיוק באותו יחס. במסלול הגלים העבודה אפילו יורדת בקטעי הירידה, כי הארגז מחזיר אותה ליד.</p>
+  <p>אז העבודה תלויה רק בהפרש הגובה, והיא לא הולכת לאיבוד: היא מחכה בגובה עד שהארגז ייפול. זו <b>אנרגיה פוטנציאלית כבידתית</b>, ובקיצור כאן: אנרגיית גובה.</p>
+  <div class="formula">
+    <div class="formula-main">\[E_p = m g h\]</div>
+    <ul class="legend-list">
+      <li><span class="sym">\(mg\)</span><span><span class="c-force">המשקל</span>, בניוטון. זה הכוח שצריך כדי להרים לאט.</span></li>
+      <li><span class="sym">\(h\)</span><span>הגובה מעל רמת האפס, במטרים.</span></li>
+    </ul>
+  </div>
+  <p class="block-gap"><b>ורמת האפס?</b> אנחנו בוחרים אותה בעצמנו, עם הסליידר שמתחת לסימולציה. האנרגיה של הרצפה משתנה לפי הבחירה, ואפילו נעשית שלילית, אבל ההפרש בין המדף לרצפה נשאר 500 ג'ול.</p>
+  <p>זה כמו מספרי קומות בבניין: אפשר לקרוא ללובי קומה 0 או קומה 3, והמדרגות לא נהיות קצרות יותר. בפיזיקה מרגישים רק את ההפרשים.</p>
+</section>
+
+<!-- 5. CONSERVATION -->
+<section class="section wrap" data-section="conservation" id="conservation">
+  <div class="section-head"><span class="section-num">5</span><h2>החוק הגדול</h2></div>
+  <p>עכשיו מחברים. ניוטון נשמט מגובה 20 מ'. בהתחלה יש לו רק אנרגיית גובה, ובסוף רק אנרגיה קינטית, והוא מגיע לרצפה ב-20 מ/ש.</p>
+  <p>בדרך האנרגיה עוברת מכיס לכיס, כמו העברה בין שני חשבונות באותו בנק. הפס הצבעוני למעלה יראה בדיוק את זה.</p>
+  <div id="pc-drop">
+    <figure class="sim"><canvas id="c-drop"></canvas><div class="sim-controls" id="ctl-drop"></div></figure>
+  </div>
+  <p class="block-gap">הפס לא השתנה באורכו אפילו לרגע, ורק הצבעים עברו זה לתוך זה. כשרק הכבידה עושה עבודה, הסכום של אנרגיה קינטית ואנרגיית גובה, שנקרא <b>אנרגיה מכנית</b>, נשמר.</p>
+  <div class="formula">
+    <div class="formula-main">\[\tfrac{1}{2} m v_1^2 + m g h_1 = \tfrac{1}{2} m v_2^2 + m g h_2\]</div>
+    <p>נקודה 1 ונקודה 2 הן כל שתי נקודות בדרך. מה שקרה ביניהן לא משתתף בחשבון, ולכן הצורה של המגלשה לא משנה.</p>
+    <p class="block-gap">וזו התשובה של הפתיח: \(m g h = \tfrac{1}{2} m v^2\). המסה מופיעה בשני הצדדים ומצטמצמת, ונשאר \(v = \sqrt{2 g h}\). מגובה 5 מ' זה 10 מ/ש, בכל מגלשה שנבנה.</p>
+  </div>
+</section>
+
+<!-- 6. FRICTION -->
+<section class="section wrap" data-section="friction" id="friction">
+  <div class="section-head"><span class="section-num">6</span><h2>החיכוך, גנב האנרגיה</h2></div>
+  <p>קערה עם דפנות חלקות, ובתחתית שלה משטח מחוספס באורך 3 מ', עם מקדם חיכוך \(\mu = 0.4\). ניוטון, 2 ק"ג הפעם (אל תשאלו), יוצא מגובה 5 מ' עם 100 ג'ול.</p>
+  <p>במעבר הראשון על המשטח הוא מאבד 24 ג'ול, ולכן בצד השני הוא עולה רק עד 3.8 מ'. משם הוא חוזר ועובר על המשטח שוב.</p>
+  <div id="pc-bowl">
+    <figure class="sim"><canvas id="c-bowl"></canvas><div class="sim-controls" id="ctl-bowl"></div></figure>
+  </div>
+  <p class="block-gap">החיכוך לא גובה אחוזים, אלא מחיר קבוע לכל מטר: כוח החיכוך \(f = \mu m g\) כפול הדרך. לכן משטח ארוך פי 2 גונב פי 2, וכל מעבר נוסף גובה שוב, גם אם חוזרים לאותה נקודה.</p>
+  <p>זה ההבדל הגדול מהכבידה. עבודת הכבידה תלויה רק בגובה, ועבודת החיכוך תלויה ב<b>אורך הדרך</b>, ולכן אי אפשר לשמור אותה ב"אנרגיית חיכוך" ולקבל אותה בחזרה.</p>
+  <div class="formula">
+    <div class="formula-main">\[W_f = -f\,d = -\mu N d\]</div>
+    <p>הסימן שלילי כי החיכוך נגד התנועה. האנרגיה שיצאה מהחשבון המכני לא נעלמה: היא הפכה ל<b>חום</b>, הפס האדום, שמסומן \(Q\). לכן:</p>
+    <div class="formula-main">\[E_{\text{start}} = E_{\text{end}} + Q\]</div>
+    <p>האנרגיה המכנית בהתחלה שווה לאנרגיה המכנית בסוף, ועוד החום.</p>
+  </div>
+</section>
+
+<!-- 7. SPRING -->
+<section class="section wrap" data-section="spring" id="spring">
+  <div class="section-head"><span class="section-num">7</span><h2>קפיץ: הכיס הנוסף</h2></div>
+  <p>קפיץ דחוס הוא עוד מקום לשמור בו אנרגיה, ולזה קוראים <b>אנרגיה אלסטית</b>. כל קפיץ מתואר במספר \(k\), הקשיחות שלו, שנקראת גם <b>קבוע הקפיץ</b>: כמה ניוטון צריך כדי לדחוס אותו מטר אחד.</p>
+  <p>כאן \(k = 500\) ניוטון/מ', והמסה של ניוטון 5 ק"ג. כשמכווצים 0.5 מ' ומשחררים, הוא טס ועולה ברמפה חלקה עד גובה 1.25 מ'. ועכשיו מכווצים פי 2, ל-1 מ'.</p>
+  <div id="pc-spring">
+    <figure class="sim"><canvas id="c-spring"></canvas><div class="sim-controls" id="ctl-spring"></div></figure>
+  </div>
+  <p class="block-gap">הכוח של הקפיץ גדל ככל שדוחסים, \(F = kx\), ולכן העבודה היא שטח של משולש ולא של מלבן: אותו רעיון של שטח מתחת לגרף מפרק 2. משולש שגם הבסיס וגם הגובה שלו גדלים פי 2 גדל פי 4.</p>
+  <div class="formula">
+    <div class="formula-main">\[E_s = \tfrac{1}{2} k x^2\]</div>
+    <ul class="legend-list">
+      <li><span class="sym">\(k\)</span><span>הקשיחות של הקפיץ, בניוטון למטר.</span></li>
+      <li><span class="sym">\(x\)</span><span>כמה הקפיץ מכווץ או מתוח מהאורך הטבעי שלו, במטרים.</span></li>
+    </ul>
+  </div>
+</section>
+
+<!-- 8. POWER -->
+<section class="section wrap" data-section="power" id="power">
+  <div class="section-head"><span class="section-num">8</span><h2>הספק: לא כמה, אלא כמה מהר</h2></div>
+  <p>ניוטון, 5 ק"ג, עולה במדרגות לגובה 4 מ'. בפעם הראשונה בהליכה, 4 ש'. בפעם השנייה בריצה, 2 ש'.</p>
+  <p>ליד כל גרם מדרגות יש נורה, שמאירה חזק יותר ככל שהעבודה נעשית מהר יותר.</p>
+  <div id="pc-stairs">
+    <figure class="sim"><canvas id="c-stairs"></canvas><div class="sim-controls" id="ctl-stairs"></div></figure>
+  </div>
+  <p class="block-gap">קצב העבודה נקרא <b>הספק</b>, והיחידה שלו היא <b>ואט</b>: ואט אחד הוא ג'ול אחד בכל שנייה. נורה של 100 ואט צורכת 100 ג'ול בכל שנייה, בדיוק כמו ניוטון בריצה.</p>
+  <div class="formula">
+    <div class="formula-main">\[P = \frac{W}{t}\]</div>
+    <ul class="legend-list">
+      <li><span class="sym">\(P\)</span><span>ההספק, בוואט.</span></li>
+      <li><span class="sym">\(W\)</span><span>העבודה, בג'ול.</span></li>
+      <li><span class="sym">\(t\)</span><span>הזמן שהיא לקחה, בשניות.</span></li>
+    </ul>
+  </div>
+  <div data-mascot="dizzy" data-size="96" data-say="ריצה לא מרימה אותי גבוה יותר. היא רק מרימה לי את הדופק."></div>
+</section>
+
+<!-- 9. THE LOOP -->
+<section class="section wrap" data-section="loop" id="loop">
+  <div class="section-head"><span class="section-num">9</span><h2>הלולאה: עובר או לא?</h2></div>
+  <p>לולאה עגולה ברדיוס \(R = 2\) מ', בלי חיכוך, והפסגה שלה בגובה \(2R = 4\) מ'. אין כאן מסילה שתופסת את החתול, רק רצפה שדוחפת אותו: הכוח הנורמלי \(N\) מפרק 4.</p>
+  <p>ניוטון יוצא ממנוחה מגובה 4 מ', בדיוק כמו הפסגה. לפי החשבון של האנרגיה, יש לו בדיוק מספיק כדי להגיע לשם.</p>
+  <div id="pc-loop">
+    <figure class="sim"><canvas id="c-loop"></canvas><div class="sim-controls" id="ctl-loop"></div></figure>
+  </div>
+  <p class="block-gap">אנרגיה אומרת מה תהיה המהירות בכל גובה, אם מגיעים אליו. היא לא אומרת אם הרצפה תספיק להחזיק אותנו. בחלק העליון של לולאה צריך להגיע עם מהירות, ולא רק עם גובה.</p>
+  <p>כמה מהירות בדיוק, ומאיזה גובה צריך להתחיל? אפשר לחפש בסליידר, ואת החשבון המדויק נעשה בפרק 6, כשתהיה לנו נוסחה לתנועה מעגלית.</p>
+</section>
+
+<!-- 10. EARNED FORMULAS -->
+<section class="section wrap" data-section="formula" data-passive id="formula">
+  <div class="section-head"><span class="section-num">10</span><h2>הנוסחאות שהרווחנו</h2></div>
+  <p>כל אחת מהן כבר רצה על המסך. כאן הן יושבות יחד, עם הרגע שבו ראינו אותן.</p>
+  <div class="formula">
+    <h3>עבודה</h3>
+    <div class="formula-main">\[W = F\, d \cos\theta \qquad W_{\text{net}} = \Delta E_k\]</div>
+    <p>הצל של הכוח על כיוון התנועה, כפול הדרך. ראינו אותה בזוויות של המזחלת, ו-0 ג'ול של המזוודה הוא המקרה של 90°. העבודה של כל הכוחות יחד היא השינוי באנרגיה הקינטית.</p>
+  </div>
+  <div class="formula">
+    <h3>שלושת הכיסים, והחום</h3>
+    <div class="formula-main">\[E_k = \tfrac{1}{2} m v^2 \qquad E_p = m g h \qquad E_s = \tfrac{1}{2} k x^2\]</div>
+    <ul class="legend-list">
+      <li><span class="sym">\(E_k\)</span><span>אנרגיה קינטית, מהבלימה: פי 2 <span class="c-vel">מהירות</span> נותן פי 4 אנרגיה ופי 4 דרך בלימה.</span></li>
+      <li><span class="sym">\(E_p\)</span><span>אנרגיית גובה, מהארגז: רק הגובה קובע, לא המסלול. רמת האפס בחירה שלנו.</span></li>
+      <li><span class="sym">\(E_s\)</span><span>אנרגיה אלסטית, מהקפיץ: פי 2 כיווץ נותן פי 4 אנרגיה.</span></li>
+      <li><span class="sym">\(Q\)</span><span>חום, מהקערה: \(Q = \mu N d\), כשהדרך \(d\) נספרת כולה, בכל מעבר.</span></li>
+    </ul>
+  </div>
+  <div class="formula">
+    <h3>השימור</h3>
+    <div class="formula-main">\[E_k + E_p + E_s + Q = \text{const}\]</div>
+    <p>הסכום קבוע (זה ה-const): בנפילה, בקערה ובקפיץ זה היה הפס העליון שלא משנה אורך. אם אין חיכוך, \(Q\) נשאר 0 ג'ול, והאנרגיה המכנית לבדה נשמרת. כוח נורמלי לא נכנס לחשבון, כי הוא ניצב לתנועה ולא עושה עבודה.</p>
+  </div>
+  <div class="formula">
+    <h3>הספק</h3>
+    <div class="formula-main">\[P = \frac{W}{t}\]</div>
+    <p>אותה עבודה בחצי זמן נותנת פי 2 הספק, כמו הריצה במדרגות. בוואט, כלומר ג'ול לשנייה.</p>
+  </div>
+</section>
+
+<!-- 11. PLAYGROUND -->
+<section class="section wrap-wide" data-section="playground" id="playground">
+  <div class="section-head"><span class="section-num">11</span><h2>בונים רכבת הרים</h2></div>
+  <p>מותר לבנות כל מה שרוצים: לגרור את הנקודות, ולשלוח את ניוטון בקרונית. הקרונית תפוסה במסילה, כך שבניגוד ללולאה היא לא נופלת, וכל שאר הפיזיקה אמיתית.</p>
+  <p>הקו המקווקו הוא <b>התקרה של האנרגיה</b>: הגובה שבו כל האנרגיה היא אנרגיית גובה והקרונית עוצרת. שום מסלול לא יעביר אותה מעליו.</p>
+  <figure class="sim"><canvas id="c-play"></canvas><div class="sim-controls" id="ctl-play"></div></figure>
+  <div class="card block-gap">
+    <b>כמה רעיונות לנסות:</b>
+    <div class="quest-list">
+      <div class="quest"><span class="quest-mark">1</span><span>להרים גבעה מעל התקרה, ולראות מה עושה הקרונית.</span></div>
+      <div class="quest"><span class="quest-mark">2</span><span>להדליק חיכוך, ולראות את התקרה יורדת לאורך הנסיעה.</span></div>
+      <div class="quest"><span class="quest-mark">3</span><span>לבנות שני מסלולים שונים לגמרי, עם אותם גובה התחלה וגובה נמוך ביותר, ולהשוות את שיא המהירות.</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- 12. GAME -->
+<section class="section wrap-wide" data-section="game" id="game">
+  <div class="section-head"><span class="section-num">12</span><h2>משחקון: מסלול ניוטון</h2></div>
+  <p>שלושה שלבים, ובכל אחד מהם חשבון אנרגיה אחר. בשלב הראשון בוחרים גובה, בשני כיווץ של קפיץ, ובשלישי בונים את המסלול בעצמנו.</p>
+  <p class="muted small">1-2 ניסיונות נותנים 3 נקודות, 3-4 נותנים 2 נקודות, ויותר מזה נקודה אחת. אפשר גם לגרור את ניוטון עצמו, והמספרים מתחלפים בכל סיבוב.</p>
+  <figure class="sim"><canvas id="c-game"></canvas><div class="sim-controls" id="ctl-game"></div></figure>
+</section>
+
+<!-- 13. TRAPS -->
+<section class="section wrap" data-section="traps" id="traps">
+  <div class="section-head"><span class="section-num">13</span><h2>מלכודות</h2></div>
+  <p>ארבע טעויות שחוזרות במבחנים, בנוסף לעייפות מסעיף 2. כדאי ליפול בהן כאן, איפה שזה לא עולה נקודות.</p>
+  <h3 class="block-gap">מלכודת הקו הישר</h3>
+  <p>נדמה שתוספת קבועה של מהירות עולה מחיר קבוע. ניוטון על קטנוע, 100 ק"ג יחד עם התפוחים.</p>
+  <div id="pc-boost">
+    <figure class="sim"><canvas id="c-boost"></canvas><div class="sim-controls" id="ctl-boost"></div></figure>
+  </div>
+  <h3 class="block-gap">מלכודת הכבד</h3>
+  <p>ניוטון, 5 ק"ג, מול ניוטון אחרי החג, 20 ק"ג. שתי מגלשות זהות, בלי חיכוך, בגובה 5 מ'.</p>
+  <div id="pc-mass">
+    <figure class="sim"><canvas id="c-mass"></canvas><div class="sim-controls" id="ctl-mass"></div></figure>
+  </div>
+  <h3 class="block-gap">מלכודת האנרגיה שנעלמה</h3>
+  <p>שוב הקערה, הפעם עם משטח מחוספס יותר, \(\mu = 0.8\). ניוטון, 2 ק"ג, יוצא מגובה 5 מ' ובסוף נעצר על המשטח: קינטית 0 ג'ול, גובה 0 ג'ול.</p>
+  <div id="pc-thief">
+    <figure class="sim"><canvas id="c-thief"></canvas><div class="sim-controls" id="ctl-thief"></div></figure>
+  </div>
+  <h3 class="block-gap">מלכודת הכוח הנורמלי</h3>
+  <p>ניוטון, 5 ק"ג, יוצא ממנוחה מגובה 5 מ' על מגלשה מעוקלת וחלקה. הרצפה דוחפת אותו לאורך כל הדרך, וככל שהעיקול חד יותר היא דוחפת חזק יותר. זה ה<b>כוח הנורמלי</b> מפרק 4, \(N\), החץ הירוק.</p>
+  <div id="pc-normal">
+    <figure class="sim"><canvas id="c-normal"></canvas><div class="sim-controls" id="ctl-normal"></div></figure>
+  </div>
+</section>
+
+<!-- 14. EXAM PROBLEMS -->
+<section class="section wrap" data-section="problems" id="problems">
+  <div class="section-head"><span class="section-num">14</span><h2>שאלות מכינה</h2></div>
+  <p>ככה זה נראה במבחן. כדאי לנסות לבד, ובכל תקיעה יש רמז לפני כל שלב של הפתרון.</p>
+  <div id="problems-host"></div>
+</section>
+
+<!-- 15. QUIZ -->
+<section class="section wrap" data-section="quiz" id="quiz">
+  <div class="section-head"><span class="section-num">15</span><h2>בוחן</h2></div>
+  <p>חמש שאלות על הפרק, ועוד שתיים שחוזרות לפרקים קודמים. הציון הטוב ביותר נשמר, ואפשר לנסות שוב.</p>
+  <div id="quiz-host" class="block-gap"></div>
+</section>
+
+<!-- 16. POCKET CARD -->
+<section class="section wrap" data-section="pocket" data-passive id="pocket">
+  <div class="section-head"><span class="section-num">16</span><h2>כרטיס כיס</h2></div>
+  <div class="pocket">
+    <h3>אנרגיה על רגל אחת</h3>
+    <div class="pocket-grid">
+      <div class="pocket-item"><b>עבודה:</b> \(W = F d \cos\theta\). רק הצל של הכוח על כיוון התנועה נספר. ניצב: 0 ג'ול.</div>
+      <div class="pocket-item"><b>משפט העבודה והאנרגיה:</b> \(W_{\text{net}} = \Delta E_k\)</div>
+      <div class="pocket-item"><b>קינטית:</b> \(E_k = \tfrac12 m v^2\). פי 2 <span class="c-vel">מהירות</span> נותן פי 4 אנרגיה.</div>
+      <div class="pocket-item"><b>גובה:</b> \(E_p = m g h\). רק הגובה קובע, ורמת האפס לבחירתנו.</div>
+      <div class="pocket-item"><b>קפיץ:</b> \(E_s = \tfrac12 k x^2\). פי 2 כיווץ נותן פי 4 אנרגיה.</div>
+      <div class="pocket-item"><b>שימור:</b> בלי חיכוך \(E_k + E_p + E_s\) קבוע, ולכן \(v = \sqrt{2 g h}\) בכל צורה של מסלול.</div>
+      <div class="pocket-item"><b>חיכוך:</b> \(Q = \mu N d\). נספר על כל הדרך. האנרגיה הופכת לחום, ולא נעלמת.</div>
+      <div class="pocket-item"><b>הספק:</b> \(P = W / t\), בוואט. אותה עבודה מהר יותר נותנת יותר ואט.</div>
+      <div class="pocket-item"><b>כוח נורמלי:</b> ניצב לתנועה, ולכן 0 ג'ול. הוא מכוון ולא נותן.</div>
+    </div>
+    <div class="pocket-quote">"האנרגיה אף פעם לא נעלמת. היא רק עוברת דירה, ולרוב לא משאירה כתובת."</div>
+  </div>
+</section>
+
+</main>
+
+<div data-chapter-nav></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.11/katex.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.11/contrib/auto-render.min.js"></script>
+<script src="../js/core/fmt.js"></script>
+<script src="../js/core/vec.js"></script>
+<script src="../js/core/progress.js"></script>
+<script src="../js/core/canvas.js"></script>
+<script src="../js/core/loop.js"></script>
+<script src="../js/core/mascot.js"></script>
+<script src="../js/core/ui.js"></script>
+<script src="../js/sims/ch02/plot.js"></script>
+<script src="../js/sims/ch05/energy.js"></script>
+<script src="../js/sims/ch05/slides.js"></script>
+<script src="../js/sims/ch05/work-lab.js"></script>
+<script src="../js/sims/ch05/braking.js"></script>
+<script src="../js/sims/ch05/lift-paths.js"></script>
+<script src="../js/sims/ch05/drop-bars.js"></script>
+<script src="../js/sims/ch05/bowl.js"></script>
+<script src="../js/sims/ch05/spring-launcher.js"></script>
+<script src="../js/sims/ch05/loop.js"></script>
+<script src="../js/sims/ch05/coaster.js"></script>
+<script src="../js/sims/ch05/newton-track.js"></script>
+<script>
+(function () {
+  'use strict';
+  const CH = '05';
+  const U = PHY.ui;
+  const $ = (id) => document.getElementById(id);
+  const TAG = 'הניחוש שלך';
+
+  /* ---------- 1. Hook: three slides ---------- */
+  const hookSim = PHY.sims.slides($('c-hook'), $('ctl-hook'), { mode: 'race' });
+  hookSim.start();
+  U.PredictCard($('pc-hook'), {
+    chapter: CH, id: 'hook', section: 'hook', tag: TAG,
+    question: `כל המגלשות מתחילות מאותו גובה, 5 מ', ובכולן אין חיכוך. באיזו מהן המהירות בתחתית הכי גדולה?`,
+    options: [
+      { text: `בתלולה. שם הכי מפחיד, אז שם הכי מהר.`, why: `התלולה באמת מאיצה הכי חזק, אבל היא גם הכי קצרה. שני הדברים האלה מתקזזים בדיוק.` },
+      { text: `במתונה. יש לה הכי הרבה דרך לצבור מהירות.`, why: `יש לה הכי הרבה דרך, אבל התאוצה בה הכי קטנה. אותו קיזוז, מהצד השני.` },
+      { text: `במתפתלת. הצורה נותנת לה משהו נוסף.`, why: `הצורה משנה מתי הוא מגיע, אבל לא באיזו מהירות. אין במגלשה מנוע שיוסיף משהו.` },
+      { text: `בכולן אותה מהירות.`, correct: true },
+    ],
+    onRun: async () => {
+      hookSim.setParam('locked', true);
+      hookSim.setParam('height', 5);
+      await hookSim.play();
+      hookSim.setParam('locked', false);
+    },
+    steps: [
+      { hint: `מה משותף לשלוש המגלשות, ומה בכל זאת שונה ביניהן?`,
+        work: `הגובה משותף, 5 מ'. התלילות והאורך שונים. וכל שלוש התחתיות הראו 10 מ/ש, כך שנראה שרק הגובה נכנס לחשבון.` },
+      { hint: `נבדוק במגלשה ישרה בזווית \\(\\theta\\). מה התאוצה שלה, ומה האורך שלה?`,
+        work: `מפרק 4, התאוצה היא \\(a = g\\sin\\theta\\). האורך הוא \\(L = h / \\sin\\theta\\). תלול יותר: תאוצה גדולה ודרך קצרה.` },
+      { hint: `נציב ב-\\(v^2 = 2aL\\) מפרק 2. מה קורה לזווית?`,
+        work: `\\[v^2 = 2 \\cdot g\\sin\\theta \\cdot \\frac{h}{\\sin\\theta} = 2gh\\] הסינוס מצטמצם, והזווית נעלמה. לכן \\(v = \\sqrt{2 \\cdot 10 \\cdot 5} = 10\\) מ/ש בכל מגלשה.` },
+      { hint: `אם המהירות בסוף שווה, למה הם לא הגיעו יחד?`,
+        work: `כי הזמן כן תלוי בדרך. התלולה הגיעה ב-1.41 ש', המתפתלת ב-2.07 ש' והמתונה ב-3.16 ש'. הכי קצר והכי חזק מגיע ראשון, והתשובה נשארת: אותה מהירות, 10 מ/ש, בזמנים שונים.` },
+    ],
+    explanation: `<p><b>עכשיו תורך:</b> לשנות את הגובה ולשלוח שוב. המהירות משתנה, אבל נשארת משותפת לכל השלוש.</p>`,
+    sayRight: 'ידעת? אני גיליתי את זה בדרך הקשה. שלוש פעמים.',
+    sayWrong: 'גם אני הימרתי על התלולה. לפחות היא נגמרה מהר.',
+  });
+
+  /* ---------- 2. Work: the suitcase ---------- */
+  const caseSim = PHY.sims.workLab($('c-suitcase'), $('ctl-suitcase'), { scene: 'suitcase', locked: true });
+  caseSim.start();
+  U.PredictCard($('pc-suitcase'), {
+    chapter: CH, id: 'suitcase', section: 'work', tag: TAG,
+    question: `לאורך כל המסדרון היד דוחפת למעלה ב-200 ניוטון. כמה עבודה עשה הכוח הזה על המזוודה?`,
+    options: [
+      { text: `2000 ג'ול. 200 ניוטון כפול 10 מ', מה יש פה לחשוב?`, why: `כפל כזה נכון רק כשהכוח והתנועה באותו כיוון. כאן הכוח למעלה והתנועה הצידה.` },
+      { text: `משהו גדול, אולי 1000 ג'ול. הזרוע לא מתעייפת סתם.`, why: `הזרוע באמת מתעייפת, והגוף באמת שורף אנרגיה. אבל היא נשארת בתוך השריר, ולמזוודה לא נכנס כלום.` },
+      { text: `0 ג'ול.`, correct: true },
+    ],
+    onRun: async () => {
+      caseSim.setParam('locked', true);
+      await caseSim.play();
+      caseSim.setParam('locked', false);
+    },
+    steps: [
+      { hint: `לאיזה כיוון דוחפת היד, ולאיזה כיוון נעה המזוודה?`,
+        work: `היד דוחפת ישר למעלה. המזוודה נעה הצידה, לאורך הרצפה. הזווית ביניהם היא 90°.` },
+      { hint: `בפרק 1 הטלנו צל של וקטור. כמה ארוך הצל של הכוח על כיוון התנועה?`,
+        work: `כוח ישר למעלה מטיל על הרצפה צל באורך 0 ניוטון. רק הצל עושה עבודה, ולכן \\(W = 0 \\cdot 10 = 0\\) ג'ול.` },
+      { hint: `נבדוק מהצד השני: האם משהו במזוודה השתנה בסוף המסדרון?`,
+        work: `המהירות קבועה והגובה קבוע. אם שום דבר בה לא השתנה, שום אנרגיה לא נכנסה אליה.` },
+      { hint: `אז למה הזרוע בכל זאת מתעייפת?`,
+        work: `כי סיבי השריר מתכווצים ומשתחררים כל הזמן כדי להחזיק, ושורפים אנרגיה שהופכת לחום בגוף. זו פעולה בתוך הזרוע, ועל המזוודה נעשו 0 ג'ול.` },
+    ],
+    explanation: `<p><b>עכשיו תורך:</b> להרים את המזוודה ולהוריד אותה, ולעקוב אחרי המונה. הכיוון של התנועה הוא מה שמשנה.</p>`,
+    sayRight: 'אפס ג\'ול. אני רוצה שהזרוע שלי תקרא את זה, היא חושבת אחרת.',
+    sayWrong: 'גם הזרוע שלי ניחשה ככה. היא עדיין כועסת.',
+  });
+
+  const pullSim = PHY.sims.workLab($('c-pull'), $('ctl-pull'), { scene: 'pull', force: 100, angle: 30 });
+  pullSim.start();
+
+  /* ---------- 3. Kinetic energy: braking ---------- */
+  const brakeSim = PHY.sims.braking($('c-brake'), $('ctl-brake'), { mode: 'brake', v2: 40, locked: true });
+  brakeSim.start();
+  U.PredictCard($('pc-brake'), {
+    chapter: CH, id: 'brake', section: 'kinetic', tag: TAG,
+    question: `מ-20 מ/ש המכונית נעצרת אחרי 20 מ'. כמה מטרים היא צריכה מ-40 מ/ש, עם אותם בלמים?`,
+    options: [
+      { text: `40 מ'. פי 2 מהירות, פי 2 מרחק. הגיון בריא.`, why: `הגיון שעובד יפה על הזמן: הבלימה באמת לוקחת פי 2 זמן. אבל במשך הזמן הכפול הזה היא גם נוסעת מהר יותר, אז הדרך גדלה יותר מפי 2.` },
+      { text: `60 מ'. קצת יותר מכפול, כי יש תנופה.`, why: `הכיוון נכון, והמספר עדיין קטן מדי. מרחק הבלימה גדל עם ריבוע המהירות.` },
+      { text: `80 מ'.`, correct: true },
+      { text: `160 מ'. התנופה מתפוצצת.`, why: `זה היה נכון אם המרחק היה גדל עם המהירות בשלישית. הוא גדל רק בריבוע.` },
+    ],
+    onRun: async () => {
+      brakeSim.setParam('locked', true);
+      brakeSim.setParam('v2', 40);
+      await brakeSim.play();
+      brakeSim.setParam('locked', false);
+    },
+    steps: [
+      { hint: `איזו נוסחה מפרק 2 קושרת מהירות, תאוצה ודרך, בלי זמן?`,
+        work: `\\(v^2 = v_0^2 + 2a\\Delta x\\). בעצירה \\(v = 0\\), ולכן גודל הדרך הוא \\(\\Delta x = v_0^2 / 2a\\).` },
+      { hint: `מה הבלמים נותנים? נחשב את התאוצה מהמקרה הראשון.`,
+        work: `\\(a = v_0^2 / 2\\Delta x = 20^2 / (2 \\cdot 20) = 10\\) מ/ש². אותם בלמים, אותה תאוצה.` },
+      { hint: `נציב את 40 מ/ש באותה נוסחה.`,
+        work: `\\(\\Delta x = 40^2 / (2 \\cdot 10) = 80\\) מ'. המהירות בריבוע, ולכן פי 2 מהירות נותן פי 4 דרך: 80 מ'.` },
+    ],
+    explanation: `<p><b>עכשיו תורך:</b> להזיז את הסליידר, לבלום שוב, ולראות איפה הנקודה נוחתת על הפרבולה.</p>`,
+    sayRight: 'בדיוק. ועכשיו ברור למה הגבלת מהירות היא לא רק רעיון של המשטרה.',
+    sayWrong: 'גם אני אמרתי 40 מ\'. אחר כך פגשתי קיר.',
+  });
+
+  /* ---------- 4. Potential energy: three paths ---------- */
+  const liftSim = PHY.sims.liftPaths($('c-lift'), $('ctl-lift'), {
+    onUse() { PHY.progress.markSection(CH, 'potential'); },
+  });
+  liftSim.start();
+
+  /* ---------- 5. Conservation: the drop ---------- */
+  const dropSim = PHY.sims.dropBars($('c-drop'), $('ctl-drop'), { height: 20, mass: 4, locked: true });
+  dropSim.start();
+  U.PredictCard($('pc-drop'), {
+    chapter: CH, id: 'drop', section: 'conservation', tag: TAG,
+    question: `מגובה 20 מ' הוא מגיע לרצפה ב-20 מ/ש. מה המהירות שלו באמצע הדרך, בגובה 10 מ'?`,
+    options: [
+      { text: `10 מ/ש. חצי דרך, חצי מהירות.`, why: `זה הקו המקווקו בגרף, וכולם מהמרים עליו. אבל חצי דרך נותנת חצי אנרגיה, והמהירות היא בריבוע באנרגיה.` },
+      { text: `בערך 14.1 מ/ש.`, correct: true },
+      { text: `5 מ/ש. הוא רק התחיל להאיץ.`, why: `את 5 מ/ש הוא כבר עובר אחרי חצי שנייה, כשירד רק 1.25 מ'. בחצי הדרך הוא הרבה מעבר למהירות הזאת.` },
+      { text: `15 מ/ש. יותר מחצי, כי בחלק התחתון הוא כבר מהיר.`, why: `הכיוון נכון: הוא באמת מעל חצי. אבל את המספר לא מנחשים, ובפתרון נראה איך מחשבים אותו.` },
+    ],
+    onRun: async () => {
+      dropSim.setParam('locked', true);
+      dropSim.setParam('height', 20);
+      await dropSim.play();
+      dropSim.setParam('locked', false);
+    },
+    steps: [
+      { hint: `ניקח מסה של 4 ק"ג. כמה אנרגיית גובה הוא איבד עד גובה 10 מ'?`,
+        work: `בהתחלה \\(mgh = 4 \\cdot 10 \\cdot 20 = 800\\) ג'ול. בגובה 10 מ' נשארו 400 ג'ול, ולכן 400 ג'ול עברו לאנרגיה קינטית.` },
+      { hint: `איזו מהירות מתאימה ל-400 ג'ול של אנרגיה קינטית?`,
+        work: `\\(\\tfrac{1}{2} \\cdot 4 \\cdot v^2 = 400\\), ולכן \\(v^2 = 200\\), כלומר \\(v \\approx 14.1\\) מ/ש. והמסה לא משנה: \\(v^2 = 2g \\cdot 10\\).` },
+      { hint: `למה זה לא חצי מ-20 מ/ש?`,
+        work: `כי חצי מהאנרגיה נותן \\(\\sqrt{1/2} \\approx 0.71\\) מהמהירות, ו-\\(\\sqrt{1/2} \\cdot 20 \\approx 14.1\\) מ/ש. בנוסף, הוא כבר בחצי הגובה אחרי 1.41 ש', ולא אחרי שנייה: בחלק העליון הוא איטי.` },
+    ],
+    explanation: `<p><b>עכשיו תורך:</b> לשנות את גובה ההתחלה, ולראות שהגרף תמיד נשאר מעל הקו המקווקו.</p>`,
+    sayRight: 'נכון. אני מרגיש את ה-14.1 הזה בשפם.',
+    sayWrong: 'חצי דרך, חצי מהירות. גם אני אמרתי. זה היה בדרך למטה.',
+  });
+
+  /* ---------- 6. Friction: the bowl ---------- */
+  const bowlSim = PHY.sims.bowl($('c-bowl'), $('ctl-bowl'), { locked: true });
+  bowlSim.start();
+  U.PredictCard($('pc-bowl'), {
+    chapter: CH, id: 'bowl', section: 'friction', tag: TAG,
+    question: `אחרי המעבר הראשון הוא עלה עד 3.8 מ', במקום 5 מ'. לאיזה גובה הוא יעלה אחרי המעבר השני?`,
+    options: [
+      { text: `2.9 מ'. בכל מעבר הולכים 24 אחוז.`, why: `ככה עובדים אחוזים, ולכן זה נשמע כל כך טוב. אבל החיכוך לא בודק כמה נשאר: הוא גובה כוח כפול דרך, ואלה לא השתנו.` },
+      { text: `2.6 מ'.`, correct: true },
+      { text: `3.2 מ'. עכשיו הוא איטי יותר, אז החיכוך קטן יותר.`, why: `בפרק 4 ראינו שחיכוך קינטי הוא \\(\\mu N\\), ובמהירות אין שם שום תפקיד.` },
+      { text: `3.8 מ'. כבר שילם על המשטח פעם אחת.`, why: `היה נחמד. אבל המשטח לא מוכר מנוי: הוא גובה בכל מעבר מחדש.` },
+    ],
+    onRun: async () => {
+      bowlSim.setParam('locked', true);
+      await bowlSim.play();
+      bowlSim.setParam('locked', false);
+    },
+    steps: [
+      { hint: `מה גודל כוח החיכוך על המשטח? האם הוא תלוי במהירות?`,
+        work: `\\(f = \\mu m g = 0.4 \\cdot 2 \\cdot 10 = 8\\) ניוטון, בכל מהירות.` },
+      { hint: `כמה עבודה הוא עושה לאורך מעבר אחד של 3 מ'?`,
+        work: `\\(W_f = -8 \\cdot 3 = -24\\) ג'ול. שלילי, כי הוא נגד התנועה. כל מעבר עולה בדיוק אותו מחיר.` },
+      { hint: `כמה אנרגיה נשארת אחרי שני מעברים, ולאיזה גובה היא מספיקה?`,
+        work: `\\(100 - 24 - 24 = 52\\) ג'ול. בפסגה הכול אנרגיית גובה: \\(2 \\cdot 10 \\cdot h = 52\\), ולכן \\(h = 2.6\\) מ'.` },
+    ],
+    explanation: `<p><b>עכשיו תורך:</b> לשנות את אורך המשטח ואת \\(\\mu\\), ולראות שההפסד בכל מעבר גדל ביחס ישר לכל אחד מהם: הוא כוח החיכוך \\(\\mu m g\\) כפול האורך.</p>`,
+    sayRight: 'בדיוק. החיכוך גובה מחיר קבוע, כמו חניון. ועדיין חם לי ברגליים.',
+    sayWrong: 'אחוזים זה הניחוש של כל מי שיש לו בנק. גם שלי.',
+  });
+
+  /* ---------- 7. The spring ---------- */
+  const springSim = PHY.sims.springLauncher($('c-spring'), $('ctl-spring'), { k: 500, m: 5, x: 0.5, locked: true });
+  springSim.start();
+  U.PredictCard($('pc-spring'), {
+    chapter: CH, id: 'spring', section: 'spring', tag: TAG,
+    question: `כיווץ של 0.5 מ' הרים אותו ל-1.25 מ'. לאיזה גובה הוא יגיע עם כיווץ של 1 מ'?`,
+    options: [
+      { text: `2.5 מ'. פי 2 כיווץ, פי 2 גובה.`, why: `זה היה נכון אם הכוח של הקפיץ היה קבוע. אבל ככל שדוחסים הוא מתנגד חזק יותר, אז חצי המטר השני עולה פי 3 מהראשון.` },
+      { text: `3.5 מ'. קצת יותר מכפול.`, why: `הכיוון נכון, אבל גובה תלוי באנרגיה, והאנרגיה בקפיץ היא בריבוע.` },
+      { text: `5 מ'.`, correct: true },
+      { text: `10 מ'. ברור שהוא מגיע לירח.`, why: `יפה, אבל זה פי 8. האנרגיה גדלה רק בריבוע של הכיווץ, וגם הירח יצטרך לחכות לפרק 9.` },
+    ],
+    onRun: async () => {
+      springSim.setParam('locked', true);
+      await springSim.playDouble(0.5);
+      springSim.setParam('locked', false);
+    },
+    steps: [
+      { hint: `איך משתנה הכוח שצריך כדי לדחוס את הקפיץ, מרגע לרגע?`,
+        work: `הוא גדל בקו ישר, \\(F = kx\\), מ-0 ניוטון ועד \\(kx\\). העבודה היא השטח מתחת לגרף של הכוח: משולש, \\(\\tfrac{1}{2} \\cdot x \\cdot kx = \\tfrac{1}{2} k x^2\\).` },
+      { hint: `נציב את שני הכיווצים. כמה אנרגיה יש בקפיץ בכל אחד מהם?`,
+        work: `כיווץ 0.5 מ': \\(\\tfrac{1}{2} \\cdot 500 \\cdot 0.25 = 62.5\\) ג'ול. כיווץ 1 מ': \\(\\tfrac{1}{2} \\cdot 500 \\cdot 1 = 250\\) ג'ול. פי 4.` },
+      { hint: `בפסגה כל האנרגיה היא אנרגיית גובה. מה הגובה?`,
+        work: `\\(5 \\cdot 10 \\cdot h = 250\\), ולכן \\(h = 5\\) מ', פי 4 מ-1.25 מ'.` },
+      { hint: `ומה קורה למהירות ביציאה מהקפיץ?`,
+        work: `\\(\\tfrac{1}{2} \\cdot 5 \\cdot v^2 = 250\\) נותן \\(v = 10\\) מ/ש, לעומת 5 מ/ש. פי 2 מהירות ופי 4 גובה: \\(v\\) גדל כמו \\(x\\), והגובה כמו \\(x^2\\). התשובה: 5 מ'.` },
+    ],
+    explanation: `<p><b>עכשיו תורך:</b> לשנות את הכיווץ ואת המסה. אותו קפיץ שולח חתול קל הרבה יותר גבוה.</p>`,
+    sayRight: 'פי 4. ולי אף אחד לא הזכיר שיש גם נחיתה.',
+    sayWrong: 'גם אני חשבתי פי 2. לכן התכווצתי כל כך בביטחון.',
+  });
+
+  /* ---------- 8. Power: the stairs ---------- */
+  const stairSim = PHY.sims.workLab($('c-stairs'), $('ctl-stairs'), { scene: 'stairs', locked: true });
+  stairSim.start();
+  U.PredictCard($('pc-stairs'), {
+    chapter: CH, id: 'stairs', section: 'power', tag: TAG,
+    question: `אותן מדרגות, אותו חתול. מה נכון לגבי הריצה לעומת ההליכה?`,
+    options: [
+      { text: `בריצה נעשית פי 2 עבודה. הרי זה קשה פי 2.`, why: `זה באמת קשה יותר, ואת זה מודד גודל אחר. העבודה היא משקל כפול גובה, ואלה לא השתנו.` },
+      { text: `אותה עבודה, אבל היא נעשית פי 2 מהר יותר.`, correct: true },
+      { text: `בהליכה נעשית יותר עבודה, כי היא נמשכת יותר זמן.`, why: `זמן לא נמצא בכלל בנוסחה של העבודה. הוא חשוב לגודל אחר, שעוד רגע יקבל שם.` },
+    ],
+    onRun: async () => {
+      stairSim.setParam('locked', true);
+      stairSim.setParam('walkTime', 4);
+      await stairSim.play();
+      stairSim.setParam('locked', false);
+    },
+    steps: [
+      { hint: `כמה עבודה צריך כדי להעלות 5 ק"ג לגובה 4 מ'?`,
+        work: `\\(W = m g h = 5 \\cdot 10 \\cdot 4 = 200\\) ג'ול, בכל קצב.` },
+      { hint: `כמה ג'ול נעשים בכל שנייה, בכל אחד מהמקרים?`,
+        work: `בהליכה \\(200 / 4 = 50\\) ג'ול לשנייה, ובריצה \\(200 / 2 = 100\\) ג'ול לשנייה.` },
+      { hint: `איך קוראים לגודל הזה, ומה המסקנה?`,
+        work: `הספק, בוואט. אותה עבודה של 200 ג'ול, ו-100 ואט בריצה מול 50 ואט בהליכה: פי 2 הספק.` },
+    ],
+    explanation: `<p><b>עכשיו תורך:</b> לשנות את זמן ההליכה, ולראות מתי הנורה של ההליכה משיגה את זו של הריצה.</p>`,
+    sayRight: 'נכון. אותה עבודה, ואני עדיין מעדיף את המעלית.',
+    sayWrong: 'גם אני חשבתי שאני עובד קשה פי 2. הפיזיקה לא התרשמה.',
+  });
+
+  /* ---------- 9. The loop ---------- */
+  const loopSim = PHY.sims.loopTheLoop($('c-loop'), $('ctl-loop'), { R: 2, height: 4, locked: true });
+  loopSim.start();
+  U.PredictCard($('pc-loop'), {
+    chapter: CH, id: 'loop', section: 'loop', tag: TAG,
+    question: `גובה ההתחלה שווה לגובה הפסגה, 4 מ'. האם ניוטון עובר את הלולאה?`,
+    options: [
+      { text: `כן. אותו גובה, אותה אנרגיה, זה חוק!`, why: `החוק אומר מה תהיה המהירות אם יגיעו לשם. הוא לא מבטיח שמגיעים, והוא נותן בפסגה מהירות 0 מ/ש.` },
+      { text: `כן, ויעצור בדיוק בפסגה לשבריר שנייה, הפוך.`, why: `תמונה יפה לסרט מצויר. בחיים, גוף שנמצא שם ולא נע פשוט נופל.` },
+      { text: `לא. הוא יתנתק מהרצפה וייפול עוד לפני הפסגה.`, correct: true },
+      { text: `לא. הוא לא יגיע אפילו לחצי הלולאה.`, why: `חצי הלולאה בגובה 2 מ', ויש לו אנרגיה בשפע כדי להגיע לשם.` },
+    ],
+    onRun: async () => {
+      loopSim.setParam('locked', true);
+      loopSim.setParam('height', 4);
+      await loopSim.play();
+      loopSim.setParam('locked', false);
+    },
+    steps: [
+      { hint: `לפי שימור האנרגיה, כמה אנרגיה קינטית נשארת לו בגובה 4 מ'?`,
+        work: `בהתחלה \\(E = m g \\cdot 4\\). בפסגה אנרגיית הגובה היא \\(m g \\cdot 4\\). נשארים 0 ג'ול של אנרגיה קינטית, כלומר \\(v = 0\\) מ/ש.` },
+      { hint: `מה קורה לגוף שעומד הפוך בפסגה, במהירות 0 מ/ש?`,
+        work: `הכבידה מושכת אותו למטה, והרצפה נמצאת מעליו. רצפה יכולה רק לדחוף, ולא יכולה למשוך אותו אליה.` },
+      { hint: `אז מתי בדיוק נגמרת הדחיפה של הרצפה? מה ראינו בסימולציה?`,
+        work: `החץ \\(N\\) התקצר בעלייה, והגיע ל-0 ניוטון בגובה 3.33 מ'. שם ניוטון התנתק, והמשיך כקליע מפרק 3. התשובה: לא עובר, ונופל לפני הפסגה.` },
+    ],
+    explanation: `<p><b>עכשיו תורך:</b> להעלות את גובה ההתחלה, ולחפש את הגובה הנמוך ביותר שעובר. את החישוב המדויק נעשה בפרק 6.</p>`,
+    sayRight: 'בדיוק. לפחות נפלתי על הרגליים. מסתבר שזו התמחות.',
+    sayWrong: 'גם אני סמכתי על החוק. החוק לא סמך עליי בחזרה.',
+  });
+
+  /* ---------- 11. Playground ---------- */
+  const playSim = PHY.sims.coaster($('c-play'), $('ctl-play'), { chapter: CH, section: 'playground' });
+  playSim.start();
+
+  /* ---------- 12. Game ---------- */
+  const game = PHY.sims.newtonTrack($('c-game'), $('ctl-game'), { chapter: CH, section: 'game' });
+  game.start();
+
+  /* ---------- 13. Traps ---------- */
+  const trapDone = {};
+  const trapFinished = (name) => {
+    trapDone[name] = true;
+    if (trapDone.a && trapDone.b && trapDone.c && trapDone.d) PHY.progress.markSection(CH, 'traps');
+  };
+
+  const boostSim = PHY.sims.braking($('c-boost'), $('ctl-boost'), { mode: 'boost', locked: true });
+  boostSim.start();
+  U.PredictCard($('pc-boost'), {
+    chapter: CH, id: 'boost', tag: 'מלכודת',
+    question: `להאיץ את הקטנוע מ-0 ל-10 מ/ש עולה 5000 ג'ול. כמה עולה להוסיף עוד 10 מ/ש, מ-10 ל-20 מ/ש?`,
+    options: [
+      { text: `5000 ג'ול. אותה תוספת מהירות, אותו מחיר.`, why: `כך עובד מחיר במכולת, לא אנרגיה. האנרגיה הולכת עם ריבוע המהירות, ולא עם המהירות.` },
+      { text: `10000 ג'ול. המהירות הוכפלה, אז גם האנרגיה.`, why: `זו בדיוק המלכודת: פי 2 מהירות נותן פי 4 אנרגיה, ולא פי 2.` },
+      { text: `15000 ג'ול.`, correct: true },
+      { text: `20000 ג'ול. פי 4!`, why: `כמעט! 20000 ג'ול זה כל מה שיש בו ב-20 מ/ש. אבל 5000 ג'ול כבר היו בו, והשאלה רק כמה צריך להוסיף.` },
+    ],
+    onRun: async () => {
+      await boostSim.play();
+      boostSim.setParam('locked', false);
+    },
+    steps: [
+      { hint: `כמה אנרגיה קינטית יש לקטנוע ב-10 מ/ש, וכמה ב-20 מ/ש?`,
+        work: `\\(\\tfrac{1}{2} \\cdot 100 \\cdot 10^2 = 5000\\) ג'ול, ו-\\(\\tfrac{1}{2} \\cdot 100 \\cdot 20^2 = 20000\\) ג'ול.` },
+      { hint: `כמה צריך להוסיף כדי לעבור מהראשון לשני?`,
+        work: `\\(20000 - 5000 = 15000\\) ג'ול: פי 3 מהתוספת הראשונה.` },
+      { hint: `איך רואים את זה על הכביש, עם כוח קבוע של 500 ניוטון?`,
+        work: `הקטע הראשון ארוך 10 מ', והשני 30 מ'. \\(W = F d\\) נותן 5000 ג'ול ו-15000 ג'ול. אותה תוספת מהירות דורשת פי 3 דרך, כי במהירות גבוהה עוברים יותר מטרים בכל שנייה.` },
+    ],
+    sayRight: 'בדיוק. המהירות השנייה תמיד יקרה יותר, ואני משלם בשפם.',
+    sayWrong: 'גם אני הייתי בטוח שזה אותו דבר. זה בדיוק מה שאומרים לפני התדלוק.',
+    onDone: () => trapFinished('a'),
+  });
+
+  const massSim = PHY.sims.slides($('c-mass'), $('ctl-mass'), { mode: 'mass', locked: true });
+  massSim.start();
+  U.PredictCard($('pc-mass'), {
+    chapter: CH, id: 'mass', tag: 'מלכודת',
+    question: `שני החתולים יוצאים יחד. מי מהם מגיע למטה ראשון?`,
+    options: [
+      { text: `הכבד. יש לו פי 4 אנרגיה, היא חייבת ללכת לאנשהו.`, why: `נכון שיש לו פי 4 אנרגיה, אבל הוא גם צריך פי 4 כדי לנוע באותה מהירות.` },
+      { text: `הקל. הוא זריז יותר, את הכבד קשה יותר להאיץ.`, why: `קשה יותר להאיץ אותו, נכון. אבל גם הכבידה עליו חזקה פי 4, ושני הדברים מתקזזים.` },
+      { text: `מגיעים יחד, באותה מהירות.`, correct: true },
+    ],
+    onRun: async () => {
+      await massSim.play();
+      massSim.setParam('locked', false);
+    },
+    steps: [
+      { hint: `נכתוב שימור אנרגיה מהפסגה לתחתית. איפה מופיעה המסה?`,
+        work: `\\(m g h = \\tfrac{1}{2} m v^2\\). המסה מופיעה בשני הצדדים, ומצטמצמת.` },
+      { hint: `מה נשאר, ומה זה נותן בגובה 5 מ'?`,
+        work: `\\(v = \\sqrt{2 g h}\\), בלי המסה. בתחתית זה \\(\\sqrt{2 \\cdot 10 \\cdot 5} = 10\\) מ/ש, לשניהם. הנוסחה לא תלויה במסה בשום גובה, אז בכל נקודה בדרך המהירויות שלהם שוות, ולכן הם גם מגיעים יחד.` },
+      { hint: `אז במה בכל זאת הם שונים?`,
+        work: `באנרגיה: לקל יש בסוף \\(\\tfrac{1}{2} \\cdot 5 \\cdot 100 = 250\\) ג'ול, ולכבד 1000 ג'ול. את זה מרגישים כשהוא נוחת עליכם, לא בשעון. התשובה נשארת: מגיעים יחד, באותה מהירות.` },
+    ],
+    sayRight: 'נכון. ואני לא שמן, יש לי תנע. אה, זה פרק 7.',
+    sayWrong: 'גם אני הימרתי על עצמי. כרגיל.',
+    onDone: () => trapFinished('b'),
+  });
+
+  const thiefSim = PHY.sims.bowl($('c-thief'), $('ctl-thief'), { mu: 0.8, thermal: true, locked: true, speed: 1.25 });
+  thiefSim.start();
+  U.PredictCard($('pc-thief'), {
+    chapter: CH, id: 'thief', tag: 'מלכודת',
+    question: `בהתחלה היו לו 100 ג'ול. עכשיו הוא עומד, בגובה 0 מ'. כמה אנרגיה יש עכשיו בעולם, מכל מה שהיה?`,
+    options: [
+      { text: `0 ג'ול. החיכוך השמיד אותה, לכן הוא נעצר.`, why: `חיכוך לא משמיד: הוא רק מעביר את האנרגיה לכיס שקשה להוציא ממנו. תראו את הפס.` },
+      { text: `100 ג'ול. כולם שם, בצורת חום.`, correct: true },
+      { text: `50 ג'ול. חצי הפך לחום, וחצי הלך לאיבוד.`, why: `אין מקום כזה "לאיבוד". כל ג'ול שיוצא מהתנועה מופיע בחום.` },
+    ],
+    onRun: async () => {
+      await thiefSim.play();
+      thiefSim.setParam('locked', false);
+    },
+    steps: [
+      { hint: `איזו אנרגיה בדיוק נעלמה מהחשבון של ניוטון?`,
+        work: `האנרגיה המכנית: קינטית ועוד גובה, שירדה מ-100 ג'ול ל-0 ג'ול.` },
+      { hint: `לאן עברה? מה קורה למשטח ולכפות הרגליים?`,
+        work: `הם מתחממים: המולקולות שלהם זזות מהר יותר. זו אנרגיה לכל דבר, רק שקשה לאסוף אותה בחזרה.` },
+      { hint: `אז מה נשמר ומה לא?`,
+        work: `הסכום כולו נשמר תמיד. האנרגיה המכנית לבדה נשמרת רק בלי חיכוך. התשובה: 100 ג'ול, כולם כחום, ולכן כותבים \\(E_{\\text{start}} = E_{\\text{end}} + Q\\).` },
+    ],
+    sayRight: 'נכון. הן לא נעלמו, הן בכפות הרגליים שלי.',
+    sayWrong: 'גם אני חשבתי שזה הלך. עד שנגעתי במשטח.',
+    onDone: () => trapFinished('c'),
+  });
+
+  const normalSim = PHY.sims.slides($('c-normal'), $('ctl-normal'), { mode: 'normal', locked: true });
+  normalSim.start();
+  U.PredictCard($('pc-normal'), {
+    chapter: CH, id: 'normal', tag: 'מלכודת',
+    question: `הכוח הנורמלי דוחף כל הדרך, ובעיקול הוא גדול בהרבה מהמשקל. כמה עבודה הוא עושה על ניוטון מלמעלה עד למטה?`,
+    options: [
+      { text: `הרבה. הוא זה שמסובב אותו, אז הוא גם נותן לו מהירות.`, why: `הוא באמת מסובב, אבל סיבוב משנה כיוון, לא גודל של מהירות. ובלי שינוי בגודל, אין שינוי באנרגיה.` },
+      { text: `עבודה שלילית. הוא דוחף נגד ומאט אותו.`, why: `גם זה היה דורש רכיב של הכוח לאורך התנועה. אין לו רכיב כזה, לא קדימה ולא אחורה.` },
+      { text: `0 ג'ול.`, correct: true },
+    ],
+    onRun: async () => {
+      await normalSim.play();
+      normalSim.setParam('locked', false);
+    },
+    steps: [
+      { hint: `מה הזווית בין \\(N\\) למהירות, בכל רגע?`,
+        work: `90°. \\(N\\) ניצב למסילה, והמהירות תמיד משיקה למסילה. זה הריבוע הקטן בין החצים.` },
+      { hint: `מה נותנת \\(W = F d \\cos\\theta\\) כשהזווית הזאת נשארת כך לאורך כל הדרך?`,
+        work: `\\(\\cos 90^\\circ = 0\\) בכל קטע קטן של הדרך, גם כש-\\(N\\) משתנה וגם כשהכיוון מסתובב. לכן הסכום הוא 0 ג'ול.` },
+      { hint: `אז מי נתן לו את האנרגיה הקינטית?`,
+        work: `רק הכבידה: \\(m g h = 5 \\cdot 10 \\cdot 5 = 250\\) ג'ול, ובסוף \\(\\tfrac{1}{2} \\cdot 5 \\cdot 10^2 = 250\\) ג'ול. הכוח הנורמלי מכוון ולא נותן, ועבודתו 0 ג'ול.` },
+    ],
+    sayRight: 'נכון. הרצפה רק מנהלת אותי. כמו מנהל, בלי לעבוד.',
+    sayWrong: 'גם אני נתתי לרצפה קרדיט. היא לא עשתה כלום.',
+    onDone: () => trapFinished('d'),
+  });
+
+  /* ---------- 14. Exam problems ---------- */
+  const probs = $('problems-host');
+  U.Problem(probs, {
+    chapter: CH, section: 'problems', tag: 'שאלה 1: מגלשה ורצפה מחוספסת',
+    text: `חתול מחליק ממנוחה מגובה 5 מ' על מגלשה חלקה. בסופה הוא ממשיך על רצפה אופקית מחוספסת עם \\(\\mu = 0.25\\). מצאו את המהירות בתחתית המגלשה, ואת המרחק שהוא עובר על הרצפה עד שהוא נעצר.`,
+    fields: [
+      { label: 'המהירות בתחתית', answer: 10, unit: 'מ/ש' },
+      { label: 'מרחק העצירה', answer: 20, unit: "מ'" },
+    ],
+    steps: [
+      { hint: `אילו כוחות עושים עבודה על המגלשה?`,
+        work: `רק הכבידה. הכוח הנורמלי ניצב לתנועה, ואין חיכוך, ולכן האנרגיה המכנית נשמרת.` },
+      { hint: `נכתוב שימור אנרגיה בין הפסגה לתחתית.`,
+        work: `\\(m g h = \\tfrac{1}{2} m v^2\\). המסה מצטמצמת, ו-\\(v = \\sqrt{2 \\cdot 10 \\cdot 5} = 10\\) מ/ש.` },
+      { hint: `מה גודל כוח החיכוך על הרצפה האופקית?`,
+        work: `\\(f = \\mu m g\\), כי על רצפה אופקית \\(N = mg\\). המסה עוד תצטמצם.` },
+      { hint: `לאן הולכת כל האנרגיה הקינטית? נשווה אותה לעבודת החיכוך.`,
+        work: `\\(\\mu m g\\, d = \\tfrac{1}{2} m v^2\\), והמסה שוב מצטמצמת: \\(0.25 \\cdot 10 \\cdot d = \\tfrac{1}{2} \\cdot 10^2\\), כלומר \\(2.5 d = 50\\). התשובה: 10 מ/ש, ו-\\(d = 20\\) מ'.` },
+    ],
+  });
+  U.Problem(probs, {
+    chapter: CH, section: 'problems', tag: 'שאלה 2: קפיץ ורמפה',
+    text: `קפיץ עם \\(k = 800\\) ניוטון/מ' מכווץ ב-0.1 מ', ולפניו גוף של 0.5 ק"ג. הקפיץ משוחרר, והגוף טס על רצפה חלקה ועולה ברמפה חלקה. מצאו את האנרגיה בקפיץ, את מהירות הגוף כשהוא עוזב את הקפיץ, ואת הגובה המרבי.`,
+    fields: [
+      { label: 'האנרגיה בקפיץ', answer: 4, unit: "ג'ול" },
+      { label: 'המהירות', answer: 4, unit: 'מ/ש' },
+      { label: 'הגובה המרבי', answer: 0.8, unit: "מ'" },
+    ],
+    steps: [
+      { hint: `באיזו נוסחה מודדים אנרגיה בקפיץ, ומה מציבים?`,
+        work: `\\(E_s = \\tfrac{1}{2} k x^2 = \\tfrac{1}{2} \\cdot 800 \\cdot 0.1^2 = 4\\) ג'ול.` },
+      { hint: `ברגע שהגוף עוזב את הקפיץ, באיזו צורה כל האנרגיה נמצאת?`,
+        work: `כולה קינטית: \\(\\tfrac{1}{2} \\cdot 0.5 \\cdot v^2 = 4\\), ולכן \\(v^2 = 16\\) ו-\\(v = 4\\) מ/ש.` },
+      { hint: `ובשיא הרמפה?`,
+        work: `כולה אנרגיית גובה: \\(0.5 \\cdot 10 \\cdot h = 4\\), ולכן \\(h = 0.8\\) מ'. התשובה: 4 ג'ול, 4 מ/ש, 0.8 מ'.` },
+    ],
+  });
+  U.Problem(probs, {
+    chapter: CH, section: 'problems', tag: 'שאלה 3: מדרגות',
+    text: `אדם במסה 60 ק"ג עולה במדרגות לגובה 3 מ' במהירות קבועה, ב-2 ש'. מצאו את העבודה נגד הכבידה ואת ההספק. אחר כך מצאו את ההספק אם אותה עלייה לוקחת 6 ש'.`,
+    fields: [
+      { label: 'העבודה', answer: 1800, unit: "ג'ול" },
+      { label: 'ההספק ב-2 ש\'', answer: 900, unit: 'ואט' },
+      { label: 'ההספק ב-6 ש\'', answer: 300, unit: 'ואט' },
+    ],
+    steps: [
+      { hint: `מה הכוח שצריך כדי לעלות במהירות קבועה?`,
+        work: `כוח ששווה למשקל: \\(mg = 60 \\cdot 10 = 600\\) ניוטון.` },
+      { hint: `כמה עבודה עושה הכוח הזה לאורך הגובה?`,
+        work: `\\(W = 600 \\cdot 3 = 1800\\) ג'ול, בכל קצב שלא יהיה.` },
+      { hint: `הספק הוא עבודה לזמן. מה מקבלים בעלייה המהירה?`,
+        work: `\\(P = 1800 / 2 = 900\\) ואט.` },
+      { hint: `מה משתנה בעלייה האיטית, ומה לא?`,
+        work: `העבודה לא משתנה, רק הזמן: \\(P = 1800 / 6 = 300\\) ואט. התשובה: 1800 ג'ול, 900 ואט, 300 ואט.` },
+    ],
+  });
+
+  /* ---------- 15. Quiz ---------- */
+  U.Quiz($('quiz-host'), {
+    chapter: CH, section: 'quiz',
+    questions: [
+      {
+        type: 'num',
+        q: `כוח של 50 ניוטון מושך ארגז לאורך 8 מ', בזווית של 60° מכיוון התנועה. כמה עבודה הוא עושה?`,
+        answer: 200, unit: "ג'ול",
+        steps: [
+          { hint: `איזה חלק מהכוח נמצא בכיוון התנועה?`,
+            work: `הצל שלו: \\(50 \\cos 60^\\circ = 25\\) ניוטון.` },
+          { hint: `מה עושים עם הצל הזה ועם הדרך?`,
+            work: `כופלים: \\(W = 25 \\cdot 8 = 200\\) ג'ול.` },
+        ],
+      },
+      {
+        type: 'mc',
+        q: `המהירות של מכונית גדלה פי 3. מה קורה לאנרגיה הקינטית שלה?`,
+        options: [`גדלה פי 3`, `גדלה פי 6`, `גדלה פי 9`, `גדלה פי 27`],
+        answer: 2,
+        steps: [
+          { hint: `באיזו חזקה המהירות מופיעה ב-\\(E_k = \\tfrac{1}{2} m v^2\\)?`,
+            work: `בריבוע, והמסה נשארת קבועה.` },
+          { hint: `מה זה אומר כשמציבים \\(3v\\) במקום \\(v\\)?`,
+            work: `\\(\\tfrac{1}{2} m (3v)^2 = 9 \\cdot \\tfrac{1}{2} m v^2\\). האנרגיה גדלה פי 9.` },
+        ],
+      },
+      {
+        type: 'num',
+        q: `אבן נשמטת ממנוחה מגובה 45 מ', בלי התנגדות אוויר. מה המהירות שלה רגע לפני הפגיעה בקרקע?`,
+        answer: 30, unit: 'מ/ש',
+        steps: [
+          { hint: `מה נשמר בנפילה, ולמה לא צריך את המסה?`,
+            work: `האנרגיה המכנית: \\(m g h = \\tfrac{1}{2} m v^2\\). המסה בשני הצדדים ומצטמצמת.` },
+          { hint: `נפתור עבור \\(v\\).`,
+            work: `\\(v = \\sqrt{2 \\cdot 10 \\cdot 45} = \\sqrt{900} = 30\\) מ/ש.` },
+        ],
+      },
+      {
+        type: 'num',
+        q: `ארגז של 2 ק"ג מחליק במהירות 10 מ/ש על רצפה אופקית עם \\(\\mu = 0.5\\). כמה מטרים הוא עובר עד שהוא נעצר?`,
+        answer: 10, unit: "מ'",
+        steps: [
+          { hint: `כמה אנרגיה קינטית יש לו?`,
+            work: `\\(\\tfrac{1}{2} \\cdot 2 \\cdot 10^2 = 100\\) ג'ול.` },
+          { hint: `מה גודל כוח החיכוך?`,
+            work: `\\(f = \\mu m g = 0.5 \\cdot 2 \\cdot 10 = 10\\) ניוטון.` },
+          { hint: `אותה אנרגיה צריכה להפוך לחום. באיזה מרחק זה קורה?`,
+            work: `\\(f d = 100\\), ולכן \\(d = 100 / 10 = 10\\) מ'.` },
+        ],
+      },
+      {
+        type: 'num',
+        q: `מנוף מרים 200 ק"ג לגובה 5 מ' במהירות קבועה, ב-10 ש'. מה ההספק שלו?`,
+        answer: 1000, unit: 'ואט',
+        steps: [
+          { hint: `כמה עבודה צריך?`,
+            work: `\\(W = m g h = 200 \\cdot 10 \\cdot 5 = 10000\\) ג'ול.` },
+          { hint: `כמה ג'ול בכל שנייה?`,
+            work: `\\(P = 10000 / 10 = 1000\\) ואט.` },
+        ],
+      },
+      {
+        type: 'num',
+        q: `חזרה מפרק 4: על שולחן חלק מונח ארגז של 5 ק"ג, וכוח אופקי של 20 ניוטון פועל עליו. מה התאוצה שלו?`,
+        answer: 4, unit: 'מ/ש²',
+        steps: [
+          { hint: `איזה חוק קושר כוח, מסה ותאוצה?`,
+            work: `החוק השני של ניוטון: \\(F = ma\\).` },
+          { hint: `נבודד את \\(a\\) ונציב.`,
+            work: `\\(a = F / m = 20 / 5 = 4\\) מ/ש².` },
+        ],
+      },
+      {
+        type: 'num',
+        q: `חזרה מפרק 3: כדור נזרק אופקית מגובה 20 מ'. כמה שניות עד שהוא מגיע לקרקע?`,
+        answer: 2, unit: "ש'",
+        steps: [
+          { hint: `האם המהירות האופקית משפיעה על זמן הנפילה?`,
+            work: `לא. אופקי ואנכי בלתי תלויים, ואין מהירות אנכית בהתחלה.` },
+          { hint: `נפתור את הנפילה.`,
+            work: `\\(20 = \\tfrac{1}{2} \\cdot 10 \\cdot t^2\\), ולכן \\(t^2 = 4\\) ו-\\(t = 2\\) ש'.` },
+        ],
+      },
+    ],
+  });
+
+  /* ---------- Easter egg ---------- */
+  PHY.mascot.easterEgg([
+    { text: 'הקשה אחת. כוח, דרך קטנה, בערך 0.01 ג\'ול של עבודה עליי.', pose: 'standing' },
+    { text: 'הקשה שנייה. גם היא הפכה לחום. אני מרגיש את זה בזנב.', pose: 'thinking' },
+    { text: 'בשיא הרוגז שלי יש לי רק אנרגיית גובה. והרבה ממנה.', pose: 'dizzy' },
+    { text: 'עוד פעם אחת, ואני עובר לאנרגיה אלסטית. זה לא ייגמר טוב.', pose: 'thinking' },
+    { text: 'mgh! כל התפוחים האלה היו גבוהים עד לפני רגע! עכשיו הכול קינטי!', pose: 'flying', spin: true, rain: true },
+  ]);
+
+  U.initChapter({ id: CH });
+})();
+</script>
+</body>
+</html>

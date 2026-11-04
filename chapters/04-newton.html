@@ -1,0 +1,838 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>פרק 4: חוקי ניוטון | פיזיקה עם ניוטון החתול</title>
+<meta name="description" content="למה דיסקית לא נעצרת, כמה שוקל חתול במעלית שהכבל שלה נקרע, ועוד שלושה חוקים שהחתול לא הסכים להם: מדריך אינטראקטיבי לחוקי ניוטון.">
+<script>try{var t=localStorage.getItem('phy-theme');document.documentElement.setAttribute('data-theme',t||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'))}catch(e){document.documentElement.setAttribute('data-theme','light')}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700&family=Rubik:wght@500;600;700;800&display=swap">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.11/katex.min.css">
+<link rel="stylesheet" href="../css/style.css">
+<style>
+  /* Chapter 4 only */
+  .toggle { min-height: 44px; }
+  .game-fine { min-width: 64px; font-size: 1.4rem; }
+  .game-hold { font-size: 1.1rem; }
+  .quest-list { display: grid; gap: 6px; padding-inline-start: 22px; margin: 8px 0 0; }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-in">
+    <a class="brand" href="../index.html" aria-label="חזרה לדף הבית"><span data-brand-cat></span><span class="brand-name">ניוטון החתול</span></a>
+    <span class="topbar-spacer"></span>
+    <span class="topbar-title">פרק 4: חוקי ניוטון</span>
+    <span data-theme-slot></span>
+  </div>
+  <div class="chapter-bar"><span data-chapter-bar></span></div>
+</header>
+
+<main>
+
+<!-- 1. HOOK: law 1 -->
+<section class="section wrap" data-section="hook" id="hook">
+  <span class="kicker">פרק 4: חוקי ניוטון</span>
+  <h1 class="hero-title">הדיסקית שלא נעצרת</h1>
+  <div data-mascot="standing" data-size="118" data-say="פרק שלם על שמי! רגע, למה אני יושב על דיסקית?"></div>
+  <p class="lead">ניוטון יושב על דיסקית הוקי. דוחפים אותו פעם אחת ועוזבים. זה כל הניסוי, והוא כבר מתלונן.</p>
+  <p>עושים את זה ארבע פעמים, באותה דחיפה ובאותה מהירות של 4 מ/ש: על שטיח, על עץ, על קרח, ועל רצפה דמיונית בלי שום חיכוך.</p>
+  <div id="pc-puck">
+    <figure class="sim"><canvas id="c-puck"></canvas><div class="sim-controls" id="ctl-puck"></div></figure>
+  </div>
+  <p class="block-gap"><b>החוק הראשון של ניוטון:</b> גוף שהכוח השקול עליו, כלומר חיבור כל הכוחות, הוא אפס, ממשיך בדיוק במה שעשה: עומד, או נע בקו ישר במהירות קבועה. כוח, דחיפה או משיכה, לא מחזיק תנועה. הוא משנה תנועה.</p>
+  <p>לתכונה הזאת של חומר, להמשיך כמו שהיה, קוראים <b>התמדה</b>. זה כמו חתול על ספה: בלי סיבה טובה הוא לא משנה כלום. כל מה שנראה לנו כמו "עצר מעצמו" פשוט פגש חיכוך.</p>
+
+  <h3 class="block-gap">ובאוטובוס?</h3>
+  <p>את אותו רעיון פוגשים בכל בוקר. האוטובוס בולם, והתפוח שעל הספסל החלק עף קדימה. אף אחד לא נגע בו, אז מי דחף אותו?</p>
+  <figure class="sim"><canvas id="c-bus"></canvas><div class="sim-controls" id="ctl-bus"></div></figure>
+  <p class="block-gap">מהכביש רואים שהנקודות של התפוח נשארות במרחקים שווים: הוא פשוט המשיך ב-6 מ/ש. הנקודות של האוטובוס הן אלה שמתקרבות, כי עליו באמת פעל כוח, החיכוך עם הכביש. כדאי להפעיל גם את המבט מתוך האוטובוס: מבפנים זה נראה כאילו מישהו דחף את התפוח, ואף אחד לא דחף.</p>
+</section>
+
+<!-- 2. LAW 2 -->
+<section class="section wrap" data-section="law2" id="law2">
+  <div class="section-head"><span class="section-num">2</span><h2>אותו כוח, מסה כפולה</h2></div>
+  <p>כשהכוח השקול אינו אפס המהירות משתנה, כלומר יש תאוצה, כמו בפרק 2. השאלה היא כמה.</p>
+  <p>שני ארגזים על רצפה בלי חיכוך, ועל כל אחד פועל אותו כוח של 10 ניוטון. כן, ניוטון: יחידת הכוח, והחתול בטוח שקראו לה על שמו. אחד הארגזים 2 ק"ג, והשני כפול ממנו, 4 ק"ג.</p>
+  <div id="pc-law2">
+    <figure class="sim"><canvas id="c-law2"></canvas><div class="sim-controls" id="ctl-law2"></div></figure>
+  </div>
+  <p class="block-gap"><b>החוק השני של ניוטון:</b> \(\sum F = ma\). התאוצה גדלה עם הכוח השקול וקטנה עם המסה. הסימן \(\sum\) אומר לחבר את כל הכוחות כווקטורים, בדיוק כמו בפרק 1.</p>
+  <p><b>מסה</b> היא כמה קשה לשנות לגוף את התנועה, כמו ההבדל בין עגלת סופר ריקה לעגלה מלאה, כשדוחפים אותן. <b>ניוטון</b> הוא הכוח שנותן ל-1 ק"ג תאוצה של 1 מ/ש². לכן 1 ניוטון הוא 1 ק"ג·מ/ש².</p>
+  <p>הכבידה מושכת תפוח בינוני בכוח של בערך 1 ניוטון. החתול מבקש לציין שזה לא מקרה, והוא טועה.</p>
+</section>
+
+<!-- 3. MASS AND WEIGHT -->
+<section class="section wrap" data-section="weight" id="weight">
+  <div class="section-head"><span class="section-num">3</span><h2>החוב מפרק 2</h2></div>
+  <p>בפרק 2 ראינו שבלי אוויר הכול נופל באותה תאוצה, והבטחנו שנראה בדיוק למה. הגיע הזמן לשלם.</p>
+  <p>מפילים שני ארגזים מגובה 20 מ', בלי אוויר. אחד 1 ק"ג והשני 3 ק"ג, ועל הכבד הכבידה מושכת חזק פי 3.</p>
+  <div id="pc-weight">
+    <figure class="sim"><canvas id="c-weight"></canvas><div class="sim-controls" id="ctl-weight"></div></figure>
+  </div>
+  <p class="block-gap"><b>משקל</b> הוא כוח הכבידה על גוף, \(W = mg\), והוא נמדד בניוטון. <b>מסה</b> היא כמות החומר בק"ג, והיא נשארת אותו דבר בכל מקום.</p>
+  <p>ביום-יום אומרים "60 קילו על המשקל". בפיזיקה מדייקים: המסה 60 ק"ג, והמשקל 600 ניוטון. ניוטון החתול הוא 5 ק"ג, כלומר 50 ניוטון, והוא מבקש לא לפרסם את המספר.</p>
+</section>
+
+<!-- 4. NORMAL FORCE AND DIAGRAMS -->
+<section class="section wrap" data-section="normal" id="normal">
+  <div class="section-head"><span class="section-num">4</span><h2>השולחן דוחף בחזרה</h2></div>
+  <p>ניוטון על שולחן. הכבידה מושכת אותו למטה ב-50 ניוטון, ובכל זאת הוא לא נופל. משהו דוחף אותו למעלה: השולחן עצמו.</p>
+  <p>עכשיו שמים מאזניים בינו לבין השולחן, וכף יד לוחצת לו על הראש ב-20 ניוטון.</p>
+  <div id="pc-press">
+    <figure class="sim"><canvas id="c-press"></canvas><div class="sim-controls" id="ctl-press"></div></figure>
+  </div>
+  <p class="block-gap"><b>כוח נורמלי</b>, \(N\), הוא הכוח שמשטח דוחף בו גוף שנשען עליו, בניצב למשטח. זה כמו קפיץ קטן בתוך השולחן: לוחצים יותר, והוא דוחף יותר. הוא לא תמיד שווה ל-\(mg\): הוא שווה למה שצריך כדי שהגוף לא ישקע לתוך המשטח.</p>
+
+  <h3 class="block-gap">דיאגרמת כוחות</h3>
+  <p><b>דיאגרמת כוחות</b> היא ציור של גוף אחד עם כל הכוחות שפועלים עליו, ורק עליו. זה הצעד הראשון בכל שאלה בפרק הזה, ובלעדיו קל מאוד לטעות.</p>
+  <p>ארבע סצנות, וכל פעם ניוטון מסכים לקחת חלק. תורך לבחור אילו כוחות באמת פועלים עליו. יש ברשימה גם כוחות שלא קיימים, וגם כוח אחד שקיים ופועל על מישהו אחר.</p>
+  <figure class="sim"><canvas id="c-fbd"></canvas><div class="sim-controls" id="ctl-fbd"></div></figure>
+  <p class="block-gap">בכל הסצנות ניוטון עומד במקום, ולכן הכוח השקול אפס. כשמחברים את החצים ראש לזנב הם חוזרים לנקודה שממנה יצאו: זה המשולש הסגור מפרק 1. על המדרון הוא ממש 3-4-5, עם 30 ניוטון, 40 ניוטון ו-50 ניוטון.</p>
+</section>
+
+<!-- 5. LAW 3 -->
+<section class="section wrap" data-section="law3" id="law3">
+  <div class="section-head"><span class="section-num">5</span><h2>מי מרגיש יותר?</h2></div>
+  <p>שני חתולים על קרח, כמעט בלי חיכוך: ניוטון, 5 ק"ג, והדוד שלו, 20 ק"ג. הם עומדים זה מול זה ודוחפים זה את זה, כי יש ביניהם עניין ישן על תפוח.</p>
+  <div id="pc-law3">
+    <figure class="sim"><canvas id="c-law3"></canvas><div class="sim-controls" id="ctl-law3"></div></figure>
+  </div>
+  <p class="block-gap"><b>החוק השלישי של ניוטון:</b> כשגוף A מפעיל כוח על גוף B, גוף B מפעיל על A כוח שווה בגודלו והפוך בכיוונו. תמיד, בכל מצב, גם כשהכול מאיץ.</p>
+  <p><b>למה הם לא מתבטלים?</b> כי הם פועלים על גופים שונים. מתבטלים רק כוחות שפועלים על אותו גוף, וכאן, בכיוון האופקי, על כל חתול פועל כוח אחד בלבד.</p>
+  <p>גם התפוח מושך את כדור הארץ, ב-1 ניוטון בדיוק כמו שכדור הארץ מושך אותו. המסה של כדור הארץ היא בערך \(6 \cdot 10^{24}\) ק"ג, אז הוא מאיץ לעבר התפוח בכ-\(10^{-25}\) מ/ש². החתול טוען שהוא מרגיש את זה.</p>
+</section>
+
+<!-- 6. FRICTION -->
+<section class="section wrap" data-section="friction" id="friction">
+  <div class="section-head"><span class="section-num">6</span><h2>כמה חיכוך יש כאן?</h2></div>
+  <p><b>חיכוך</b> הוא הכוח של משטח נגד החלקה עליו. הכי הרבה חיכוך שמשטח יכול לתת תלוי בשני דברים: כמה חזק המשטחים נלחצים זה לזה, שזה \(N\), ו<b>מקדם החיכוך</b> \(\mu\) (האות היוונית מיו), מספר שאומר כמה הם "דביקים".</p>
+  <p>ארגז של 10 ק"ג על רצפה, עם מקדם חיכוך להיצמדות \(\mu_s = 0.5\) ו-\(N = 100\) ניוטון. ניוטון מושך בחבל ב-30 ניוטון, והארגז לא זז. החתול, שפתח ספר, מכריז: "0.5 כפול 100 ניוטון, החיכוך 50 ניוטון".</p>
+  <div id="pc-friction">
+    <figure class="sim"><canvas id="c-friction"></canvas><div class="sim-controls" id="ctl-friction"></div></figure>
+  </div>
+  <p class="block-gap"><b>חיכוך סטטי</b> הוא החיכוך כשהגוף לא זז. הוא כמו מאבטח שמשתווה לכל דחיפה: נותן בדיוק מה שצריך, ועד גבול. בנוסחה \(f_s \le \mu_s N\), והסימן \(\le\) הוא כל הסיפור.</p>
+  <p>ברגע שהגבול נשבר הארגז מחליק, והחיכוך נופל ל<b>חיכוך קינטי</b>, \(f_k = \mu_k N\). כאן \(\mu_k = 0.4\), כלומר 40 ניוטון, ולכן הארגז מזנק קדימה. כל העברת דירה מלמדת את הגרף הזה: הכי קשה להזיז ארון בסנטימטר הראשון.</p>
+</section>
+
+<!-- 7. INCLINE -->
+<section class="section wrap" data-section="incline" id="incline">
+  <div class="section-head"><span class="section-num">7</span><h2>הכבד מחליק מהר יותר?</h2></div>
+  <p>מדרון של 37°. בקורס הזה זו הזווית הידידותית: \(\sin 37^\circ = 0.6\) ו-\(\cos 37^\circ = 0.8\). על מסלולים מקבילים עומדים שני ארגזים, 10 ק"ג ו-2 ק"ג, עם אותו \(\mu = 0.25\).</p>
+  <div id="pc-incline">
+    <figure class="sim"><canvas id="c-incline"></canvas><div class="sim-controls" id="ctl-incline"></div></figure>
+  </div>
+  <p class="block-gap">\(mg\sin\theta\) ו-\(mg\cos\theta\) הם הצללים של חץ הכבידה, כמו הפנסים בפרק 1: צל אחד לאורך המדרון וצל אחד בניצב אליו. הצל במורד מושך, והצל שבניצב קובע את \(N\), ולכן גם את החיכוך.</p>
+  <p>ארגז מתחיל להחליק כשהצל במורד מגיע לתקרה של החיכוך: \(mg\sin\theta = \mu_s\, mg\cos\theta\). המסה מצטמצמת שוב, ונשאר \(\tan\theta = \mu_s\). זו דרך זולה למדוד \(\mu\): מטים קרש לאט, עד שהחתול מחליק.</p>
+  <p class="muted small">כאן, לשם הפשטות, יש \(\mu\) אחד גם להיצמדות וגם להחלקה. בסעיף 6 ראינו שבמציאות הם שונים.</p>
+</section>
+
+<!-- 8. TENSION AND PULLEYS -->
+<section class="section wrap" data-section="pulley" id="pulley">
+  <div class="section-head"><span class="section-num">8</span><h2>כמה מושך החבל?</h2></div>
+  <p>שתי משקולות קשורות בחבל שעובר על גלגלת: 3 ק"ג ו-1 ק"ג. הגלגלת רק משנה את הכיוון, והחבל מושך בשני קצותיו באותו כוח. לכוח הזה קוראים <b>מתיחות</b>, \(T\).</p>
+  <p>על החבל תלוי מד כוח. משחררים, הכבד יורד והקל עולה.</p>
+  <div id="pc-atwood">
+    <figure class="sim"><canvas id="c-atwood"></canvas><div class="sim-controls" id="ctl-atwood"></div></figure>
+  </div>
+  <p class="block-gap">המתיחות חייבת להיות בין שני המשקלים: פחות מ-30 ניוטון כדי שהכבד ירד, ויותר מ-10 ניוטון כדי שהקל יעלה. השיטה תמיד אותה שיטה: החוק השני לכל גוף בנפרד, ואז מחברים את המשוואות כדי להיפטר מ-\(T\).</p>
+  <p>אותה שיטה עובדת על גוש על שולחן שקשור למשקולת תלויה. אפשר לעבור אליו בכפתור שבסימולציה: התאוצה קטנה, כי המשקולת הקטנה צריכה לגרור גם את הגוש.</p>
+</section>
+
+<!-- 9. ELEVATOR -->
+<section class="section wrap" data-section="elevator" id="elevator">
+  <div class="section-head"><span class="section-num">9</span><h2>מאזניים במעלית</h2></div>
+  <div data-mascot="thinking" data-size="104" data-say="אני רק רוצה לעלות לקומה שלישית. למה יש כאן מאזניים?"></div>
+  <p>ניוטון עומד על מאזניים במעלית. בדרך כלל הם מראים 50 ניוטון. המעלית מתחילה לנסוע, והגרף מצייר מה הם מראים בכל רגע.</p>
+  <p>בסוף הנסיעה, ברגע הכי לא נעים, הכבל נקרע. המעלית וניוטון נופלים יחד, עד שבלם החירום תופס.</p>
+  <div id="pc-elevator">
+    <figure class="sim"><canvas id="c-elevator"></canvas><div class="sim-controls" id="ctl-elevator"></div></figure>
+  </div>
+  <p class="block-gap">מאזניים מודדים את \(N\), לא את המשקל. לכן מה שמשנה הוא <b>כיוון התאוצה</b>, לא כיוון הנסיעה: יורדת ומאטה נותנת קריאה גבוהה, בדיוק כמו עולה ומאיצה. במהירות קבועה, לכל כיוון, המאזניים מראים 50 ניוטון.</p>
+  <p>קריאה של אפס נקראת <b>חוסר משקל</b>. הכבידה לא נעלמה, פשוט שום דבר לא דוחף נגדה, כי המאזניים נופלים יחד עם החתול. נחזור לזה בפרק 9, אצל האסטרונאוטים.</p>
+</section>
+
+<!-- 10. FORMULAS -->
+<section class="section wrap" data-section="formula" data-passive id="formula">
+  <div class="section-head"><span class="section-num">10</span><h2>הנוסחאות שהרווחנו</h2></div>
+  <p>שלושה חוקים, ועוד כמה כוחות שמכירים לפי השם. כמעט כל שאלה בפרק הזה היא אותו מתכון: ציור כוחות, בחירת כיוון חיובי, וחוק שני.</p>
+
+  <div class="formula">
+    <h3>שלושת החוקים</h3>
+    <div class="formula-main">\[\sum \vec F = 0 \;\Rightarrow\; \vec v = \text{const}\]</div>
+    <div class="formula-main">\[\sum \vec F = m\vec a\]</div>
+    <div class="formula-main">\[\vec F_{AB} = -\vec F_{BA}\]</div>
+    <ul class="legend-list">
+      <li><span class="sym">\(\sum \vec F\)</span><span><span class="c-force">הכוח השקול</span>: חיבור וקטורי של כל הכוחות על הגוף, בניוטון. בדיסקית ראינו שבלעדיו המהירות לא משתנה.</span></li>
+      <li><span class="sym">\(m\)</span><span>המסה, בק"ג. הארגז הכבד קיבל חצי תאוצה.</span></li>
+      <li><span class="sym">\(\vec a\)</span><span><span class="c-acc">התאוצה</span>, במ/ש², תמיד בכיוון הכוח השקול, ולא בהכרח בכיוון התנועה.</span></li>
+      <li><span class="sym">\(\vec F_{AB}\)</span><span>הכוח שגוף A מפעיל על גוף B. הוא שווה והפוך לכוח של B על A, ופועל על גוף אחר, כמו אצל שני החתולים.</span></li>
+    </ul>
+  </div>
+
+  <div class="formula">
+    <h3>משקל, נורמלי, חיכוך</h3>
+    <div class="formula-main">\[W = mg \qquad f_s \le \mu_s N \qquad f_k = \mu_k N\]</div>
+    <ul class="legend-list">
+      <li><span class="sym">\(W\)</span><span>המשקל, בניוטון. הגוף של 5 ק"ג שוקל 50 ניוטון.</span></li>
+      <li><span class="sym">\(N\)</span><span>הכוח הנורמלי. לא נוסחה, אלא מה שיוצא מחוק שני בניצב למשטח. עם כף של 20 ניוטון הוא היה 70 ניוטון.</span></li>
+      <li><span class="sym">\(f_s\)</span><span>חיכוך סטטי: בדיוק מה שצריך, עד התקרה \(\mu_s N\). במשיכה של 30 ניוטון הוא היה 30 ניוטון.</span></li>
+      <li><span class="sym">\(f_k\)</span><span>חיכוך קינטי, כשכבר מחליקים. לרוב קטן מהתקרה של הסטטי, ולא תלוי במהירות.</span></li>
+    </ul>
+  </div>
+
+  <div class="formula">
+    <h3>מדרון</h3>
+    <div class="formula-main">\[a = g(\sin\theta - \mu\cos\theta)\]</div>
+    <div class="formula-main">\[N = mg\cos\theta \qquad \tan\theta_{\text{slip}} = \mu_s\]</div>
+    <ul class="legend-list">
+      <li><span class="sym">\(a\)</span><span><span class="c-acc">התאוצה</span> של גוף שמחליק במורד. אם הגוף עומד, או מחליק במעלה המדרון, החיכוך אחר והנוסחה הזאת לא חלה.</span></li>
+      <li><span class="sym">\(\theta\)</span><span>זווית המדרון. ב-37° יצא \(a = 10(0.6 - 0.25 \cdot 0.8) = 4\) מ/ש², לכל מסה.</span></li>
+      <li><span class="sym">\(\theta_{\text{slip}}\)</span><span>הזווית שבה הגוף מתחיל להחליק. גם בה אין \(m\).</span></li>
+    </ul>
+  </div>
+
+  <div class="formula">
+    <h3>גלגלת</h3>
+    <div class="formula-main">\[a = \frac{m_1 - m_2}{m_1 + m_2}\,g \qquad T = \frac{2 m_1 m_2}{m_1 + m_2}\,g\]</div>
+    <p>זה פתרון של שתי המשוואות שכתבנו, \(m_1 g - T = m_1 a\) ו-\(T - m_2 g = m_2 a\). עם 3 ק"ג ו-1 ק"ג יוצא 5 מ/ש² ו-15 ניוטון.</p>
+    <div class="formula-main">\[a = \frac{m g}{M + m} \qquad T = \frac{M m g}{M + m}\]</div>
+    <p>וזה גוש \(M\) על שולחן חלק, עם משקולת \(m\) תלויה. כדאי לזכור את הדרך ולא את הנוסחה, כי במבחן תמיד משנים משהו קטן.</p>
+  </div>
+
+  <div class="formula">
+    <h3>מעלית</h3>
+    <div class="formula-main">\[N = m(g + a)\]</div>
+    <ul class="legend-list">
+      <li><span class="sym">\(a\)</span><span><span class="c-acc">תאוצת המעלית</span>, חיובית כלפי מעלה. עולה ומאיצה ב-2 מ/ש²: 60 ניוטון. מאטה בדרך למעלה: 40 ניוטון.</span></li>
+      <li><span class="sym">\(-g\)</span><span>נפילה חופשית, \(a = -g\): אז \(N = 0\) ניוטון, וזה מה שראינו כשהכבל נקרע.</span></li>
+    </ul>
+  </div>
+</section>
+
+<!-- 11. PLAYGROUND -->
+<section class="section wrap-wide" data-section="playground" id="playground">
+  <div class="section-head"><span class="section-num">11</span><h2>ארגז החול של הכוחות</h2></div>
+  <p>מסתכלים על ארגז מלמעלה, על רצפה בלי חיכוך. הכבידה והרצפה מתקזזות, ונשארים רק החצים שלנו. אפשר לגרור את הקצה של כל חץ ירוק, והכול עוצר לרגע כדי שיהיה נוח לכוון.</p>
+  <p>החץ הירוק המקווקו הוא <span class="c-force">הכוח השקול</span>, האדום הוא <span class="c-acc">התאוצה</span> והכחול הוא <span class="c-vel">המהירות</span>. בפינה החצים מחוברים ראש לזנב, כמו בפרק 1.</p>
+  <figure class="sim"><canvas id="c-play"></canvas><div class="sim-controls" id="ctl-play"></div></figure>
+  <div class="callout block-gap">
+    <b>שלוש משימות, בלי תשובות:</b>
+    <ol class="quest-list">
+      <li>לגרום לארגז לנוע לכיוון אחד, בזמן שהכוח השקול פונה לכיוון ההפוך. מה קורה למהירות?</li>
+      <li>לסגור משולש עם שלושה כוחות, בזמן שהארגז כבר נע. מה קורה למהירות עכשיו?</li>
+      <li>אותם כוחות, מסה פי 2: מה משתנה, ומה לא?</li>
+    </ol>
+  </div>
+</section>
+
+<!-- 12. GAME -->
+<section class="section wrap-wide" data-section="game" id="game">
+  <div class="section-head"><span class="section-num">12</span><h2>משחקון: המעלית של ניוטון</h2></div>
+  <p>בשלב הראשון מנחשים מה יראו המאזניים. בשלב השני מכוונים את התאוצה כדי לקבל קריאה מסוימת. בשלב השלישי נוהגים במעלית בעצמנו, עם ניוטון בפנים, והוא לא מסכים להימחץ.</p>
+  <p class="muted small">כל שלב שווה עד 3 נקודות, וטעויות מורידות מהן. בכל פעם המספרים חדשים.</p>
+  <figure class="sim"><canvas id="c-game"></canvas><div class="sim-controls" id="ctl-game"></div></figure>
+</section>
+
+<!-- 13. TRAPS -->
+<section class="section wrap" data-section="traps" id="traps">
+  <div class="section-head"><span class="section-num">13</span><h2>מלכודות</h2></div>
+  <p>אלה הטעויות שחוזרות בכל מבחן מכינה. את המלכודת "חיכוך סטטי תמיד שווה ל-\(\mu N\)" כבר פגשנו בסעיף 6. הנה עוד שלוש, כאן, איפה שזה לא עולה נקודות.</p>
+  <div id="pc-trap1">
+    <figure class="sim"><canvas id="c-trap1"></canvas><div class="sim-controls" id="ctl-trap1"></div></figure>
+  </div>
+  <div id="pc-trap2" class="block-gap">
+    <figure class="sim"><canvas id="c-trap2"></canvas><div class="sim-controls" id="ctl-trap2"></div></figure>
+  </div>
+  <div id="pc-trap3" class="block-gap">
+    <figure class="sim"><canvas id="c-trap3"></canvas><div class="sim-controls" id="ctl-trap3"></div></figure>
+  </div>
+  <p class="block-gap">ומה דוחף את ניוטון קדימה? הכפות דוחפות את הקרקע אחורה, והקרקע דוחפת אותן קדימה. זה חיכוך, כמו בסעיף 6: בלעדיו הכפות היו מחליקות אחורה.</p>
+</section>
+
+<!-- 14. EXAM PROBLEMS -->
+<section class="section wrap" data-section="problems" id="problems">
+  <div class="section-head"><span class="section-num">14</span><h2>שאלות מכינה</h2></div>
+  <p>ככה זה נראה במבחן. כדאי לנסות לבד, עם דף ועיפרון ודיאגרמת כוחות. אם נתקעים, יש רמז לפני כל שלב, ואין פה שיפוט.</p>
+  <div id="problems-host"></div>
+</section>
+
+<!-- 15. QUIZ -->
+<section class="section wrap" data-section="quiz" id="quiz">
+  <div class="section-head"><span class="section-num">15</span><h2>בוחן</h2></div>
+  <p>חמש שאלות על הפרק ועוד שתיים שחוזרות לפרקים הקודמים. הציון הטוב ביותר נשמר, ואפשר לנסות שוב כמה פעמים שרוצים.</p>
+  <div id="quiz-host" class="block-gap"></div>
+</section>
+
+<!-- 16. POCKET CARD -->
+<section class="section wrap" data-section="pocket" data-passive id="pocket">
+  <div class="section-head"><span class="section-num">16</span><h2>כרטיס כיס</h2></div>
+  <div class="pocket">
+    <h3>חוקי ניוטון על רגל אחת</h3>
+    <div class="pocket-grid">
+      <div class="pocket-item"><b>חוק 1:</b> שקול אפס, מהירות קבועה. אפשר גם 0 מ/ש, ואפשר גם 100 מ/ש.</div>
+      <div class="pocket-item"><b>חוק 2:</b> \(\sum F = ma\), לכל גוף בנפרד. <span class="c-acc">התאוצה</span> בכיוון <span class="c-force">השקול</span>.</div>
+      <div class="pocket-item"><b>חוק 3:</b> \(F_{AB} = -F_{BA}\). הם על גופים שונים, ולכן לא מתבטלים.</div>
+      <div class="pocket-item"><b>משקל:</b> \(W = mg\), בניוטון. <b>מסה:</b> בק"ג, ולא משתנה.</div>
+      <div class="pocket-item"><b>נורמלי:</b> \(N\) יוצא מחוק שני בניצב למשטח. לא תמיד \(mg\).</div>
+      <div class="pocket-item"><b>חיכוך:</b> \(f_s \le \mu_s N\), \(f_k = \mu_k N\).</div>
+      <div class="pocket-item"><b>מדרון:</b> \(N = mg\cos\theta\), \(\tan\theta_{\text{slip}} = \mu_s\). בהחלקה במורד: \(a = g(\sin\theta - \mu\cos\theta)\).</div>
+      <div class="pocket-item"><b>גלגלת:</b> חוק שני לכל גוף, ומחברים. בשתי משקולות תלויות, \(T\) נמצא בין שני המשקלים.</div>
+      <div class="pocket-item"><b>מעלית:</b> \(N = m(g + a)\), עם \(a\) חיובי למעלה. כבל קרוע: 0 ניוטון.</div>
+    </div>
+    <div class="pocket-quote">"כוח לא שומר על תנועה, הוא משנה אותה. החיכוך עבד עלינו אלפי שנים."</div>
+  </div>
+</section>
+
+</main>
+
+<div data-chapter-nav></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.11/katex.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.11/contrib/auto-render.min.js"></script>
+<script src="../js/core/fmt.js"></script>
+<script src="../js/core/vec.js"></script>
+<script src="../js/core/progress.js"></script>
+<script src="../js/core/canvas.js"></script>
+<script src="../js/core/loop.js"></script>
+<script src="../js/core/mascot.js"></script>
+<script src="../js/core/ui.js"></script>
+<script src="../js/sims/ch02/plot.js"></script>
+<script src="../js/sims/ch04/kit.js"></script>
+<script src="../js/sims/ch04/inertia.js"></script>
+<script src="../js/sims/ch04/crate-lanes.js"></script>
+<script src="../js/sims/ch04/force-sandbox.js"></script>
+<script src="../js/sims/ch04/fbd.js"></script>
+<script src="../js/sims/ch04/pairs.js"></script>
+<script src="../js/sims/ch04/friction-pull.js"></script>
+<script src="../js/sims/ch04/incline.js"></script>
+<script src="../js/sims/ch04/pulley.js"></script>
+<script src="../js/sims/ch04/elevator.js"></script>
+<script src="../js/sims/ch04/elevator-game.js"></script>
+<script>
+(function () {
+  'use strict';
+  const CH = '04';
+  const U = PHY.ui;
+  const $ = (id) => document.getElementById(id);
+  const GUESS = 'הניחוש שלך';
+  const TRAP = 'מלכודת';
+
+  /* ---------- 1. The puck ---------- */
+  const puck = PHY.sims.inertia($('c-puck'), $('ctl-puck'), { mode: 'puck' });
+  puck.start();
+  U.PredictCard($('pc-puck'), {
+    chapter: CH, id: 'puck', section: 'hook', tag: GUESS,
+    question: `במסלול בלי החיכוך, אחרי שהיד עזבה: מה צריך לקרות כדי שניוטון ימשיך לנוע ב-4 מ/ש?`,
+    options: [
+      { text: `חייב כוח שימשיך לדחוף אותו. בלי כוח אין תנועה, רואים את זה כל יום.`, why: `זו התחושה של כולם, וגם של אריסטו, והיא החזיקה מעמד אלפי שנים. היא נשמעת הגיונית, כי בעולם שלנו תמיד יש חיכוך שגונב מהירות.` },
+      { text: `כלום. אם שום דבר לא מפריע לו, הוא פשוט ממשיך.`, correct: true, why: `בדיוק. במסלול בלי חיכוך הוא יצא מהמסך באותה מהירות שבה התחיל.` },
+      { text: `כלום, אבל הוא יאט לאט, כי הדחיפה נגמרת לו.`, why: `כאילו דחיפה היא דלק במיכל. אבל הדחיפה לא נשארת בתוכו. מה שנשאר אחריה הוא רק מהירות, והיא לא מתכלה מעצמה.` },
+      { text: `הוא יעצור כשיימאס לו.`, why: `בדקנו. נמאס לו עוד לפני ההתחלה, והוא ממשיך בכל זאת.` },
+    ],
+    onRun: () => puck.play(),
+    steps: [
+      { hint: `מה היה זהה בכל ארבעת המסלולים, ומה היה שונה?`,
+        work: `הדחיפה הייתה זהה, וכולם יצאו ב-4 מ/ש. רק המשטח השתנה: ניוטון עצר אחרי 1.6 מ' על שטיח, אחרי 4 מ' על עץ ואחרי 8 מ' על קרח.` },
+      { hint: `ככל שהחיכוך קטן, הדרך עד העצירה גדלה. מה צפוי כשהחיכוך הוא אפס בדיוק?`,
+        work: `אין מה שיעצור אותו, והדרך לא נגמרת. ראינו אותו יוצא מהמסך, עדיין ב-4 מ/ש.` },
+      { hint: `אז מה בעצם עצר אותו על השטיח: מחסור בדחיפה, או כוח שפעל נגדו?`,
+        work: `כוח שפעל נגדו, החיכוך. בלי כוח המהירות לא משתנה, ולכן התשובה: לא צריך כלום. כוח לא מחזיק תנועה, הוא משנה אותה.` },
+    ],
+    sayRight: 'נכון. עכשיו שאלה אמיתית: מישהו יודע איך עוצרים?',
+    sayWrong: 'גם אני הייתי בטוח. גם אריסטו, אם זה מנחם.',
+  });
+
+  const bus = PHY.sims.inertia($('c-bus'), $('ctl-bus'), { mode: 'bus' });
+  bus.start();
+
+  /* ---------- 2. Law 2 ---------- */
+  const law2 = PHY.sims.crateLanes($('c-law2'), $('ctl-law2'), { mode: 'push', F: 10, m: 2, locked: true });
+  law2.start();
+  U.PredictCard($('pc-law2'), {
+    chapter: CH, id: 'law2', section: 'law2', tag: GUESS,
+    question: `אותו כוח, 10 ניוטון, על 2 ק"ג ועל 4 ק"ג. מה התאוצה של הכבד לעומת הקל?`,
+    options: [
+      { text: `אותה תאוצה. הכוח אותו כוח, אז גם התוצאה.`, why: `הכוח באמת זהה, אבל אצל הכבד הוא צריך להזיז פי 2 חומר. אותו מנוע, ועגלה מלאה.` },
+      { text: `חצי. מסה כפולה, תאוצה חצי.`, correct: true, why: `בדיוק. באותו זמן הכבד גם עבר חצי דרך.` },
+      { text: `רבע. מסה כפולה זה הרבה יותר קשה.`, why: `תחושה סבירה, כי הרבה דברים בפיזיקה הם ריבועיים. כאן לא: הקשר בין מסה לתאוצה הוא פשוט יחס הפוך.` },
+      { text: `כפולה. לכבד יש יותר תנופה.`, why: `תנופה יש למה שכבר נע. בהתחלה שניהם עומדים, וקשה יותר להזיז את הכבד.` },
+    ],
+    onRun: async () => {
+      law2.setParam('locked', true);
+      law2.setParam('F', 10);
+      law2.setParam('m', 2);
+      await law2.play();
+      law2.setParam('locked', false);
+    },
+    steps: [
+      { hint: `איזו תאוצה ראינו על כל ארגז בסימולציה?`,
+        work: `5 מ/ש² על 2 ק"ג, ו-2.5 מ/ש² על 4 ק"ג. כשהקל עבר 16 מ', הכבד עבר 8 מ'.` },
+      { hint: `איך מקבלים את שני המספרים האלה מהכוח ומהמסה?`,
+        work: `10 ניוטון חלקי 2 ק"ג הם 5 מ/ש². 10 ניוטון חלקי 4 ק"ג הם 2.5 מ/ש². כלומר \\(a = F/m\\).` },
+      { hint: `ומה זה אומר על מסה כפולה?`,
+        work: `כשהמסה במכנה מוכפלת, התאוצה נחצית. בלי שבר כותבים את זה \\(F = ma\\), והתשובה: חצי מהתאוצה, 2.5 מ/ש² במקום 5 מ/ש².` },
+    ],
+    explanation: `<p><b>עכשיו תורך:</b> הסליידרים פתוחים. מה קורה לתאוצה כשמכפילים את הכוח ומשאירים את המסה?</p>`,
+    sayRight: 'בדיוק. לכן אני שומר על מסה בריאה: קשה יותר להזיז אותי.',
+    sayWrong: 'גם אני ניחשתי ככה. הארגז לא התרשם.',
+  });
+
+  /* ---------- 3. Mass and weight ---------- */
+  const fall = PHY.sims.crateLanes($('c-weight'), $('ctl-weight'), { mode: 'fall', m2: 3, locked: true });
+  fall.start();
+  U.PredictCard($('pc-weight'), {
+    chapter: CH, id: 'fall', section: 'weight', tag: GUESS,
+    question: `על הכבד פועל כוח גדול פי 3. מה יקרה?`,
+    options: [
+      { text: `הכבד נוחת הרבה לפני. כוח פי 3, תאוצה פי 3.`, why: `הכוח באמת גדול פי 3. אבל גם המסה שהוא צריך להאיץ גדולה פי 3, והחוק השני מחלק ביניהם.` },
+      { text: `נוחתים יחד.`, correct: true, why: `בדיוק. כוח פי 3, מסה פי 3, ותאוצה זהה.` },
+      { text: `הקל נוחת קודם, כי קל יותר להזיז אותו.`, why: `קל יותר להזיז אותו, נכון. אבל גם מושכים אותו פחות, ושני הדברים מתקזזים בדיוק.` },
+    ],
+    onRun: async () => {
+      fall.setParam('locked', true);
+      fall.setParam('m2', 3);
+      await fall.play();
+      fall.setParam('locked', false);
+    },
+    steps: [
+      { hint: `מה הכוח על כל ארגז?`,
+        work: `הכבידה מושכת כל ק"ג ב-10 ניוטון. על 1 ק"ג היא מושכת ב-10 ניוטון, ועל 3 ק"ג ב-30 ניוטון.` },
+      { hint: `מה נותן החוק השני לכל אחד מהם?`,
+        work: `\\(a = F/m\\). 10 ניוטון חלקי 1 ק"ג הם 10 מ/ש². 30 ניוטון חלקי 3 ק"ג הם גם 10 מ/ש².` },
+      { hint: `ומה יוצא אם כותבים את זה לגוף בכל מסה \\(m\\)?`,
+        work: `\\(a = mg/m = g\\): המסה מצטמצמת. לכן הם נוחתים יחד, אחרי 2 ש'. זה הלמה שהבטחנו בפרק 2.` },
+    ],
+    explanation: `<p><b>עכשיו תורך:</b> לשנות את מסת הארגז הגדול ולהפיל שוב. הזמן לא זז.</p>`,
+    sayRight: 'ידעת. פרק 2 מסר ד"ש.',
+    sayWrong: 'גם אריסטו הימר על הכבד. חברה טובה.',
+  });
+
+  /* ---------- 4. Normal force ---------- */
+  const press = PHY.sims.fbd($('c-press'), $('ctl-press'), { mode: 'press', locked: true });
+  press.start();
+  U.PredictCard($('pc-press'), {
+    chapter: CH, id: 'press', section: 'normal', tag: GUESS,
+    question: `כבידה של 50 ניוטון, וכף שלוחצת למטה ב-20 ניוטון. מה יראו המאזניים?`,
+    options: [
+      { text: `50 ניוטון. מאזניים מודדים משקל, והמשקל שלו לא השתנה.`, why: `המשקל שלו באמת לא השתנה. אבל מאזניים לא מרגישים "משקל". הם מרגישים כמה לוחצים עליהם.` },
+      { text: `70 ניוטון.`, correct: true, why: `בדיוק. המאזניים נושאים עכשיו גם את החתול וגם את הכף.` },
+      { text: `30 ניוטון. הכף לוקחת חלק מהמשקל.`, why: `כף שמרימה הייתה לוקחת חלק מהמשקל. כף שלוחצת רק מוסיפה עליו.` },
+    ],
+    onRun: async () => {
+      press.setParam('locked', true);
+      press.setParam('hand', 0);
+      await press.play();
+      press.setParam('locked', false);
+    },
+    steps: [
+      { hint: `אילו כוחות פועלים על ניוטון, ולאן?`,
+        work: `כבידה של 50 ניוטון למטה, הכף 20 ניוטון למטה, והכוח מהמאזניים, \\(N\\), למעלה.` },
+      { hint: `ניוטון לא זז. מה זה אומר על הכוח השקול עליו?`,
+        work: `השקול אפס, לפי החוק הראשון. לכן \\(N\\) מאזן את שני האחרים, 50 ניוטון ועוד 20 ניוטון.` },
+      { hint: `ומה בעצם מראים המאזניים?`,
+        work: `הם מראים כמה הם דוחפים, כלומר את \\(N\\): 70 ניוטון.` },
+    ],
+    explanation: `<p><b>עכשיו תורך:</b> הסליידר פתוח. מה קורה ל-\\(N\\) כשהכף מרימה במקום ללחוץ?</p>`,
+    sayRight: 'נכון. ועכשיו אפשר להוריד לי את הכף מהראש?',
+    sayWrong: 'גם אני חשבתי שהמשקל שלי הוא מה שקובע. הכף חושבת אחרת.',
+  });
+
+  const fbd = PHY.sims.fbd($('c-fbd'), $('ctl-fbd'), {
+    mode: 'builder',
+    onScene(name, n) {
+      if (n === 4) { PHY.mascot.say('ארבע דיאגרמות. עכשיו אפשר לרדת מהמדרון?', 'happy'); U.burst($('c-fbd'), 22); }
+    },
+  });
+  fbd.start();
+
+  /* ---------- 5. Law 3 ---------- */
+  const law3 = PHY.sims.pairs($('c-law3'), $('ctl-law3'), { mode: 'push' });
+  law3.start();
+  U.PredictCard($('pc-law3'), {
+    chapter: CH, id: 'law3', section: 'law3', tag: GUESS,
+    question: `בזמן הדחיפה, מי מרגיש כוח גדול יותר?`,
+    options: [
+      { text: `ניוטון הקטן. בטוח שהוא קיבל יותר, תראו איך הוא עף.`, why: `הוא באמת עף מהר יותר, פי 4. אבל זה בגלל המסה שלו ולא בגלל הכוח. אותו כוח על פחות מסה נותן יותר תאוצה.` },
+      { text: `הדוד הגדול. הוא חזק יותר, אז הוא גם מרגיש יותר.`, why: `חוזק קובע כמה כוח שניהם יכולים לייצר יחד, לא מי מרגיש יותר. מה שהדוד נותן, הוא גם מקבל.` },
+      { text: `אותו כוח בדיוק.`, correct: true, why: `בדיוק. 40 ניוטון על כל אחד, והתוצאה שונה בגלל המסה.` },
+    ],
+    onRun: async () => {
+      law3.setParam('locked', true);
+      law3.setParam('big', 20);
+      await law3.play();
+      law3.setParam('locked', false);
+    },
+    steps: [
+      { hint: `כשדוחפים מישהו, מי מרגיש את הדחיפה?`,
+        work: `שניהם. אי אפשר לגעת בלי שיגעו בנו. זה כוח אחד עם שני קצוות: 40 ניוטון על הקטן ו-40 ניוטון על הגדול.` },
+      { hint: `אם הכוחות שווים, למה התנועה כל כך שונה?`,
+        work: `בגלל המסה. \\(a = F/m\\): על הקטן 40 ניוטון חלקי 5 ק"ג הם 8 מ/ש², ועל הגדול 40 ניוטון חלקי 20 ק"ג הם 2 מ/ש². יחס של 4 ל-1.` },
+      { hint: `מה המהירות של כל אחד כשהדחיפה נגמרת, אחרי 0.5 ש'?`,
+        work: `\\(v = at\\): 4 מ/ש לקטן ו-1 מ/ש לגדול. שונה מאוד, אבל התשובה לשאלה נשארת: אותו כוח בדיוק.` },
+    ],
+    explanation: `<p><b>עכשיו תורך:</b> לשנות את מסת החתול הגדול. התאוצות משתנות, והחצים הירוקים נשארים שווים.</p>`,
+    sayRight: 'נכון. הוא הרגיש בדיוק כמוני. רק שאני זה שעף.',
+    sayWrong: 'גם אני הייתי בטוח שאני קיבלתי יותר. אני עדיין בטוח, אבל החצים לא.',
+  });
+
+  /* ---------- 6. Friction ---------- */
+  const fric = PHY.sims.frictionPull($('c-friction'), $('ctl-friction'), { locked: true });
+  fric.start();
+  U.PredictCard($('pc-friction'), {
+    chapter: CH, id: 'friction', section: 'friction', tag: TRAP,
+    question: `\\(\\mu_s = 0.5\\), \\(N = 100\\) ניוטון, ומושכים ב-30 ניוטון. הארגז לא זז. כמה כוח החיכוך?`,
+    options: [
+      { text: `50 ניוטון. \\(\\mu N\\), יש נוסחה.`, why: `הטעות הכי נפוצה בפרק. אם החיכוך היה 50 ניוטון נגד משיכה של 30 ניוטון, השקול היה 20 ניוטון אחורה, והארגז היה זוחל אחורה מעצמו.` },
+      { text: `30 ניוטון.`, correct: true, why: `בדיוק. החיכוך נותן בדיוק מה שצריך, ולא יותר.` },
+      { text: `0 ניוטון. הארגז לא זז, אז אין כוח.`, why: `הוא לא זז כי השקול אפס, לא כי אין כוחות. משיכה של 30 ניוטון חייבת משהו שיעמוד מולה.` },
+      { text: `20 ניוטון, ההפרש בין 50 ניוטון ל-30 ניוטון.`, why: `נשמע חכם, אבל אז 30 ניוטון קדימה נגד 20 ניוטון אחורה היו מזיזים את הארגז, והוא לא זז.` },
+    ],
+    onRun: async () => {
+      fric.setParam('locked', true);
+      await fric.play({ to: 30 });
+      fric.setParam('locked', false);
+    },
+    steps: [
+      { hint: `הארגז עומד. מה אומר החוק הראשון על הכוח השקול עליו?`,
+        work: `השקול אפס, וזה נכון גם בכיוון האופקי וגם באנכי.` },
+      { hint: `מה חייב החיכוך להיות כדי שהשקול האופקי יהיה אפס?`,
+        work: `הוא חייב להיות נגד המשיכה ושווה לה בגודלו. כלומר 30 ניוטון אחורה.` },
+      { hint: `אז מה בעצם אומר המספר \\(\\mu_s N\\)?`,
+        work: `\\(\\mu_s N = 0.5 \\cdot 100 = 50\\) ניוטון הוא רק התקרה, הכי הרבה שחיכוך סטטי יכול לתת. עד שם הוא נותן בדיוק מה שצריך, וכאן זה 30 ניוטון.` },
+    ],
+    explanation: `<p><b>עכשיו תורך:</b> לגרור את הסליידר לאט עד 50 ניוטון, ועוד טיפה. מה קורה לגרף ולארגז?</p>`,
+    sayRight: 'נכון. החיכוך לא מתאמץ יותר ממה שצריך. גם אני לא.',
+    sayWrong: 'גם אני הצבתי בנוסחה בלי לחשוב. הארגז לא זז מזה.',
+  });
+
+  /* ---------- 7. Incline ---------- */
+  const incline = PHY.sims.incline($('c-incline'), $('ctl-incline'), { two: true, angle: 37, mu: 0.25, locked: true });
+  incline.start();
+  U.PredictCard($('pc-incline'), {
+    chapter: CH, id: 'incline', section: 'incline', tag: GUESS,
+    question: `משחררים את שני הארגזים יחד, מאותו מקום. מי מגיע ראשון למטה?`,
+    options: [
+      { text: `הכבד. הכבידה מושכת אותו חזק פי 5.`, why: `נכון, פי 5. אבל גם החיכוך עליו גדול פי 5, וגם המסה שצריך להאיץ. הכול מצטמצם.` },
+      { text: `הקל. על הכבד יש יותר חיכוך.`, why: `יש עליו יותר חיכוך, נכון. אבל יש גם יותר כוח במורד, באותו יחס.` },
+      { text: `מגיעים יחד.`, correct: true, why: `בדיוק. המסה מצטמצמת כאן כמו בנפילה.` },
+    ],
+    onRun: async () => {
+      incline.setParam('locked', true);
+      incline.setParam('angle', 37);
+      incline.setParam('mu', 0.25);
+      await incline.play({ two: true });
+      incline.setParam('locked', false);
+    },
+    steps: [
+      { hint: `נפרק את הכבידה של הארגז הכבד לצל לאורך המדרון ולצל בניצב אליו. כמה יוצא?`,
+        work: `\\(mg = 100\\) ניוטון. לאורך המדרון \\(100 \\cdot 0.6 = 60\\) ניוטון, ובניצב \\(100 \\cdot 0.8 = 80\\) ניוטון.` },
+      { hint: `מה \\(N\\), ומה החיכוך?`,
+        work: `בניצב למדרון אין תנועה, אז \\(N = 80\\) ניוטון. החיכוך \\(0.25 \\cdot 80 = 20\\) ניוטון, במעלה המדרון.` },
+      { hint: `מה התאוצה של הכבד?`,
+        work: `\\(a = F/m\\). השקול הוא 60 ניוטון פחות 20 ניוטון, 40 ניוטון, על 10 ק"ג: 4 מ/ש².` },
+      { hint: `ואיך זה יוצא לארגז של 2 ק"ג?`,
+        work: `12 ניוטון פחות 4 ניוטון הם 8 ניוטון, על 2 ק"ג: גם 4 מ/ש². בכללי \\(a = g(\\sin\\theta - \\mu\\cos\\theta)\\), בלי \\(m\\). לכן הם מגיעים יחד.` },
+    ],
+    explanation: `<p><b>עכשיו תורך:</b> הסליידרים פתוחים, עם ארגז אחד וכל הצללים. להוריד קודם את הזווית ל-0°, להעלות אותה לאט ולמצוא מתי הוא מתחיל להחליק, ואז לשנות מסה ולבדוק שוב.</p>`,
+    sayRight: 'תיקו! ואני התערבתי על הכבד.',
+    sayWrong: 'גם אני הימרתי. הפסדתי תפוח.',
+  });
+
+  /* ---------- 8. Pulley ---------- */
+  const pulley = PHY.sims.pulley($('c-atwood'), $('ctl-atwood'), { mode: 'atwood', m1: 3, m2: 1, M: 4, m: 1, locked: true });
+  pulley.start();
+  U.PredictCard($('pc-atwood'), {
+    chapter: CH, id: 'atwood', section: 'pulley', tag: GUESS,
+    question: `3 ק"ג בצד אחד ו-1 ק"ג בצד השני. מה יראה מד הכוח על החבל, בזמן התנועה?`,
+    options: [
+      { text: `30 ניוטון. הכבד תלוי עליו, וזה המשקל שלו.`, why: `ב-30 ניוטון הכוחות על הכבד היו שווים, והוא לא היה מאיץ בכלל. אבל הוא יורד ומאיץ, ולכן החבל מושך אותו בפחות.` },
+      { text: `10 ניוטון. החבל מושך רק כמה שהקל שוקל.`, why: `ב-10 ניוטון הקל לא היה מאיץ למעלה. הוא עולה, אז החבל מושך אותו ביותר ממשקלו.` },
+      { text: `20 ניוטון. ממוצע, פשוט והוגן.`, why: `ממוצע נשמע הוגן, אבל הכבד והקל מקבלים אז תאוצות שונות, והחבל היה צריך להתארך. חבל לא משתתף בזה.` },
+      { text: `15 ניוטון.`, correct: true, why: `בדיוק. מעט מאוד אנשים מנחשים את זה בלי לחשב.` },
+    ],
+    onRun: async () => {
+      pulley.setParam('locked', true);
+      pulley.setParam('mode', 'atwood');
+      pulley.setParam('m1', 3);
+      pulley.setParam('m2', 1);
+      await pulley.play();
+      pulley.setParam('locked', false);
+    },
+    steps: [
+      { hint: `נכתוב את החוק השני לכבד. אילו כוחות פועלים עליו, ולאן הוא מאיץ?`,
+        work: `הוא מאיץ למטה: 30 ניוטון למטה ו-\\(T\\) למעלה. לכן \\(30 - T = 3a\\).` },
+      { hint: `ומה עם הקל? האם התאוצה שלו אחרת?`,
+        work: `הוא מאיץ למעלה: \\(T - 10 = 1 \\cdot a\\). זו אותה \\(a\\), כי שניהם קשורים באותו חבל.` },
+      { hint: `איך נפטרים מ-\\(T\\)?`,
+        work: `מחברים את שתי המשוואות: \\(30 - 10 = 4a\\), ולכן \\(a = 5\\) מ/ש².` },
+      { hint: `עכשיו מציבים בחזרה. מה יוצא ל-\\(T\\)?`,
+        work: `\\(T - 10 = 1 \\cdot 5\\), ולכן \\(T = 15\\) ניוטון. לא 30 ניוטון, לא 10 ניוטון, ולא הממוצע שלהם.` },
+    ],
+    explanation: `<p><b>עכשיו תורך:</b> לשנות את המשקולות, ולעבור לשולחן. מה קורה כשהמסות שוות?</p>`,
+    sayRight: 'יפה. אף אחד לא מנחש 15 ניוטון בטעות.',
+    sayWrong: 'גם אני ניחשתי. החבל לא מתחשב בתחושות.',
+  });
+
+  /* ---------- 9. Elevator ---------- */
+  const elev = PHY.sims.elevator($('c-elevator'), $('ctl-elevator'), { locked: true });
+  elev.start();
+  U.PredictCard($('pc-elevator'), {
+    chapter: CH, id: 'elevator', section: 'elevator', tag: GUESS,
+    question: `הכבל נקרע, והמעלית וניוטון נופלים יחד. מה יראו המאזניים בזמן הנפילה?`,
+    options: [
+      { text: `50 ניוטון. הוא שוקל מה שהוא שוקל.`, why: `כוח הכבידה עליו באמת לא השתנה, 50 ניוטון. אבל המאזניים לא מודדים אותו. הם מודדים כמה הם דוחפים.` },
+      { text: `יותר מ-50 ניוטון. הוא נופל, הכול נלחץ.`, why: `התחושה הזאת מגיעה בסוף, בבלימה: שם הקריאה קפצה ל-100 ניוטון. בזמן הנפילה עצמה אין מה שילחץ.` },
+      { text: `פחות מ-50 ניוטון, אבל לא אפס. משהו בכל זאת נשאר.`, why: `זו תאוצה חלקית, כמו בבלימה בדרך למעלה. בנפילה חופשית התאוצה היא כל ה-\\(g\\), ואז לא נשאר כלום.` },
+      { text: `0 ניוטון.`, correct: true, why: `בדיוק. המאזניים נופלים באותו קצב, וניוטון כבר לא לוחץ עליהם.` },
+    ],
+    onRun: async () => {
+      elev.setParam('locked', true);
+      await elev.play();
+      elev.setParam('locked', false);
+    },
+    steps: [
+      { hint: `נכתוב את החוק השני לניוטון, עם כיוון חיובי למעלה. אילו כוחות יש?`,
+        work: `\\(N\\) למעלה ו-\\(mg\\) למטה: \\(N - mg = ma\\), ולכן \\(N = m(g + a)\\).` },
+      { hint: `מה זה נותן בקטע שהמעלית מאיצה למעלה ב-2 מ/ש², ובקטע שהיא מאטה?`,
+        work: `\\(a = +2\\) מ/ש²: \\(N = 5 \\cdot 12 = 60\\) ניוטון. \\(a = -2\\) מ/ש²: \\(N = 5 \\cdot 8 = 40\\) ניוטון. במהירות קבועה: 50 ניוטון, כמו שראינו בגרף.` },
+      { hint: `מה \\(a\\) כשהכבל נקרע, ומה יוצא ל-\\(N\\)?`,
+        work: `נפילה חופשית: \\(a = -10\\) מ/ש². לכן \\(N = 5 \\cdot (10 - 10) = 0\\) ניוטון. המאזניים נופלים באותו קצב כמו הרגליים, ולכן הרגליים לא לוחצות עליהם.` },
+    ],
+    explanation: `<p><b>עכשיו תורך:</b> הסליידר והכפתורים פתוחים. למצוא תאוצה שבה המאזניים מראים 75 ניוטון.</p>`,
+    sayRight: 'אפס ניוטון. הרגע הכי קל בחיי, וגם הכי גרוע.',
+    sayWrong: 'גם אני חשבתי שאשקול הרבה. בפועל המאזניים הראו אפס, וצרחתי.',
+  });
+
+  /* ---------- 11. Playground ---------- */
+  const sandbox = PHY.sims.forceSandbox($('c-play'), $('ctl-play'), { chapter: CH, section: 'playground' });
+  sandbox.start();
+
+  /* ---------- 12. Game ---------- */
+  const game = PHY.sims.elevatorGame($('c-game'), $('ctl-game'), { chapter: CH, section: 'game' });
+  game.start();
+
+  /* ---------- 13. Traps ---------- */
+  const steady = PHY.sims.crateLanes($('c-trap1'), $('ctl-trap1'), { mode: 'steady' });
+  steady.start();
+  U.PredictCard($('pc-trap1'), {
+    chapter: CH, id: 'trap-steady', section: 'traps', tag: TRAP,
+    question: `ארגז של 10 ק"ג כבר נע ב-2 מ/ש, והחיכוך עליו 20 ניוטון. בכמה צריך למשוך כדי שימשיך בדיוק ב-2 מ/ש?`,
+    options: [
+      { text: `יותר מ-20 ניוטון. אם לא מנצחים את החיכוך, הוא נעצר.`, why: `כדי להאיץ, כן. אבל הוא כבר נע, ואין צורך להוסיף לו מהירות. ב-25 ניוטון השקול 5 ניוטון, והוא רק הולך ומאיץ.` },
+      { text: `בדיוק 20 ניוטון.`, correct: true, why: `בדיוק. משיכה שווה לחיכוך, שקול אפס, ומהירות קבועה.` },
+      { text: `אפס. החוק הראשון אומר שלא צריך כוח.`, why: `החוק הראשון מדבר על שקול אפס, לא על אפס כוחות. יש כאן חיכוך, ובלי משיכה הוא יעצור את הארגז.` },
+    ],
+    onRun: () => steady.play(),
+    steps: [
+      { hint: `מהירות קבועה. מה זה אומר על התאוצה?`,
+        work: `\\(a = 0\\) מ/ש². המהירות לא משתנה, וזה בדיוק מה שתאוצה מודדת.` },
+      { hint: `ומה זה אומר על הכוח השקול?`,
+        work: `\\(\\sum F = ma = 0\\). כלומר משיכה פחות חיכוך שווה אפס, ולכן המשיכה שווה לחיכוך.` },
+      { hint: `מה ראינו בכל אחד משלושת הנתיבים?`,
+        work: `ב-25 ניוטון הארגז מאיץ, וב-15 ניוטון הוא מאט ונעצר. רק ב-20 ניוטון הוא נשאר ב-2 מ/ש. התשובה: 20 ניוטון.` },
+    ],
+    sayRight: 'נכון. שקול אפס, אותה מהירות. הפרק נקלט.',
+    sayWrong: 'גם אני משכתי יותר מדי. הארגז התחיל לברוח.',
+  });
+
+  const pull = PHY.sims.fbd($('c-trap2'), $('ctl-trap2'), { mode: 'pull', locked: true });
+  pull.start();
+  U.PredictCard($('pc-trap2'), {
+    chapter: CH, id: 'trap-normal', section: 'traps', tag: TRAP,
+    question: `ארגז של 10 ק"ג על מאזניים. חבל מושך אותו ב-50 ניוטון בזווית של 37° מעל הרצפה, והוא לא זז. מה יראו המאזניים?`,
+    options: [
+      { text: `100 ניוטון. \\(N = mg\\), זו הנוסחה.`, why: `\\(N = mg\\) נכון רק כשאין שום כוח אנכי אחר. כאן החבל מרים קצת, והרצפה יכולה להרפות.` },
+      { text: `70 ניוטון.`, correct: true, why: `בדיוק. הצל האנכי של החבל נושא 30 ניוטון, ולמאזניים נשאר השאר.` },
+      { text: `50 ניוטון. החבל מרים 50 ניוטון.`, why: `רק הצל האנכי של החבל מרים, ולא כל 50 הניוטון. שאר הכוח שלו מושך הצידה.` },
+    ],
+    onRun: async () => {
+      pull.setParam('locked', true);
+      pull.setParam('rope', 0);
+      await pull.play();
+      pull.setParam('locked', false);
+    },
+    steps: [
+      { hint: `נפרק את החבל לשני צללים, כמו בפרק 1. כמה מרים וכמה מושך הצידה?`,
+        work: `כלפי מעלה \\(50 \\cdot \\sin 37^\\circ = 50 \\cdot 0.6 = 30\\) ניוטון. הצידה \\(50 \\cdot 0.8 = 40\\) ניוטון, ואותם מאזן החיכוך.` },
+      { hint: `הארגז לא זז. מה השקול האנכי?`,
+        work: `השקול האנכי אפס: \\(N\\) ועוד 30 ניוטון של החבל מאזנים 100 ניוטון של כבידה.` },
+      { hint: `מה יוצא ל-\\(N\\), וזה מה שרואים במאזניים?`,
+        work: `\\(N = 70\\) ניוטון, וזו הקריאה. \\(N\\) הוא מה שצריך, לא תמיד \\(mg\\).` },
+    ],
+    explanation: `<p><b>עכשיו תורך:</b> הסליידר פתוח. בכמה צריך למשוך כדי שהמאזניים יראו 64 ניוטון?</p>`,
+    sayRight: 'בול. החבל לקח חלק מהעבודה מהרצפה.',
+    sayWrong: 'גם אני הנחתי על אוטומט שהרצפה נושאת הכול. לא רק אני.',
+  });
+
+  const sled = PHY.sims.pairs($('c-trap3'), $('ctl-trap3'), { mode: 'sled' });
+  sled.start();
+  U.PredictCard($('pc-trap3'), {
+    chapter: CH, id: 'trap-pair', section: 'traps', tag: TRAP,
+    question: `ניוטון מושך מזחלת בחבל. לפי החוק השלישי, המזחלת מושכת אותו אחורה באותו כוח בדיוק. אז איך הם בכלל זזים?`,
+    options: [
+      { text: `ניוטון מושך קצת יותר חזק ממה שהמזחלת מושכת אותו.`, why: `זה הכי מפתה, והחבל לא מסכים. שני הכוחות שווים תמיד, גם כשהכול מאיץ.` },
+      { text: `הכוחות מתבטלים, ולכן הם לא אמורים לזוז. החוק השלישי פשוט לא חל על דברים שנעים.`, why: `הוא חל תמיד. והם לא מתבטלים, כי כל אחד מהם פועל על גוף אחר.` },
+      { text: `הכוחות פועלים על גופים שונים. לכל גוף יש שקול משלו, והוא שקובע.`, correct: true, why: `בדיוק. כדי לדעת מי מאיץ, מסתכלים על גוף אחד ועל כל הכוחות שעליו.` },
+    ],
+    onRun: () => sled.play(),
+    steps: [
+      { hint: `על איזה גוף פועל כל אחד משני הכוחות?`,
+        work: `40 ניוטון של החבל על המזחלת, ו-40 ניוטון של החבל על ניוטון. גופים שונים, ולכן לא מחברים אותם.` },
+      { hint: `מה השקול על המזחלת?`,
+        work: `40 ניוטון קדימה ו-20 ניוטון חיכוך אחורה: שקול 20 ניוטון. על 20 ק"ג זו תאוצה של 1 מ/ש².` },
+      { hint: `ומה דוחף את ניוטון קדימה?`,
+        work: `הקרקע, בחיכוך עם הכפות: 45 ניוטון קדימה. פחות 40 ניוטון של החבל, שקול 5 ניוטון, ועל 5 ק"ג גם זו תאוצה של 1 מ/ש². הם זזים כי לכל גוף יש שקול משלו.` },
+    ],
+    sayRight: 'בדיוק. למזחלת השקול שלה, ולי השקול שלי.',
+    sayWrong: 'גם אני הסתבכתי. ובכל זאת סחבתי אותה.',
+  });
+
+  /* ---------- 14. Exam problems ---------- */
+  const probs = $('problems-host');
+  U.Problem(probs, {
+    chapter: CH, section: 'problems', tag: 'שאלה 1: מדרון',
+    text: `ארגז של 5 ק"ג משתחרר ממנוחה על מדרון של 37°. מקדם החיכוך הקינטי \\(\\mu_k = 0.25\\). נתון \\(\\sin 37^\\circ = 0.6\\), \\(\\cos 37^\\circ = 0.8\\), \\(g = 10\\) מ/ש². מה התאוצה, ומה המהירות והדרך אחרי 2 ש'?`,
+    fields: [
+      { label: 'א. התאוצה', answer: 4, unit: 'מ/ש²' },
+      { label: 'ב. המהירות', answer: 8, unit: 'מ/ש' },
+      { label: 'ג. הדרך', answer: 8, unit: 'מ\'' },
+    ],
+    steps: [
+      { hint: `נצייר דיאגרמת כוחות. אילו שלושה כוחות פועלים על הארגז?`,
+        work: `כבידה \\(mg = 50\\) ניוטון למטה, כוח נורמלי \\(N\\) בניצב למדרון, וחיכוך \\(f\\) במעלה המדרון.` },
+      { hint: `נפרק את הכבידה: צל לאורך המדרון, וצל בניצב אליו.`,
+        work: `לאורך המדרון \\(50 \\cdot 0.6 = 30\\) ניוטון, במורד. בניצב \\(50 \\cdot 0.8 = 40\\) ניוטון, אל תוך המדרון.` },
+      { hint: `בניצב למדרון אין תאוצה. מה \\(N\\), ומה החיכוך?`,
+        work: `\\(N = 40\\) ניוטון, ולכן \\(f = \\mu_k N = 0.25 \\cdot 40 = 10\\) ניוטון.` },
+      { hint: `נכתוב את החוק השני לאורך המדרון.`,
+        work: `\\(30 - 10 = 5a\\), ולכן \\(a = 4\\) מ/ש².` },
+      { hint: `עכשיו קינמטיקה מפרק 2. הארגז מתחיל ממנוחה: מה \\(v\\) ומה \\(d\\)?`,
+        work: `\\(v = at = 4 \\cdot 2 = 8\\) מ/ש, ו-\\(d = \\tfrac12 a t^2 = \\tfrac12 \\cdot 4 \\cdot 4 = 8\\) מ'.` },
+    ],
+  });
+  U.Problem(probs, {
+    chapter: CH, section: 'problems', tag: 'שאלה 2: שולחן וגלגלת',
+    text: `גוש של 4 ק"ג על שולחן חלק, בלי חיכוך, קשור בחבל שעובר על גלגלת למשקולת של 1 ק"ג שתלויה מעבר לקצה השולחן. משחררים ממנוחה. מה התאוצה, ומה המתיחות בחבל?`,
+    fields: [
+      { label: 'א. התאוצה', answer: 2, unit: 'מ/ש²' },
+      { label: 'ב. המתיחות בחבל', answer: 8, unit: 'ניוטון' },
+    ],
+    steps: [
+      { hint: `נכתוב את החוק השני לגוש שעל השולחן. איזה כוח מאיץ אותו?`,
+        work: `רק המתיחות. הכבידה עליו והכוח הנורמלי מתקזזים. לכן \\(T = 4a\\).` },
+      { hint: `ועכשיו למשקולת: לאן היא מאיצה, ואילו כוחות עליה?`,
+        work: `היא מאיצה למטה, עם 10 ניוטון כבידה למטה ו-\\(T\\) למעלה: \\(10 - T = 1 \\cdot a\\). זו אותה \\(a\\), כי זה אותו חבל.` },
+      { hint: `נחבר את המשוואות כדי להיפטר מ-\\(T\\). מה יוצא?`,
+        work: `\\(10 = 5a\\), ולכן \\(a = 2\\) מ/ש².` },
+      { hint: `נציב בחזרה. מה \\(T\\), והאם זה מסתדר עם המשקולת?`,
+        work: `\\(T = 4 \\cdot 2 = 8\\) ניוטון. בדיקה: 10 ניוטון פחות 8 ניוטון הם 2 ניוטון, ועל 1 ק"ג זה 2 מ/ש². חשוב לשים לב: \\(T\\) אינו 10 ניוטון, כי המשקולת מאיצה.` },
+    ],
+  });
+  U.Problem(probs, {
+    chapter: CH, section: 'problems', tag: 'שאלה 3: מעלית',
+    text: `אדם של 60 ק"ג עומד על מאזניים במעלית, והם מראים 720 ניוטון. מה תאוצת המעלית? (חיובית כלפי מעלה)`,
+    fields: [
+      { label: 'התאוצה', answer: 2, unit: 'מ/ש²' },
+    ],
+    steps: [
+      { hint: `מה המשקל של האדם?`,
+        work: `\\(mg = 60 \\cdot 10 = 600\\) ניוטון.` },
+      { hint: `אילו כוחות פועלים עליו, ומה הכוח השקול?`,
+        work: `720 ניוטון למעלה מהמאזניים, ו-600 ניוטון למטה מהכבידה. השקול 120 ניוטון למעלה.` },
+      { hint: `נכתוב את החוק השני.`,
+        work: `\\(120 = 60a\\), ולכן \\(a = 2\\) מ/ש², כלפי מעלה.` },
+      { hint: `האם אפשר לדעת לאיזה כיוון המעלית נוסעת?`,
+        work: `לא. היא יכולה לעלות ולהאיץ, או לרדת ולהאט. בשני המקרים התאוצה 2 מ/ש² כלפי מעלה.` },
+    ],
+  });
+
+  /* ---------- 15. Quiz ---------- */
+  U.Quiz($('quiz-host'), {
+    chapter: CH, section: 'quiz',
+    questions: [
+      {
+        type: 'num',
+        q: `על גוף של 2 ק"ג פועלים 10 ניוטון ימינה ו-4 ניוטון שמאלה. מה גודל התאוצה?`,
+        answer: 3, unit: 'מ/ש²',
+        steps: [
+          { hint: `מה הכוח השקול?`, work: `הכוחות הפוכים, אז מחסרים: 10 ניוטון פחות 4 ניוטון הם 6 ניוטון ימינה.` },
+          { hint: `מה נותן החוק השני?`, work: `\\(a = F/m\\): 6 ניוטון חלקי 2 ק"ג הם 3 מ/ש², ימינה.` },
+        ],
+      },
+      {
+        type: 'mc',
+        q: `אסטרונאוט של 80 ק"ג נוסע לירח, שבו \\(g\\) קטן בערך פי 6. מה משתנה?`,
+        options: ['המסה קטנה פי 6, והמשקל נשאר', 'המשקל קטן פי 6, והמסה נשארת', 'שניהם קטנים פי 6', 'שום דבר לא משתנה'],
+        answer: 1,
+        steps: [
+          { hint: `מסה היא כמות החומר. האם יש פחות חומר באסטרונאוט בגלל הנסיעה?`, work: `לא. הוא נשאר 80 ק"ג, גם שם קשה להזיז אותו באותה מידה.` },
+          { hint: `ומה עם \\(W = mg\\)?`, work: `\\(g\\) קטן פי 6 ולכן גם המשקל: בערך 133 ניוטון במקום 800 ניוטון. המשקל קטן פי 6, והמסה נשארת.` },
+        ],
+      },
+      {
+        type: 'num',
+        q: `ארגז של 20 ק"ג על רצפה, עם \\(\\mu_s = 0.4\\). מושכים אותו אופקית ב-50 ניוטון, והוא לא זז. מה כוח החיכוך?`,
+        answer: 50, unit: 'ניוטון',
+        steps: [
+          { hint: `מה התקרה של החיכוך הסטטי כאן?`, work: `\\(N = 200\\) ניוטון, ולכן \\(\\mu_s N = 0.4 \\cdot 200 = 80\\) ניוטון.` },
+          { hint: `המשיכה מתחת לתקרה. הארגז עומד: מה השקול, ומה זה אומר על החיכוך?`, work: `השקול אפס, ולכן החיכוך שווה למשיכה: 50 ניוטון. לא 80 ניוטון.` },
+        ],
+      },
+      {
+        type: 'mc',
+        q: `מעלית יורדת ומאטה לקראת עצירה. מה מראים המאזניים, לעומת \\(mg\\)?`,
+        options: ['יותר מ-\\(mg\\)', 'פחות מ-\\(mg\\)', 'בדיוק \\(mg\\)', '0 ניוטון'],
+        answer: 0,
+        steps: [
+          { hint: `המהירות למטה וגודלה קטן. לאן פונה התאוצה?`, work: `כלפי מעלה. כדי להאט תנועה למטה, התאוצה חייבת להיות נגד התנועה.` },
+          { hint: `מה נותן \\(N = m(g + a)\\) עם \\(a\\) חיובי?`, work: `\\(N\\) גדול מ-\\(mg\\). לכן הקריאה גבוהה מ-\\(mg\\), בדיוק כמו במעלית שעולה ומאיצה.` },
+        ],
+      },
+      {
+        type: 'num',
+        q: `ניוטון, 5 ק"ג, דוחף על קרח אדם של 50 ק"ג, והאדם מאיץ ב-1 מ/ש². מה גודל התאוצה של ניוטון?`,
+        answer: 10, unit: 'מ/ש²',
+        steps: [
+          { hint: `מה הכוח על האדם?`, work: `\\(F = ma = 50 \\cdot 1 = 50\\) ניוטון.` },
+          { hint: `לפי החוק השלישי, מה הכוח על ניוטון, ומה נותן לו החוק השני?`, work: `גם עליו פועלים 50 ניוטון. \\(a = F/m\\): 50 ניוטון חלקי 5 ק"ג הם 10 מ/ש².` },
+        ],
+      },
+      {
+        type: 'num',
+        q: `חזרה מפרק 3: ניוטון נורה אופקית ב-15 מ/ש מצוק בגובה 20 מ'. כמה רחוק מבסיס הצוק הוא נוחת?`,
+        answer: 30, unit: "מ'",
+        steps: [
+          { hint: `כמה זמן הוא באוויר? מה קובע את זה?`, work: `רק הנפילה: \\(20 = 5t^2\\), ולכן \\(t = 2\\) ש'.` },
+          { hint: `כמה הוא מספיק לעבור אופקית בזמן הזה?`, work: `\\(x = v_0 t = 15 \\cdot 2 = 30\\) מ'.` },
+        ],
+      },
+      {
+        type: 'num',
+        q: `חזרה מפרק 1: שני כוחות, 30 ניוטון מזרחה ו-40 ניוטון צפונה, פועלים על אותו גוף. מה גודל הכוח השקול?`,
+        answer: 50, unit: 'ניוטון',
+        steps: [
+          { hint: `הכוחות בניצב. איזה משפט מחבר אותם?`, work: `פיתגורס: \\(F = \\sqrt{30^2 + 40^2}\\).` },
+          { hint: `את המשולש הזה כבר ראינו. מה הוא נותן?`, work: `זה 3-4-5, כפול 10: \\(F = 50\\) ניוטון.` },
+        ],
+      },
+    ],
+  });
+
+  /* ---------- Easter egg: click the cat ---------- */
+  PHY.mascot.easterEgg([
+    { text: 'מיאו. זו הייתה נגיעה של בערך 1 ניוטון.', pose: 'standing' },
+    { text: 'החוק השלישי: עכשיו גם האצבע מרגישה אותי, בדיוק באותה מידה.', pose: 'thinking' },
+    { text: 'השקול עליי אפס. אני לא מתכוון לזוז.', pose: 'thinking' },
+    { text: 'הסבלנות שלי היא חיכוך סטטי. יש לה תקרה.', pose: 'dizzy' },
+    { text: 'נשברה! ועכשיו הכול מחליק, גם התפוחים!', pose: 'sliding', spin: true, rain: true },
+  ]);
+
+  U.initChapter({ id: CH });
+})();
+</script>
+</body>
+</html>

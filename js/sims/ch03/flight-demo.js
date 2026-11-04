@@ -1,4 +1,5 @@
 /* PHY.sims.flightDemo: scripted flights for the traps section. No controls except readouts.
+   opts: {angle (of the cannon before the first shot, default 45)}.
    sim.play([{v, a, every, arrows, freezeTop, caption, endCaption}, ...]) -> Promise.
    every: strobe interval in seconds, stamped with velocity parts when arrows: 'parts'.
    freezeTop: seconds to hold at the highest point with the velocity (blue) and acceleration (red) arrows.
@@ -93,7 +94,7 @@
       } else if (S.lastCat !== undefined && S.lastCat !== null) {
         PHY.mascot.draw(view, S.lastCat, 0, { pose: 'standing', px: px });
       }
-      const ang = sh ? sh.a : S.traces.length ? S.traces[S.traces.length - 1].a : 45;
+      const ang = sh ? sh.a : S.traces.length ? S.traces[S.traces.length - 1].a : opts.angle || 45;
       B.drawCannon(view, 0, 0, ang, { len: 26, w: 11 });
       if (S.caption) view.screenText(view.w / 2, 20, S.caption, { size: 13.5, weight: 700, pill: true });
 

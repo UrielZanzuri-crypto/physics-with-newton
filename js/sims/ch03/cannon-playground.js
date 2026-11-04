@@ -74,11 +74,12 @@
         S.found.best = true;
         q1.done();
         U.burst(canvasEl, 22);
-        PHY.mascot.say('45° ניצח את שתי הזוויות שמסביבו. שמרתי לך את הנחיתה הרחוקה ביותר. גם את הכאב.', 'dizzy');
+        PHY.mascot.say('זווית 45° ניצחה את שתי הזוויות שמסביבה. שמרתי לך את הנחיתה הרחוקה ביותר. גם את הכאב.', 'dizzy');
         if (opts.onDiscover) opts.onDiscover('best');
       }
       if (!S.found.pair) {
-        const pair = same.find(function (t) { return t.a !== shot.a && t.a > 0 && t.a < 90 && Math.abs(t.R - shot.R) < 0.02; });
+        /* Two different angles that sum to 90°. A tolerance on the range would also accept 44° and 45° at low speed. */
+        const pair = same.find(function (t) { return t.a !== shot.a && t.a > 0 && t.a < 90 && t.a + shot.a === 90; });
         if (pair) {
           S.found.pair = true;
           q2.done();

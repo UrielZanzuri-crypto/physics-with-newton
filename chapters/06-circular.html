@@ -1,0 +1,879 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>פרק 6: תנועה מעגלית | פיזיקה עם ניוטון החתול</title>
+<meta name="description" content="החוט נגזר. לאן התפוח עף? מדריך אינטראקטיבי לתנועה מעגלית: משיק, תאוצה למרכז, סיבובים בכביש, דלי מים והלולאה.">
+<script>try{var t=localStorage.getItem('phy-theme');document.documentElement.setAttribute('data-theme',t||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'))}catch(e){document.documentElement.setAttribute('data-theme','light')}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700&family=Rubik:wght@500;600;700;800&display=swap">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.11/katex.min.css">
+<link rel="stylesheet" href="../css/style.css">
+<style>
+  /* Chapter 6 only: touch-sized toggles, and the cat that whirls in the easter egg. */
+  .toggle { min-height: 44px; }
+  .egg-cat { position: fixed; left: 0; top: 0; z-index: 61; width: 84px; height: 84px; pointer-events: none; }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-in">
+    <a class="brand" href="../index.html" aria-label="חזרה לדף הבית"><span data-brand-cat></span><span class="brand-name">ניוטון החתול</span></a>
+    <span class="topbar-spacer"></span>
+    <span class="topbar-title">פרק 6: תנועה מעגלית</span>
+    <span data-theme-slot></span>
+  </div>
+  <div class="chapter-bar"><span data-chapter-bar></span></div>
+</header>
+
+<main>
+
+<!-- 1. HOOK -->
+<section class="section wrap" data-section="hook" id="hook">
+  <span class="kicker">פרק 6: תנועה מעגלית</span>
+  <h1 class="hero-title">החוט נגזר</h1>
+  <div data-mascot="thinking" data-size="118" data-say="אני רק מסובב תפוח על חוט. מה כבר יכול לקרות?"></div>
+  <p class="lead">ניוטון מסובב תפוח על חוט, על שולחן חלק, ואנחנו מסתכלים מלמעלה, כמו רחפן. עוד רגע החוט נגזר.</p>
+  <p>השאלה לוקחת שנייה אחת, וכמעט כולם טועים בה. אז קודם ניחוש, ורק אז הריצה.</p>
+  <div id="pc-hook">
+    <figure class="sim"><canvas id="c-hook"></canvas><div class="sim-controls" id="ctl-hook"></div></figure>
+  </div>
+</section>
+
+<!-- 2. DESCRIBING THE CIRCLE -->
+<section class="section wrap" data-section="describe" id="describe">
+  <div class="section-head"><span class="section-num">2</span><h2>כמה מהר זה מעגל?</h2></div>
+  <p>התפוח עף לאורך <b>המשיק</b>: קו ישר שנוגע במעגל בנקודה אחת, בניצב לרדיוס. כדי להבין למה בכלל היה צריך חוט, נצטרך קודם מילים שמתארות מעגל.</p>
+  <p>ניוטון עלה על קרוסלה עם חבר חתול. שניהם על אותו קו: אחד 2 מ' מהמרכז, והשני 4 מ' מהמרכז. סיבוב שלם לוקח 4 ש'.</p>
+  <div id="pc-carousel">
+    <figure class="sim"><canvas id="c-carousel"></canvas><div class="sim-controls" id="ctl-carousel"></div></figure>
+  </div>
+  <p class="block-gap">שלושה מספרים מתארים את הקרוסלה. <b>זמן מחזור</b> \(T\) הוא הזמן של סיבוב אחד, כאן 4 ש'. <b>תדירות</b> \(f = 1/T\) היא כמה סיבובים בשנייה, כאן 0.25 סיבובים בשנייה.</p>
+  <p>השלישי הוא <b>מהירות זוויתית</b> \(\omega\) (האות היוונית אומגה): כמה זווית עוברים בשנייה. היא שווה לשני החתולים, כי הם על אותו קו, והיא נותנת את הקשר \(v = \omega R\): אותה זווית, ומי שרחוק יותר עובר יותר דרך.</p>
+
+  <h3 class="block-gap">רדיאן, בלי לפחד</h3>
+  <p>אפשר למדוד זווית במעלות, אבל יש דרך טבעית יותר. לוקחים חתיכת חוט באורך הרדיוס ומניחים אותה על ההיקף. הזווית שהחוט הזה תופס נקראת <b>רדיאן אחד</b>, והיא בערך 57°&lrm;.</p>
+  <p>סביב כל העיגול נכנסים \(2\pi \approx 6.28\) חוטים כאלה. לכן סיבוב שלם הוא \(2\pi\) רדיאנים, ו-\(\omega = 2\pi / T\). בקרוסלה זה \(2\pi / 4 \approx 1.57\) רדיאנים בשנייה, ובקיצור רד/ש.</p>
+  <figure class="sim block-gap"><canvas id="c-radian"></canvas><div class="sim-controls" id="ctl-radian"></div></figure>
+  <div class="block-gap" data-mascot="thinking" data-size="96" data-say="קניתי 6 חוטים. תמיד חסר קצת."></div>
+</section>
+
+<!-- 3. THE ACCELERATION -->
+<section class="section wrap" data-section="accel" id="accel">
+  <div class="section-head"><span class="section-num">3</span><h2>מהירות קבועה. אז אין תאוצה?</h2></div>
+  <p>תפוח על חוט מסתובב ב-4 מ/ש במעגל ברדיוס 2 מ'. המהירות לא משתנה לרגע. אז אין לו תאוצה, נכון?</p>
+  <p>תאוצה היא שינוי במהירות, ומהירות היא חץ, עם גודל וכיוון, כמו בפרק 1. נמדוד את השינוי בחץ בעזרת הכלי של פרק 1: ראש לזנב.</p>
+  <div id="pc-dir">
+    <figure class="sim"><canvas id="c-dir"></canvas><div class="sim-controls" id="ctl-dir"></div></figure>
+  </div>
+  <p class="block-gap">החץ הזה נקרא <b><span class="c-acc">תאוצה צנטריפטלית</span></b>, כלומר "שואפת למרכז". היא לא משנה את הגודל של המהירות, רק את הכיוון, ולכן מד המהירות לא מרגיש אותה.</p>
+
+  <h3 class="block-gap">כמה תאוצה? שני משולשים</h3>
+  <p>בתמונה למעלה יש שני משולשים. באחד הצלעות הן \(R\), \(R\) והקטע הסגול בין שתי הנקודות. בשני הצלעות הן \(v\), \(v\) ו-\(\Delta v\).</p>
+  <p>הזווית בקודקוד זהה: חץ המהירות ניצב לרדיוס, אז כשהרדיוס מסתובב קצת, החץ מסתובב בדיוק באותה זווית. שני משולשים שווי שוקיים עם אותה זווית הם דומים, ולכן היחסים שלהם שווים.</p>
+  <p>במרווח קצר הקטע הסגול הוא הדרך שעברנו, \(v\,\Delta t\). נכתוב את היחס ונעביר אגפים:</p>
+  <div class="formula-main">\[\frac{\Delta v}{v} = \frac{v\,\Delta t}{R} \quad\Rightarrow\quad a = \frac{\Delta v}{\Delta t} = \frac{v^2}{R}\]</div>
+  <p>עם \(v = 4\) מ/ש ו-\(R = 2\) מ' יוצא \(a = 16 / 2 = 8\) מ/ש². זה בדיוק המספר שהתמונה התייצבה עליו.</p>
+  <div id="pc-scale" class="block-gap">
+    <figure class="sim"><canvas id="c-scale"></canvas><div class="sim-controls" id="ctl-scale"></div></figure>
+  </div>
+  <div class="callout">פי 2 מהירות נותן פי 4 תאוצה. פי 2 רדיוס נותן חצי תאוצה. לכן סיבוב חד במהירות גבוהה הוא עסק יקר.</div>
+</section>
+
+<!-- 4. WHO SUPPLIES THE FORCE -->
+<section class="section wrap" data-section="who" id="who">
+  <div class="section-head"><span class="section-num">4</span><h2>מי מושך?</h2></div>
+  <p>אם יש תאוצה למרכז, החוק השני מפרק 4 דורש כוח למרכז: \(F = ma = mv^2/R\). אז מי מפעיל אותו?</p>
+  <p>כאן מסתתרת הטעות הכי נפוצה בפרק. <b>כוח צנטריפטלי</b> הוא לא כוח חדש שמוסיפים לרשימה, אלא שם של תפקיד, כמו "שוער". בכל סיפור מישהו אחר ממלא אותו.</p>
+  <figure class="sim block-gap"><canvas id="c-who"></canvas><div class="sim-controls" id="ctl-who"></div></figure>
+  <p class="block-gap">בחוט זו המתיחות (גם היא מסומנת \(T\), כמו זמן מחזור, ואין קשר ביניהם), ובכביש זה החיכוך. אצל הירח זו הכבידה, שנותנת לו תאוצה של 0.0028 מ/ש², ובפרק 9 נראה שהמספר הזה מסתדר בדיוק. בתוף המסתובב של לונה פארק זה הכוח הנורמלי, הדחיפה של הקיר.</p>
+  <p>בתוף, החיכוך עם הקיר מטפל במשהו אחר: הוא מחזיק חתול של 5 ק"ג נגד המשקל שלו, 50 ניוטון, ולכן אפשר להוריד את הרצפה. ניוטון ביקש שנציין שהוא לא התנדב.</p>
+
+  <h3 class="block-gap">חתולים על צלחת</h3>
+  <p>עכשיו נבחן את החיכוך. שני חתולים זהים עומדים על צלחת מסתובבת, אחד 1 מ' מהמרכז והשני 2 מ' מהמרכז, עם \(\mu = 0.4\). מאיצים את הצלחת לאט לאט.</p>
+  <div id="pc-table">
+    <figure class="sim"><canvas id="c-table"></canvas><div class="sim-controls" id="ctl-table"></div></figure>
+  </div>
+  <div class="callout">הכלל: חתול על צלחת מחליק כש-\(v^2/R > \mu g\). החיכוך יכול לתת לכל היותר תאוצה של \(\mu g\), והמסה לא משנה, כי היא מצטמצמת.</div>
+  <p class="block-gap">זה החיכוך הסטטי מפרק 4: הרגליים לא מחליקות על הצלחת, ולכן התקרה היא \(\mu_s N\). ה-\(\mu\) בפרק הזה הוא \(\mu_s\).</p>
+</section>
+
+<!-- 5. THE CURVE -->
+<section class="section wrap" data-section="curve" id="curve">
+  <div class="section-head"><span class="section-num">5</span><h2>הסיבוב בכביש</h2></div>
+  <p>מכונית בסיבוב היא חתול על צלחת, בלי הצלחת. החיכוך עם הכביש מכופף את המסלול שלה. אם הוא לא מספיק, הצמיגים מוותרים, והמכונית מחליקה.</p>
+  <p>בהנפשה שלנו הגלגלים נעולים, ולכן החיכוך שנשאר רק בולם, והמכונית ממשיכה לאורך המשיק. מכונית אמיתית בדרך כלל עוד מתעקלת קצת, ויורדת מהכביש בצד החיצוני של הסיבוב.</p>
+  <p>מכונית של 1000 ק"ג ומשאית של 4000 ק"ג נוסעות זו ליד זו, אל סיבוב ברדיוס 50 מ', על כביש יבש (\(\mu = 0.8\)). מעלים את המהירות, מ-18 מ/ש ל-22 מ/ש.</p>
+  <div id="pc-truck">
+    <figure class="sim"><canvas id="c-truck"></canvas><div class="sim-controls" id="ctl-truck"></div></figure>
+  </div>
+  <p class="block-gap">החיכוך והדרישה גדלים יחד עם המסה, אז היא מצטמצמת. מה שנשאר הוא <b>המהירות המרבית בסיבוב</b>:</p>
+  <div class="formula-main">\[v_{\max} = \sqrt{\mu g R}\]</div>
+  <p>היא תלויה רק בכביש (\(\mu\)) ובסיבוב (\(R\)). מבחינת החלקה, המהירות אחת לכולם.</p>
+
+  <h3 class="block-gap">ואם מטים את הכביש?</h3>
+  <p>במסלולי מרוצים הכביש נוטה לכיוון מרכז הסיבוב. אז הכוח הנורמלי, שניצב לכביש, נוטה גם הוא פנימה. הצל האופקי שלו, כמו בפרק 1, ממלא את התפקיד של החיכוך.</p>
+  <figure class="sim block-gap"><canvas id="c-bank"></canvas><div class="sim-controls" id="ctl-bank"></div></figure>
+  <p class="block-gap">הרכיב האנכי של הנורמלי מחזיק את המשקל, \(N\cos\theta = mg\). הרכיב האופקי נותן את הכוח למרכז, \(N\sin\theta = mv^2/R\). מחלקים אחד בשני, וגם כאן המסה נעלמת:</p>
+  <div class="formula-main">\[\tan\theta = \frac{v^2}{gR}\]</div>
+  <p>בסיבוב ברדיוס 50 מ' עם הטיה של 37°&lrm; (\(\tan 37^\circ = 0.75\)), המהירות שלא צריכה חיכוך בכלל היא \(\sqrt{0.75 \cdot 10 \cdot 50} \approx 19.4\) מ/ש.</p>
+</section>
+
+<!-- 6. VERTICAL CIRCLE -->
+<section class="section wrap" data-section="vertical" id="vertical">
+  <div class="section-head"><span class="section-num">6</span><h2>דלי מים מעל החתול</h2></div>
+  <div data-mascot="dizzy" data-size="110" data-say="אני שונא מים. למה דווקא אני עומד מתחת?"></div>
+  <p>ניוטון מסובב דלי מים על חוט של 1 מ', במעגל אנכי. בפסגה הדלי הפוך, ממש מעל הראש שלו. והוא, כידוע, שונא מים.</p>
+  <p>כולנו שמענו שאם מסובבים מהר מספיק, המים נשארים בדלי. כמה זה "מהר מספיק"?</p>
+  <div id="pc-bucket">
+    <figure class="sim"><canvas id="c-bucket"></canvas><div class="sim-controls" id="ctl-bucket"></div></figure>
+  </div>
+  <p class="block-gap">המים בפסגה כן נופלים, בתאוצה של לפחות 10 מ/ש² כלפי מטה. הדלי פשוט נופל איתם. במהירות \(\sqrt{gR}\), הנפילה מעקמת את המסלול בדיוק כמו המעגל, והמים לא צריכים שהדלי ידחוף אותם.</p>
+
+  <h3 class="block-gap">איפה החוט סובל הכי הרבה?</h3>
+  <p>נסתכל על הגרף בתמונה. האות \(T\) כאן היא מתיחות, ולא זמן מחזור. המתיחות הכי קטנה בפסגה, והכי גדולה בתחתית.</p>
+  <ul class="legend-list">
+    <li><span class="sym">למעלה</span><span>המשקל עוזר למתיחות, ולכן \(T = mv^2/R - mg\).</span></li>
+    <li><span class="sym">למטה</span><span>המשקל מפריע למתיחות, וגם המהירות הכי גבוהה, ולכן \(T = mv^2/R + mg\).</span></li>
+  </ul>
+  <p class="block-gap">במעגל אנכי גודל המהירות משתנה: המשקל מאט בעלייה ומאיץ בירידה. לכן יש גם תאוצה לאורך המשיק, ו-\(v^2/R\) הוא רק הרכיב שפונה למרכז.</p>
+  <p>שימור אנרגיה נותן למטה \(v^2 = v_{\text{top}}^2 + 4gR\), כש-\(v_{\text{top}}\) היא המהירות בפסגה. נחסר את המתיחות בפסגה מהמתיחות בתחתית, ונציב:</p>
+  <div class="formula-main">\[\begin{aligned} T_{\text{bottom}} - T_{\text{top}} &= \frac{m(v^2 - v_{\text{top}}^2)}{R} + 2mg \\ &= 4mg + 2mg = 6mg \end{aligned}\]</div>
+  <p>ההפרש יוצא תמיד \(6mg\), בכל מהירות. בריצה עם 1 ק"ג ו-3.2 מ/ש זה מ-0 ניוטון ל-60 ניוטון, ולכן חוטים נקרעים למטה ולא למעלה.</p>
+</section>
+
+<!-- 7. THE LOOP -->
+<section class="section wrap" data-section="loop" id="loop">
+  <div class="section-head"><span class="section-num">7</span><h2>הלולאה: התשובה מפרק 5</h2></div>
+  <p>בפרק 5 שאלנו אם ניוטון עובר לולאה כשהוא יוצא מגובה \(2R\), וגילינו שלא: הוא צריך גם מהירות בפסגה. עכשיו יש לנו מספיק כלים כדי לחשב כמה בדיוק.</p>
+  <p>מסילה בלי חיכוך, ולולאה ברדיוס 2 מ'. המסילה יכולה רק לדחוף, בדיוק כמו הדלי. ניוטון יושב בפנים ומתלונן מראש.</p>
+  <div id="pc-loop">
+    <figure class="sim"><canvas id="c-loop"></canvas><div class="sim-controls" id="ctl-loop"></div></figure>
+  </div>
+  <p class="block-gap">מגובה \(2R\), 4 מ', ניוטון עזב את המסילה בגובה של כ-3.3 מ', עוד לפני הפסגה. מגובה \(2.5R\), 5 מ', הוא עבר, עם \(N = 0\) ניוטון בדיוק בפסגה: הרגע היחיד בנסיעה שבו הוא לא מרגיש את המסילה בכלל.</p>
+  <p>ובתחתית? \(N = 6mg\), שזה 300 ניוטון על חתול של 5 ק"ג. הפסגה מרגישה כמו ריחוף, והתחתית כמו פיל על הגב.</p>
+</section>
+
+<!-- 8. EARNED FORMULAS -->
+<section class="section wrap" data-section="formula" data-passive id="formula">
+  <div class="section-head"><span class="section-num">8</span><h2>הנוסחאות שהרווחנו</h2></div>
+  <p>כל מה שעשינו בפרק הוא נוסחה אחת, \(F = mv^2/R\), ובכל פעם מישהו אחר ממלא את הצד של הכוח.</p>
+
+  <div class="formula">
+    <h3>לתאר מעגל</h3>
+    <div class="formula-main">\[f = \frac{1}{T} \qquad \omega = \frac{2\pi}{T} \qquad v = \frac{2\pi R}{T} = \omega R\]</div>
+    <ul class="legend-list">
+      <li><span class="sym">\(T\)</span><span>זמן מחזור: כמה שניות לוקח סיבוב שלם.</span></li>
+      <li><span class="sym">\(f\)</span><span>תדירות: כמה סיבובים בשנייה.</span></li>
+      <li><span class="sym">\(\omega\)</span><span>מהירות זוויתית: כמה רדיאנים בשנייה. שווה לכל מי שעל אותה קרוסלה.</span></li>
+      <li><span class="sym">\(v\)</span><span><span class="c-vel">מהירות</span> לאורך המשיק: היקף חלקי זמן. גדלה עם הרדיוס.</span></li>
+    </ul>
+  </div>
+
+  <div class="formula">
+    <h3>תאוצה וכוח למרכז</h3>
+    <div class="formula-main">\[a = \frac{v^2}{R} = \omega^2 R \qquad\qquad F = \frac{mv^2}{R}\]</div>
+    <ul class="legend-list">
+      <li><span class="sym">\(a\)</span><span><span class="c-acc">תאוצה</span> צנטריפטלית: תמיד למרכז, ומשנה רק את הכיוון של המהירות.</span></li>
+      <li><span class="sym">\(F\)</span><span>ה<span class="c-force">כוח</span> השקול בכיוון המרכז: הכוחות שפונים למרכז, פחות אלה שפונים ממנו. לא כוח חדש, אלא תפקיד שמישהו ממלא: מתיחות, חיכוך, נורמלי או כבידה.</span></li>
+    </ul>
+  </div>
+
+  <div class="formula">
+    <h3>בסיבוב אופקי</h3>
+    <div class="formula-main">\[v_{\max} = \sqrt{\mu g R} \qquad\qquad \tan\theta = \frac{v^2}{gR}\]</div>
+    <ul class="legend-list">
+      <li><span class="sym">\(v_{\max}\)</span><span>המהירות המרבית כשהחיכוך לבדו מספק את הכוח. \(\mu\) הוא מקדם החיכוך הסטטי, \(g = 10\) מ/ש². המסה מצטמצמת.</span></li>
+      <li><span class="sym">\(\theta\)</span><span>הטיית כביש שלא צריכה חיכוך במהירות \(v\). אותו קשר נותן גם את הזווית של מטוטלת חרוטית, מהסעיף הבא.</span></li>
+    </ul>
+  </div>
+
+  <div class="formula">
+    <h3>במעגל אנכי</h3>
+    <div class="formula-main">\[v_{\text{top}} \ge \sqrt{gR} \qquad T_{\text{bottom}} - T_{\text{top}} = 6mg \qquad h_{\min} = 2.5R\]</div>
+    <ul class="legend-list">
+      <li><span class="sym">\(v_{\text{top}}\)</span><span>המהירות בפסגה. החוט או המסילה יכולים למשוך או לדחוף רק לכיוון אחד, ולכן המינימום הוא כשהמתיחות \(T\) או הנורמלי \(N\) מגיעים ל-0 ניוטון. המהירות לא מגיעה ל-0 מ/ש.</span></li>
+      <li><span class="sym">\(h_{\min}\)</span><span>גובה התחלה מינימלי בלי חיכוך: \(mgh = mg \cdot 2R + \tfrac12 m (gR)\). ברדיוס 2 מ' זה 5 מ'.</span></li>
+    </ul>
+  </div>
+</section>
+
+<!-- 9. PLAYGROUND -->
+<section class="section wrap-wide" data-section="playground" id="playground">
+  <div class="section-head"><span class="section-num">9</span><h2>מגרש משחקים</h2></div>
+  <p>שני צעצועים. <b>מעגל על שולחן:</b> חוט שנקרע ב-40 ניוטון. כמה מהר אפשר לסובב תפוח של 1 ק"ג על חוט של 1 מ' לפני שהוא נקרע?</p>
+  <p><b>מטוטלת חרוטית:</b> ניוטון תלוי על חוט ומסתובב במעגל אופקי, כשהחוט נוטה בזווית \(\theta\) מהאנך. הרכיב האנכי של המתיחות מחזיק את המשקל, והאופקי הוא הכוח למרכז, בדיוק כמו בכביש המוטה, ולכן גם כאן \(\tan\theta = v^2/(gR)\).</p>
+  <p>כאן אי אפשר לבחור מהירות: הזווית קובעת הכול. כדאי לשנות את המסה ולראות מה לא זז.</p>
+  <figure class="sim block-gap"><canvas id="c-lab"></canvas><div class="sim-controls" id="ctl-lab"></div></figure>
+</section>
+
+<!-- 10. MINI GAME -->
+<section class="section wrap-wide" data-section="game" id="game">
+  <div class="section-head"><span class="section-num">10</span><h2>משחקון: הקלע של ניוטון</h2></div>
+  <p>תפוח, חוט, והקשה אחת. התפוח עף לאורך המשיק מהנקודה שבה שוחרר, ולא לכיוון שהחוט הצביע עליו. לכן משחררים בערך רבע סיבוב לפני שהתפוח "מצביע" על המטרה.</p>
+  <p class="muted small">1-2 ניסיונות נותנים 3 נקודות, 3-4 נותנים 2 נקודות, ויותר מזה נקודה אחת. אחרי כמה החטאות, עיגול זהוב מסמן נקודת שחרור טובה.</p>
+  <figure class="sim"><canvas id="c-game"></canvas><div class="sim-controls" id="ctl-game"></div></figure>
+</section>
+
+<!-- 11. TRAPS -->
+<section class="section wrap" data-section="traps" id="traps">
+  <div class="section-head"><span class="section-num">11</span><h2>מלכודות</h2></div>
+  <p>את המלכודת של המשאית כבר פגשנו בסעיף 5: מסה כבדה לא מחליקה מוקדם יותר. הנה עוד ארבע, והכי טוב ליפול בהן כאן, איפה שזה לא עולה נקודות.</p>
+  <div id="pc-door">
+    <figure class="sim"><canvas id="c-door"></canvas><div class="sim-controls" id="ctl-door"></div></figure>
+  </div>
+  <p class="block-gap">להרגשה הזאת יש שם: <b>כוח צנטריפוגלי</b>, "בורח מהמרכז". היא אמיתית לגמרי מתוך מכונית, אבל אין גוף שמפעיל אותה. במבחן מציירים רק כוחות שמישהו מפעיל, ובכיוון שבו הם פועלים באמת.</p>
+  <div id="pc-meter" class="block-gap">
+    <figure class="sim"><canvas id="c-meter"></canvas><div class="sim-controls" id="ctl-meter"></div></figure>
+  </div>
+  <div id="pc-vzero" class="block-gap">
+    <figure class="sim"><canvas id="c-vzero"></canvas><div class="sim-controls" id="ctl-vzero"></div></figure>
+  </div>
+  <p class="block-gap">מוט קשיח יכול גם לדחוף, ולכן עם מוט המינימום בפסגה באמת 0 מ/ש. חוט או מסילה יכולים רק למשוך או רק לדחוף, ושם התנאי הוא \(T = 0\) או \(N = 0\) ניוטון, והמהירות היא \(\sqrt{gR}\).</p>
+  <div id="pc-rain" class="block-gap">
+    <figure class="sim"><canvas id="c-rain"></canvas><div class="sim-controls" id="ctl-rain"></div></figure>
+  </div>
+</section>
+
+<!-- 12. EXAM PROBLEMS -->
+<section class="section wrap" data-section="problems" id="problems">
+  <div class="section-head"><span class="section-num">12</span><h2>שאלות מכינה</h2></div>
+  <p>ככה זה נראה במבחן. קודם ננסה לבד, ואם נתקענו, יש רמז לפני כל שלב של הפתרון. אין פה שיפוט.</p>
+  <div id="problems-host"></div>
+</section>
+
+<!-- 13. QUIZ -->
+<section class="section wrap" data-section="quiz" id="quiz">
+  <div class="section-head"><span class="section-num">13</span><h2>בוחן</h2></div>
+  <p>חמש שאלות על הפרק ועוד שתיים שחוזרות לפרקים קודמים. הציון הטוב ביותר נשמר, ואפשר לנסות שוב כמה פעמים שרוצים.</p>
+  <div id="quiz-host" class="block-gap"></div>
+</section>
+
+<!-- 14. POCKET CARD -->
+<section class="section wrap" data-section="pocket" data-passive id="pocket">
+  <div class="section-head"><span class="section-num">14</span><h2>כרטיס כיס</h2></div>
+  <div class="pocket">
+    <h3>מעגלים על רגל אחת</h3>
+    <div class="pocket-grid">
+      <div class="pocket-item"><b>בלי כוח:</b> קו ישר. החוט נקרע, והגוף עף לאורך המשיק.</div>
+      <div class="pocket-item"><b>לתאר:</b> \(f = 1/T,\;\; \omega = 2\pi/T,\;\; v = 2\pi R/T = \omega R\)</div>
+      <div class="pocket-item"><b><span class="c-acc">תאוצה</span>:</b> \(a = v^2/R = \omega^2 R\): הרכיב שפונה למרכז. כשגודל המהירות קבוע, זו כל התאוצה.</div>
+      <div class="pocket-item"><b><span class="c-force">כוח</span> למרכז:</b> \(F = mv^2/R\). תפקיד, לא כוח חדש. בכל תרגיל שואלים: מי ממלא אותו?</div>
+      <div class="pocket-item"><b>סיבוב בכביש:</b> \(v_{\max} = \sqrt{\mu g R}\). המסה לא משנה.</div>
+      <div class="pocket-item"><b>כביש מוטה, מטוטלת חרוטית:</b> \(\tan\theta = v^2/(gR)\)</div>
+      <div class="pocket-item"><b>מינימום בפסגה של חוט או מסילה:</b> \(T = 0\) או \(N = 0\) ניוטון, ולכן \(v_{\min} = \sqrt{gR}\).</div>
+      <div class="pocket-item"><b>תחתית פחות פסגה:</b> \(T_{\text{bottom}} - T_{\text{top}} = 6mg\). <b>לולאה בלי חיכוך:</b> \(h_{\min} = 2.5R\).</div>
+    </div>
+    <div class="pocket-quote">"אין דבר כזה כוח צנטריפוגלי. יש רק דלת שהגיעה בזמן."</div>
+  </div>
+</section>
+
+</main>
+
+<div data-chapter-nav></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.11/katex.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.11/contrib/auto-render.min.js"></script>
+<script src="../js/core/fmt.js"></script>
+<script src="../js/core/vec.js"></script>
+<script src="../js/core/progress.js"></script>
+<script src="../js/core/canvas.js"></script>
+<script src="../js/core/loop.js"></script>
+<script src="../js/core/mascot.js"></script>
+<script src="../js/core/ui.js"></script>
+<script src="../js/sims/ch02/plot.js"></script>
+<script src="../js/sims/ch06/circle-kit.js"></script>
+<script src="../js/sims/ch06/sling-cut.js"></script>
+<script src="../js/sims/ch06/carousel.js"></script>
+<script src="../js/sims/ch06/delta-v.js"></script>
+<script src="../js/sims/ch06/who-pulls.js"></script>
+<script src="../js/sims/ch06/curve-road.js"></script>
+<script src="../js/sims/ch06/car-inside.js"></script>
+<script src="../js/sims/ch06/bucket.js"></script>
+<script src="../js/sims/ch06/loop-track.js"></script>
+<script src="../js/sims/ch06/circle-lab.js"></script>
+<script src="../js/sims/ch06/sling-game.js"></script>
+<script>
+(function () {
+  'use strict';
+  const CH = '06';
+  const U = PHY.ui;
+  const $ = (id) => document.getElementById(id);
+  const GUESS = 'קודם מנחשים';
+  const TRAP = 'מלכודת';
+
+  /* ---------- 1. Hook ---------- */
+  const hookSim = PHY.sims.slingCut($('c-hook'), $('ctl-hook'), { v: 4, R: 2, locked: true });
+  hookSim.start();
+  U.PredictCard($('pc-hook'), {
+    chapter: CH, id: 'hook', section: 'hook', tag: GUESS,
+    question: `התפוח מסתובב נגד כיוון השעון, וברגע אחד החוט נגזר. לאן הוא עף?`,
+    options: [
+      { text: `בספירלה החוצה, כאילו הסיבוב עוד נמשך קצת.`, why: `זה נראה הגיוני, כאילו הוא "התרגל" לסיבוב. אבל לתפוח אין זיכרון. ספירלה היא דרך עקומה, ודרך עקומה דורשת כוח, והכוח היחיד היה החוט.` },
+      { text: `ישר החוצה מהמרכז. הסיבוב זורק אותו החוצה, כולם יודעים.`, why: `ככה זה מרגיש במכונית בסיבוב, ונחזור לזה במלכודות. אבל ברגע החיתוך התפוח בכלל לא נע החוצה: כל המהירות שלו הייתה לאורך המעגל.` },
+      { text: `בקו ישר, בכיוון שאליו הוא נע ברגע החיתוך.`, correct: true },
+      { text: `נופל למרכז. הרי החוט משך אותו לשם.`, why: `החוט באמת משך למרכז, אבל ברגע שאין חוט אין גם משיכה. וגם כשהחוט משך, התפוח לא התקרב למרכז, כי הוא נע הצידה.` },
+    ],
+    onRun: async (i) => {
+      hookSim.setParam('locked', true);
+      await hookSim.play({ guess: i });
+      hookSim.setParam('locked', false);
+    },
+    steps: [
+      { hint: `מה עשה התפוח ברגע האחרון לפני החיתוך? לאן הצביע החץ הכחול?`,
+        work: `הוא נע לאורך המעגל, ו<span class="c-vel">חץ המהירות</span> הצביע בניצב לחוט, ב-4 מ/ש.` },
+      { hint: `איזה כוח פעל עליו עד אז, ומה הכוח הזה עשה?`,
+        work: `החוט משך למרכז. בכל רגע הוא עיקם קצת את חץ המהירות, וזה מה שיצר את המעגל. בלי חוט אין מי שיעקם.` },
+      { hint: `מה עושה גוף שאין עליו שום כוח? (רמז: חוק ראשון, פרק 4)`,
+        work: `ממשיך באותה מהירות ובאותו כיוון. לכן קו ישר, ב-4 מ/ש, בדיוק לאן שהוא היה בדרך. הקו הזה נקרא <b>משיק</b>: הוא נוגע במעגל בנקודה אחת, בניצב לרדיוס.` },
+    ],
+    explanation: `<p><b>עכשיו תורך:</b> אפשר לשנות את המהירות ולגזור בכל רגע, בכפתור או בהקשה על התמונה. מכל נקודה התפוח יוצא בניצב לחוט.</p>`,
+    sayRight: 'ידעת? רוב האנשים מאשימים את הסיבוב.',
+    sayWrong: 'גם אני ניחשתי החוצה. ואני זה שהחזיק את החוט.',
+  });
+
+  /* ---------- 2. Carousel ---------- */
+  const carSim = PHY.sims.carousel($('c-carousel'), $('ctl-carousel'), { T: 4, R: 2, locked: true });
+  carSim.start();
+  U.PredictCard($('pc-carousel'), {
+    chapter: CH, id: 'carousel', section: 'describe', tag: GUESS,
+    question: `שני החתולים על אותה קרוסלה. מי מהם נוסע מהר יותר?`,
+    options: [
+      { text: `אותה מהירות. אותה קרוסלה, והם מסיימים סיבוב יחד.`, why: `הם באמת מסיימים יחד, וזו התשובה לשאלה אחרת: מי מסתובב מהר יותר. מהירות היא מטרים בשנייה, והחיצוני עובר יותר מטרים באותו זמן.` },
+      { text: `הפנימי. המעגל שלו קטן, אז הוא מסיים אותו מהר.`, why: `הוא מסיים את המעגל באותו זמן בדיוק, לא לפני. ומעגל קטן פירושו פחות דרך, אז פחות מהירות.` },
+      { text: `החיצוני, פי 2.`, correct: true },
+      { text: `החיצוני, פי 4. פי 2 רדיוס, אז הרבה יותר.`, why: `פי 4 באמת יופיע בסעיף הבא, אצל התאוצה. כאן הקשר פשוט יותר: פי 2 רדיוס, פי 2 היקף, פי 2 מהירות.` },
+    ],
+    onRun: async () => {
+      carSim.setParam('locked', true);
+      carSim.setParam('T', 4);
+      carSim.setParam('R', 2);
+      await carSim.play({ seconds: 6 });
+      carSim.setParam('locked', false);
+    },
+    steps: [
+      { hint: `מה שווה לשני החתולים? כמה זמן לוקח לכל אחד סיבוב שלם?`,
+        work: `לשניהם 4 ש'. הזמן הזה נקרא <b>זמן מחזור</b>, \\(T\\). הם גם עוברים אותה זווית בכל רגע, כי הם על אותו קו.` },
+      { hint: `כמה מטרים עובר כל אחד בסיבוב שלם?`,
+        work: `היקף מעגל הוא \\(2\\pi R\\). הפנימי עובר \\(2\\pi \\cdot 2 \\approx 12.6\\) מ', והחיצוני \\(2\\pi \\cdot 4 \\approx 25.1\\) מ'.` },
+      { hint: `מהירות היא דרך חלקי זמן. מה יוצא לכל אחד?`,
+        work: `\\(v = 2\\pi R / T\\): הפנימי \\(12.6 / 4 \\approx 3.14\\) מ/ש, והחיצוני \\(25.1 / 4 \\approx 6.28\\) מ/ש. החיצוני מהיר פי 2, וזה מה שהקשתות הסגולות הראו.` },
+    ],
+    explanation: `<p><b>עכשיו תורך:</b> אפשר לשנות את זמן הסיבוב ואת הרדיוס, ולראות איך כל המספרים זזים יחד.</p>`,
+    sayRight: 'נכון. אני ישבתי בחוץ, ולכן אני הגיבור של הסיפור.',
+    sayWrong: 'גם אני חשבתי שאנחנו באותה מהירות. ואז החבר שלי נראה הרבה יותר רגוע.',
+  });
+  const radSim = PHY.sims.carousel($('c-radian'), $('ctl-radian'), { mode: 'radian' });
+  radSim.start();
+
+  /* ---------- 3. Direction of the acceleration ---------- */
+  const dirSim = PHY.sims.deltaV($('c-dir'), $('ctl-dir'), { v: 4, R: 2, locked: true });
+  dirSim.start();
+  U.PredictCard($('pc-dir'), {
+    chapter: CH, id: 'dir', section: 'accel', tag: GUESS,
+    question: `ניקח שני רגעים קרובים ונבדוק את השינוי בחץ המהירות, \\(\\Delta\\vec v = \\vec v_2 - \\vec v_1\\). לאן הוא מצביע?`,
+    options: [
+      { text: `לשום מקום. המהירות קבועה, אז השינוי הוא 0 מ/ש.`, why: `האורך של החץ לא השתנה, אבל הכיוון כן. הפרש של שני חצים הוא חץ בעצמו, והוא לא אפס.` },
+      { text: `קדימה, בכיוון התנועה.`, why: `שינוי קדימה היה מאריך את החץ, כלומר מאיץ את התפוח. אבל התפוח נשאר ב-4 מ/ש.` },
+      { text: `החוצה מהמעגל. זו ההרגשה בסיבוב.`, why: `ההרגשה אמיתית, והיא מטעה. נחזור אליה במלכודות. החצים עצמם מראים את ההפך.` },
+      { text: `פנימה, בדיוק למרכז.`, correct: true },
+    ],
+    onRun: async () => {
+      dirSim.setParam('locked', true);
+      dirSim.setParam('v', 4);
+      dirSim.setParam('R', 2);
+      await dirSim.play();
+      dirSim.setParam('locked', false);
+    },
+    steps: [
+      { hint: `נניח את שני החצים באותה נקודה, זנב על זנב. איך נראה ההפרש ביניהם?`,
+        work: `הוא החץ שיוצא מראש החץ הראשון ומגיע לראש החץ השני: \\(\\vec v_1 + \\Delta\\vec v = \\vec v_2\\). זה ראש לזנב מפרק 1.` },
+      { hint: `לשני החצים אותו אורך. איזו צורה הם יוצרים עם \\(\\Delta\\vec v\\), ולאן הוא מצביע?`,
+        work: `משולש שווה שוקיים. הבסיס שלו, \\(\\Delta\\vec v\\), ניצב למשיק שבאמצע הקשת. מה שניצב למשיק מצביע למרכז.` },
+      { hint: `מה קורה ל-\\(\\Delta v\\) ול-\\(\\Delta t\\) כשמקטינים את המרווח?`,
+        work: `שניהם קטנים יחד, והיחס \\(\\Delta v / \\Delta t\\), שהוא ה<span class="c-acc">תאוצה</span>, מתייצב על 8 מ/ש². יש תאוצה, והיא מצביעה למרכז.` },
+    ],
+    explanation: `<p><b>עכשיו תורך:</b> אפשר לגרור את המרווח \\(\\Delta t\\), ולראות שגם במרווח גדול השינוי מצביע למרכז.</p>`,
+    sayRight: 'בדיוק למרכז. איפה שאני עומד. זה מסביר הרבה.',
+    sayWrong: 'גם אני חשבתי שמהירות קבועה זה חופש. מסתבר שלא.',
+  });
+
+  const scaleSim = PHY.sims.deltaV($('c-scale'), $('ctl-scale'), { mode: 'scale', locked: true });
+  scaleSim.start();
+  U.PredictCard($('pc-scale'), {
+    chapter: CH, id: 'scale', section: 'accel', tag: GUESS,
+    question: `אותו מעגל, פי 2 מהירות. פי כמה גדלה התאוצה?`,
+    options: [
+      { text: `פי 2. פי 2 מהירות, פי 2 תאוצה, מה יש פה לחשוב?`, why: `זו הציפייה הטבעית, ככה זה היה בקרוסלה. אבל כאן המהירות משפיעה פעמיים, כמו שהריבוע בנוסחה רומז.` },
+      { text: `פי 4.`, correct: true },
+      { text: `לא משתנה. אותו מעגל, אותה תאוצה.`, why: `המעגל אותו מעגל, אבל משנים כיוון מהר יותר, וחץ המהירות עצמו גם ארוך יותר.` },
+    ],
+    onRun: async () => {
+      scaleSim.setParam('locked', true);
+      await scaleSim.play();
+      scaleSim.setParam('locked', false);
+    },
+    steps: [
+      { hint: `מה קורה לאורך החץ כשהמהירות גדלה פי 2? ומה קורה לזמן שלוקח לעבור את אותה זווית?`,
+        work: `חץ המהירות ארוך פי 2, ולכן באותה זווית \\(\\Delta v\\) גדול פי 2. וגם את אותה זווית עוברים בחצי מהזמן. שני הדברים יחד נותנים פי 4.` },
+      { hint: `נציב במספרים. מה הייתה התאוצה, ומה היא עכשיו?`,
+        work: `\\(4^2 / 2 = 8\\) מ/ש², ועכשיו \\(8^2 / 2 = 32\\) מ/ש². פי 4 בדיוק.` },
+      { hint: `ואם במקום זה מכפילים את הרדיוס, באותה מהירות?`,
+        work: `\\(4^2 / 4 = 4\\) מ/ש²: חצי. במעגל גדול יותר הכיוון משתנה לאט יותר, וזו העמודה השלישית. התשובה: פי 2 מהירות נותן פי 4 תאוצה.` },
+    ],
+    explanation: `<p><b>עכשיו תורך:</b> אפשר לגרור את \\(v\\) ואת \\(R\\) ולראות את העמודה "עכשיו" משתנה.</p>`,
+    sayRight: 'פי 4! אני מרגיש את זה באוזניים.',
+    sayWrong: 'גם אני אמרתי פי 2. ואז ראיתי את העמודה.',
+  });
+
+  /* ---------- 4. Who pulls ---------- */
+  const whoSim = PHY.sims.whoPulls($('c-who'), $('ctl-who'), { scene: 'string' });
+  whoSim.start();
+  const tableSim = PHY.sims.whoPulls($('c-table'), $('ctl-table'), { scene: 'table', mu: 0.4, locked: true });
+  tableSim.start();
+  U.PredictCard($('pc-table'), {
+    chapter: CH, id: 'table', section: 'who', tag: GUESS,
+    question: `שני חתולים זהים על אותה צלחת, ב-1 מ' וב-2 מ' מהמרכז. מי עף ראשון?`,
+    options: [
+      { text: `הפנימי. \\(v^2/R\\) גדול יותר כשהרדיוס קטן, אז דורשים ממנו יותר.`, why: `יפה שזכרנו את הנוסחה, וזו מלכודת יפה. אבל \\(v\\) כאן לא קבוע: על אותה צלחת \\(v = \\omega R\\), והחיצוני מהיר פי 2.` },
+      { text: `החיצוני.`, correct: true },
+      { text: `עפים יחד. אותו חתול, אותו חיכוך.`, why: `החיכוך המרבי באמת זהה. אבל הדרישה שונה: על אותה צלחת החיצוני צריך פי 2 תאוצה.` },
+      { text: `אף אחד. חתולים נאחזים.`, why: `חתולים בהחלט מנסים. אבל גם ציפורניים הן רק חיכוך, ולחיכוך יש גבול.` },
+    ],
+    onRun: async () => {
+      tableSim.setParam('locked', true);
+      tableSim.setParam('mu', 0.4);
+      await tableSim.play({ mu: 0.4 });
+      tableSim.setParam('locked', false);
+    },
+    steps: [
+      { hint: `מה שווה לשני החתולים על הצלחת, ומה לא?`,
+        work: `\\(\\omega\\) שווה, ו-\\(v = \\omega R\\) לא. לכן התאוצה שכל אחד צריך היא \\(a = v^2/R = \\omega^2 R\\): היא גדלה עם הרדיוס.` },
+      { hint: `כמה תאוצה החיכוך יכול לתת, לכל היותר?`,
+        work: `החיכוך המרבי הוא \\(f = \\mu N = \\mu m g\\), ולכן \\(a_{\\max} = \\mu g = 0.4 \\cdot 10 = 4\\) מ/ש². המסה מצטמצמת.` },
+      { hint: `באיזו מהירות זוויתית כל אחד מגיע לגבול הזה?`,
+        work: `\\(\\omega^2 R = 4\\) מ/ש². בחיצוני, \\(R = 2\\) מ', זה \\(\\omega \\approx 1.41\\) רד/ש, ובפנימי, \\(R = 1\\) מ', זה \\(\\omega = 2\\) רד/ש. לכן החיצוני עף ראשון.` },
+    ],
+    explanation: `<p><b>עכשיו תורך:</b> אפשר לשחק במהירות הצלחת ובחיכוך, ולהחזיר את החתולים בכפתור. הם לא הסכימו לזה.</p>`,
+    sayRight: 'נכון, והייתי החיצוני. למה זה תמיד אני?',
+    sayWrong: 'גם אני חשבתי שהפנימי בצרות. ואז עפתי.',
+  });
+
+  /* ---------- 5. The truck ---------- */
+  const truckSim = PHY.sims.curveRoad($('c-truck'), $('ctl-truck'), { v: 18, R: 50, pair: true, locked: true });
+  truckSim.start();
+  U.PredictCard($('pc-truck'), {
+    chapter: CH, id: 'truck', section: 'curve', tag: TRAP,
+    question: `מכונית של 1000 ק"ג ומשאית של 4000 ק"ג, באותה מהירות, באותו סיבוב. מי מחליקה ראשונה?`,
+    options: [
+      { text: `המשאית. היא כבדה, ואי אפשר לסובב אותה.`, why: `היא באמת צריכה פי 4 כוח כדי להסתובב. אבל הכביש גם דוחף אותה פי 4, כי החיכוך גדל עם המשקל.` },
+      { text: `המכונית. המשאית כבדה, אז היא נצמדת לכביש.`, why: `החיכוך של המשאית באמת גדול פי 4. אבל גם הכוח שהיא צריכה גדול פי 4, אז היא לא נצמדת יותר מהמכונית.` },
+      { text: `מחליקות יחד, באותה מהירות.`, correct: true },
+    ],
+    onRun: async () => {
+      truckSim.setParam('locked', true);
+      truckSim.setParam('R', 50);
+      truckSim.setParam('wet', false);
+      truckSim.setParam('pair', true);
+      await truckSim.play({ v: 18, wet: false });
+      await truckSim.play({ v: 22, wet: false });
+      truckSim.setParam('locked', false);
+    },
+    steps: [
+      { hint: `כמה כוח צריכה כל אחת כדי להסתובב ב-18 מ/ש?`,
+        work: `\\(F = mv^2/R\\): המכונית \\(1000 \\cdot 18^2 / 50 = 6480\\) ניוטון, והמשאית, פי 4, 25920 ניוטון.` },
+      { hint: `ומה הכי הרבה שהחיכוך יכול לתת לכל אחת?`,
+        work: `\\(f_{\\max} = \\mu m g\\): המכונית \\(0.8 \\cdot 1000 \\cdot 10 = 8000\\) ניוטון, והמשאית, פי 4, 32000 ניוטון. גם הדרישה וגם ההיצע גדלו פי 4.` },
+      { hint: `נשווה את הכוח הדרוש לכוח המרבי. מה קורה ל-\\(m\\)?`,
+        work: `\\(mv^2/R = \\mu m g\\). המסה מצטמצמת, ונשאר \\(v_{\\max} = \\sqrt{\\mu g R} = \\sqrt{0.8 \\cdot 10 \\cdot 50} = 20\\) מ/ש, לשתיהן. ב-18 מ/ש שתיהן עברו, וב-22 מ/ש שתיהן החליקו.` },
+    ],
+    explanation: `<p><b>עכשיו תורך:</b> אפשר לשנות מהירות, רדיוס ומסה, ולהדליק כביש רטוב.</p>`,
+    sayRight: 'נכון. המסה התבטלה, וגם נהג המשאית לא מאמין.',
+    sayWrong: 'גם אני הייתי בטוח שהמשאית תעוף. היא ענקית.',
+  });
+  const bankSim = PHY.sims.curveRoad($('c-bank'), $('ctl-bank'), { mode: 'bank', R: 50 });
+  bankSim.start();
+
+  /* ---------- 6. The bucket ---------- */
+  const bucketSim = PHY.sims.bucket($('c-bucket'), $('ctl-bucket'), { R: 1, m: 1, vTop: 4, locked: true });
+  bucketSim.start();
+  U.PredictCard($('pc-bucket'), {
+    chapter: CH, id: 'bucket', section: 'vertical', tag: GUESS,
+    question: `חוט של 1 מ'. מה המהירות הכי נמוכה בפסגה שבה המים נשארים בדלי?`,
+    options: [
+      { text: `בערך 1 מ/ש. העיקר שהדלי יזוז.`, why: `זה נשמע מספיק, אבל הריצה ב-2 מ/ש כבר רטובה. לאט מדי, המשקל מושך יותר ממה שהמעגל צריך, והמים עוזבים.` },
+      { text: `בערך 3.2 מ/ש.`, correct: true },
+      { text: `10 מ/ש, כמו \\(g\\).`, why: `\\(g\\) היא תאוצה ו-\\(v\\) היא מהירות, אלה יחידות אחרות. ה-10 מופיע, אבל בתוך שורש.` },
+      { text: `אין מהירות כזאת. מים נופלים למטה, נקודה.`, why: `הם באמת נופלים! רק שגם הדלי נופל איתם, ובינתיים שניהם מתקדמים הצידה.` },
+    ],
+    onRun: async () => {
+      bucketSim.setParam('locked', true);
+      await bucketSim.play({ vTop: 2, label: 'אנרגיה ל-2 מ/ש בפסגה, אם נגיע אליה' });
+      await bucketSim.pause(0.6);
+      await bucketSim.play({ vTop: 3.2, revs: 2, label: 'עכשיו 3.2 מ/ש בפסגה' });
+      bucketSim.setParam('locked', false);
+    },
+    steps: [
+      { hint: `אילו כוחות פועלים על המים בפסגה, ולאן הם מצביעים?`,
+        work: `המשקל \\(mg\\), כלפי מטה, והדחיפה של תחתית הדלי \\(N\\), גם כלפי מטה. בפסגה "מטה" הוא גם "למרכז", ולכן \\(mg + N = mv^2/R\\).` },
+      { hint: `מה הכי פחות יכול להיות \\(N\\)? מה קורה כשהדלי מאט?`,
+        work: `דלי יכול רק לדחוף, אז \\(N\\) לא יורד מ-0 ניוטון. במהירות המינימלית \\(N = 0\\): המים בקושי נוגעים בדלי, והמשקל לבדו מספק את הכוח למרכז.` },
+      { hint: `נציב \\(N = 0\\). מה יוצא?`,
+        work: `\\(mg = mv^2/R\\), ולכן \\(v = \\sqrt{gR} = \\sqrt{10 \\cdot 1} \\approx 3.2\\) מ/ש. מתחת לזה המשקל חזק ממה שהמעגל צריך, והמים עוזבים.` },
+    ],
+    explanation: `<p><b>עכשיו תורך:</b> אפשר לשנות את המהירות בפסגה ואת אורך החוט. חוט קצר יותר סולח יותר.</p>`,
+    sayRight: 'נכון. אני יבש, ולא מודה לאף אחד.',
+    sayWrong: 'גם אני ניחשתי לאט. לכן אני רטוב.',
+  });
+
+  /* ---------- 7. The loop ---------- */
+  const loopSim = PHY.sims.loopTrack($('c-loop'), $('ctl-loop'), { R: 2, h: 6, m: 5, locked: true });
+  loopSim.start();
+  U.PredictCard($('pc-loop'), {
+    chapter: CH, id: 'loop', section: 'loop', tag: GUESS,
+    question: `מאיזה גובה הכי נמוך צריך לצאת כדי לעבור לולאה ברדיוס \\(R\\)?`,
+    options: [
+      { text: `\\(2R\\). זה גובה הפסגה, והאנרגיה נשמרת.`, why: `האנרגיה מספיקה כדי להגיע לגובה הזה, אבל ב-0 מ/ש. ועוד לפני כן המסילה מפסיקה לדחוף, וניוטון נושר.` },
+      { text: `\\(2.5R\\).`, correct: true },
+      { text: `\\(3R\\). צריך קצת ביטחון.`, why: `זה עובר בכיף, אבל זה יותר ממה שחייבים. ב-\\(3R\\) נשארת בפסגה עוד דחיפה של \\(N = mg\\).` },
+      { text: `\\(4R\\). פי 2 מהגובה של הלולאה, ליתר ביטחון.`, why: `זה עובר, וגם ניוטון מעריך את הביטחון. אבל המינימום נמוך הרבה יותר, וגובה מיותר עולה בתחתית בכוח גדול.` },
+    ],
+    onRun: async () => {
+      loopSim.setParam('locked', true);
+      await loopSim.play({ h: 4, label: 'מגובה 2R' });
+      await loopSim.pause(0.5);
+      await loopSim.play({ h: 5, label: 'מגובה 2.5R' });
+      loopSim.setParam('locked', false);
+    },
+    steps: [
+      { hint: `מה התנאי בפסגה? מה הכי פחות המסילה יכולה לדחוף?`,
+        work: `המסילה יכולה רק לדחוף, אז \\(N\\) לא יורד מ-0 ניוטון. במקרה הגבולי \\(N = 0\\), המשקל לבדו מספק את הכוח למרכז: \\(mg = mv^2/R\\), ולכן בפסגה \\(v^2 = gR\\).` },
+      { hint: `כמה אנרגיה יש בפסגה עם המהירות הזאת?`,
+        work: `גובה: \\(mg \\cdot 2R\\). תנועה: \\(\\tfrac12 mv^2 = \\tfrac12 mgR\\). יחד: \\(2.5\\,mgR\\).` },
+      { hint: `מאיזה גובה צריך לצאת כדי שתהיה אנרגיה כזאת?`,
+        work: `בהתחלה יש רק אנרגיית גובה, ולכן \\(mgh = 2.5\\,mgR\\), ו-\\(h = 2.5R\\). ברדיוס 2 מ' זה 5 מ'. גם כאן המסה מצטמצמת.` },
+    ],
+    explanation: `<p><b>עכשיו תורך:</b> אפשר לגרור את \\(h\\) ולבדוק: 4.9 מ' עדיין נופל, 5 מ' עובר, ו-6 מ' משאיר בפסגה \\(N = mg\\).</p>`,
+    sayRight: 'שתיים וחצי. ידעתי שיש לי חצי תירוץ.',
+    sayWrong: 'גם אני חשבתי ש-2R מספיק. ראינו איך זה נגמר.',
+  });
+
+  /* ---------- 9. Playground ---------- */
+  const labSim = PHY.sims.circleLab($('c-lab'), $('ctl-lab'), { mode: 'table' });
+  labSim.start();
+  ['input', 'click'].forEach(function (type) {
+    $('ctl-lab').addEventListener(type, function () { PHY.progress.markSection(CH, 'playground'); });
+  });
+
+  /* ---------- 10. Game ---------- */
+  const gameSim = PHY.sims.slingGame($('c-game'), $('ctl-game'), { chapter: CH, section: 'game' });
+  gameSim.start();
+
+  /* ---------- 11. Traps ---------- */
+  const doorSim = PHY.sims.carInside($('c-door'), $('ctl-door'), { mode: 'door', locked: true });
+  doorSim.start();
+  U.PredictCard($('pc-door'), {
+    chapter: CH, id: 'door', section: 'traps', tag: TRAP,
+    question: `מכונית פונה שמאלה. ניוטון, על מושב חלקלק, נמרח על הדלת הימנית. מי דחף אותו לשם?`,
+    options: [
+      { text: `כוח צנטריפוגלי. הסיבוב זורק החוצה, כל נהג יודע.`, why: `ההרגשה אמיתית לגמרי, אבל אין גוף שמפעיל את הכוח הזה. מהכביש רואים שאף אחד לא דחף אותו החוצה.` },
+      { text: `אף אחד. הוא המשיך ישר, והדלת הגיעה אליו.`, correct: true },
+      { text: `המושב זרק אותו הצידה.`, why: `מושב חלקלק כמעט לא דוחף הצידה. וגם אם היה דוחף, זה היה לכיוון הפנייה, ולא החוצה.` },
+    ],
+    onRun: async () => {
+      doorSim.setParam('locked', true);
+      await doorSim.play({ frame: 'car' });
+      await doorSim.play({ frame: 'road' });
+      doorSim.setParam('locked', false);
+    },
+    steps: [
+      { hint: `נסתכל מלמעלה. מה עושה ניוטון לפני שמשהו נוגע בו?`,
+        work: `אין עליו כוח אופקי, אז הוא ממשיך ישר באותה מהירות, 10 מ/ש. זה החוק הראשון, והקו הסגול הוא קו ישר.` },
+      { hint: `ומה עושה המכונית באותו זמן?`,
+        work: `היא פונה שמאלה, אז הדלת הימנית מתקרבת אליו. המגע קורה אחרי שהמכונית פנתה בכ-25°&lrm;.` },
+      { hint: `מי דוחף את מי מהרגע הזה, ולאיזה כיוון?`,
+        work: `המכונית נוסעת ב-10 מ/ש ברדיוס 16 מ'. ניוטון, 5 ק"ג, נע עכשיו צמוד לדלת ברדיוס 17.5 מ', ולכן ב-10.9 מ/ש. הדלת דוחפת אותו <b>פנימה</b>, למרכז הסיבוב, וממלאת את תפקיד הכוח הצנטריפטלי: \\(F = mv^2/R = 5 \\cdot 10.9^2 / 17.5 \\approx 34\\) ניוטון.` },
+      { hint: `אז מי דחף אותו לדלת, ומאיפה ההרגשה שנזרקנו החוצה?`,
+        work: `לפי החוק השלישי ניוטון לוחץ על הדלת החוצה, וזו ההרגשה שלו. התשובה: אף אחד לא דחף אותו לשם. הוא המשיך ישר, והדלת הגיעה אליו.` },
+    ],
+    explanation: `<p><b>עכשיו תורך:</b> אפשר להריץ שוב מכל נקודת מבט, בכפתורים שמתחת לתמונה.</p>`,
+    sayRight: 'נכון. הדלת התנצלה. אני לא.',
+    sayWrong: 'גם אני הייתי בטוח שמשהו זרק אותי. עד היום אני מאשים את המושב.',
+  });
+
+  const meterSim = PHY.sims.carInside($('c-meter'), $('ctl-meter'), { mode: 'meter' });
+  meterSim.start();
+  U.PredictCard($('pc-meter'), {
+    chapter: CH, id: 'meter', section: 'traps', tag: TRAP,
+    question: `מכונית נוסעת ב-20 מ/ש, נכנסת לסיבוב ברדיוס 100 מ', ומד המהירות לא זז. מה התאוצה שלה בסיבוב?`,
+    options: [
+      { text: `0 מ/ש². המד לא זז, אז אין תאוצה.`, why: `המד מודד רק את אורך חץ המהירות. בסיבוב האורך קבוע, אבל הכיוון משתנה, וגם זו תאוצה.` },
+      { text: `4 מ/ש², למרכז הסיבוב.`, correct: true },
+      { text: `4 מ/ש², החוצה מהסיבוב.`, why: `המספר נכון, והכיוון הוא מה שמרגישים ולא מה שקורה. התפוח נוטה החוצה דווקא מפני שהוא מפגר אחרי מכונית שמאיצה פנימה.` },
+      { text: `20 מ/ש². כמו המהירות.`, why: `מהירות ותאוצה הן לא אותו דבר. התאוצה תלויה גם ברדיוס: ככל שהסיבוב רחב יותר, היא קטנה יותר.` },
+    ],
+    onRun: async () => { await meterSim.play(); },
+    steps: [
+      { hint: `מהי תאוצה? שינוי של מה?`,
+        work: `שינוי של חץ המהירות, בגודל או בכיוון. בסיבוב הגודל קבוע, 20 מ/ש, והכיוון משתנה.` },
+      { hint: `איזו נוסחה נותנת את גודל השינוי הזה?`,
+        work: `\\(a = v^2/R = 20^2 / 100 = 4\\) מ/ש², לכיוון מרכז הסיבוב. בקטע הישר של הכביש התאוצה הייתה 0 מ/ש².` },
+      { hint: `איך תפוח שתלוי על המראה מודד את זה?`,
+        work: `החוט נוטה עד שהמתיחות נותנת לתפוח את אותה תאוצה: \\(\\tan\\theta = a/g = 4/10\\), כלומר בערך 22°&lrm;. מד מהירות לא יכול לראות את זה, ותפוח על חוט כן. התשובה: 4 מ/ש², למרכז הסיבוב.` },
+    ],
+    sayRight: 'נכון. המד שתק, התפוח הלשין.',
+    sayWrong: 'גם אני סמכתי על המד. הוא עונה רק על מה ששואלים אותו.',
+  });
+
+  const vzeroSim = PHY.sims.bucket($('c-vzero'), $('ctl-vzero'), { R: 1, m: 1, vTop: 0, payload: 'apple', locked: true });
+  vzeroSim.start();
+  U.PredictCard($('pc-vzero'), {
+    chapter: CH, id: 'vzero', section: 'traps', tag: TRAP,
+    question: `תפוח על חוט של 1 מ'. שולחים אותו מלמטה ב-6.3 מ/ש: לפי אנרגיה, בדיוק מה שמספיק כדי להגיע לפסגה ב-0 מ/ש. מה יקרה?`,
+    options: [
+      { text: `מגיע לפסגה, עוצר לרגע, וממשיך. האנרגיה בדיוק מספיקה.`, why: `כך זה עובד עם מוט קשיח, שיכול גם לדחוף. חוט יכול רק למשוך, והוא נרפה הרבה לפני הפסגה.` },
+      { text: `החוט נרפה עוד לפני הפסגה, והתפוח נופל.`, correct: true },
+      { text: `עושה סיבוב שלם, ויש לו עוד מהירות בפסגה.`, why: `לפי אנרגיה לא נשארת לו מהירות למעלה. בשביל סיבוב שלם צריך 7.1 מ/ש, וזו הריצה השנייה.` },
+    ],
+    onRun: async () => {
+      vzeroSim.setParam('locked', true);
+      await vzeroSim.play({ vBottom: Math.sqrt(40), label: 'יוצאים מלמטה ב-6.3 מ/ש' });
+      await vzeroSim.pause(0.5);
+      await vzeroSim.play({ vBottom: Math.sqrt(50), revs: 1, label: 'יוצאים מלמטה ב-7.1 מ/ש' });
+      vzeroSim.setParam('locked', false);
+    },
+    steps: [
+      { hint: `מה המתיחות צריכה לעשות בדרך למעלה? מתי היא כבר לא יכולה?`,
+        work: `\\(T = mv^2/R + mg\\cos\\varphi\\), כש-\\(\\varphi\\) היא הזווית מהנקודה התחתונה. מעל גובה המרכז \\(\\cos\\varphi\\) שלילי, והמשקל מושך למרכז במקום החוט. כש-\\(T\\) מגיע ל-0 ניוטון החוט נרפה, כי חוט לא דוחף.` },
+      { hint: `נשתמש באנרגיה: כמה \\(v^2\\) נשאר בזווית \\(\\varphi\\)?`,
+        work: `\\(v^2 = v_0^2 - 2gR(1 - \\cos\\varphi) = 40 - 20(1 - \\cos\\varphi)\\) מ²/ש², עם \\(v_0^2 = 40\\) מ²/ש².` },
+      { hint: `נציב ב-\\(T = 0\\). באיזה גובה זה קורה?`,
+        work: `בלי המסה: \\(v^2/R + g\\cos\\varphi = 0\\), כלומר \\(40 - 20 + 20\\cos\\varphi + 10\\cos\\varphi = 0\\), ולכן \\(\\cos\\varphi = -2/3\\). הגובה מעל התחתית: \\(R(1 + 2/3) \\approx 1.67\\) מ'. הפסגה נמצאת ב-2 מ', והתפוח לא הגיע אליה.` },
+      { hint: `ומה באמת צריך כדי לעבור?`,
+        work: `בפסגה \\(v^2 = gR\\), ולכן למטה \\(v^2 = gR + 4gR = 50\\) מ²/ש², כלומר בערך 7.1 מ/ש. התנאי האמיתי הוא \\(T = 0\\) ניוטון בפסגה, ולא \\(v = 0\\) מ/ש. התשובה: ב-6.3 מ/ש החוט נרפה בגובה 1.67 מ', והתפוח נופל לפני הפסגה.` },
+    ],
+    explanation: `<p><b>עכשיו תורך:</b> אפשר לשנות את המהירות המתוכננת בפסגה ולראות איפה החוט נרפה. מתחת ל-\\(\\sqrt{gR}\\) לא מגיעים אליה בכלל.</p>`,
+    sayRight: 'נכון. אנרגיה זה יפה, אבל חוט זה חוט.',
+    sayWrong: 'גם אני חשבתי ש-0 מ/ש מספיק. התפוח לא הסכים.',
+  });
+
+  const rainSim = PHY.sims.curveRoad($('c-rain'), $('ctl-rain'), { v: 20, R: 50, wet: true, locked: true });
+  rainSim.start();
+  U.PredictCard($('pc-rain'), {
+    chapter: CH, id: 'rain', section: 'traps', tag: TRAP,
+    question: `בכביש יבש (\\(\\mu = 0.8\\)) סיבוב ברדיוס 50 מ' מתיר 20 מ/ש. יורד גשם, ו-\\(\\mu\\) יורד לחצי, 0.4. מה המהירות המרבית עכשיו?`,
+    options: [
+      { text: `10 מ/ש. חצי אחיזה, חצי מהירות, מה יש פה לחשוב?`, why: `10 מ/ש בטוח לגמרי, אבל אפשר הרבה יותר. \\(\\mu\\) נמצא בתוך השורש, אז המהירות יורדת לאט יותר ממנו.` },
+      { text: `בערך 14 מ/ש.`, correct: true },
+      { text: `20 מ/ש. הסיבוב לא התקצר.`, why: `הסיבוב אותו סיבוב, אבל החיכוך הוא מה שמספק את הכוח למרכז. פחות חיכוך, פחות מהירות.` },
+    ],
+    onRun: async () => {
+      rainSim.setParam('locked', true);
+      rainSim.setParam('R', 50);
+      await rainSim.play({ v: 14, wet: true });
+      await rainSim.play({ v: 15, wet: true });
+      rainSim.setParam('locked', false);
+    },
+    steps: [
+      { hint: `איפה \\(\\mu\\) נמצא בנוסחה של המהירות המרבית?`,
+        work: `\\(v_{\\max} = \\sqrt{\\mu g R}\\). הוא נמצא בתוך השורש, ולכן חצי \\(\\mu\\) לא נותן חצי מהירות.` },
+      { hint: `נציב את המספרים החדשים.`,
+        work: `\\(\\sqrt{0.4 \\cdot 10 \\cdot 50} = \\sqrt{200} \\approx 14.1\\) מ/ש. לכן 14 מ/ש עבר ו-15 מ/ש החליק.` },
+      { hint: `אז למה גשם מסוכן כל כך, אם ירדנו רק ב-30% במהירות?`,
+        work: `מי שנכנס ב-20 מ/ש צריך \\(v^2/R = 8\\) מ/ש², והחיכוך נותן עכשיו רק 4 מ/ש²: חצי ממה שצריך. ההבדל הוא בין לעבור לבין לרדת מהכביש. התשובה: המהירות המרבית בגשם היא בערך 14 מ/ש.` },
+    ],
+    explanation: `<p><b>עכשיו תורך:</b> אפשר לכבות את הגשם ולהשוות, או לשנות את הרדיוס.</p>`,
+    sayRight: 'נכון. שורש זה הדבר הכי אופטימי במתמטיקה.',
+    sayWrong: 'גם אני אמרתי חצי. שורש לא עובד ככה.',
+  });
+
+  /* ---------- 12. Exam problems ---------- */
+  const probs = $('problems-host');
+  U.Problem(probs, {
+    chapter: CH, section: 'problems', tag: 'שאלה 1: סיבוב בכביש',
+    text: `מכונית נכנסת לסיבוב אופקי ברדיוס 50 מ'. מקדם החיכוך בין הצמיגים לכביש הוא 0.5. מה המהירות הגדולה ביותר שבה אפשר לעבור את הסיבוב בלי להחליק?`,
+    fields: [{ label: `\\(v_{\\max}\\)`, answer: 15.8, unit: 'מ/ש' }],
+    steps: [
+      { hint: `מי ממלא כאן את תפקיד הכוח למרכז?`,
+        work: `רק החיכוך בין הצמיגים לכביש. הנורמלי והמשקל אנכיים, ובכביש אופקי הם לא עוזרים.` },
+      { hint: `מה הכוח הגדול ביותר שהחיכוך יכול לתת?`,
+        work: `\\(f_{\\max} = \\mu N = \\mu m g\\), כי בכביש אופקי \\(N = mg\\).` },
+      { hint: `מה הכוח שהמעגל דורש? נשווה בין השניים.`,
+        work: `\\(mv^2/R = \\mu m g\\). המסה מצטמצמת, ונשאר \\(v^2 = \\mu g R\\).` },
+      { hint: `נציב את הנתונים.`,
+        work: `\\(v^2 = 0.5 \\cdot 10 \\cdot 50 = 250\\) מ²/ש², ולכן \\(v_{\\max} = \\sqrt{250} \\approx 15.8\\) מ/ש.` },
+    ],
+  });
+  U.Problem(probs, {
+    chapter: CH, section: 'problems', tag: 'שאלה 2: מעגל אנכי',
+    text: `כדור במסה 0.5 ק"ג קשור לחוט באורך 1 מ', ומסתובב במעגל אנכי. בפסגה המהירות שלו 5 מ/ש. מה המתיחות בפסגה, מה \\(v^2\\) בתחתית, ומה המתיחות בתחתית?`,
+    fields: [
+      { label: `מתיחות בפסגה`, answer: 7.5, unit: 'ניוטון' },
+      { label: `\\(v^2\\) בתחתית`, answer: 65, unit: 'מ²/ש²' },
+      { label: `מתיחות בתחתית`, answer: 37.5, unit: 'ניוטון' },
+    ],
+    steps: [
+      { hint: `אילו כוחות פועלים על הכדור בפסגה, ולאן הם מצביעים?`,
+        work: `המשקל, \\(mg = 0.5 \\cdot 10 = 5\\) ניוטון, והמתיחות \\(T\\). שניהם כלפי מטה, כלומר למרכז.` },
+      { hint: `נכתוב את החוק השני בפסגה.`,
+        work: `\\(T + mg = mv^2/R\\), כלומר \\(T + 5 = 0.5 \\cdot 5^2 / 1 = 12.5\\) ניוטון, ולכן \\(T = 7.5\\) ניוטון.` },
+      { hint: `איך קושרים בין המהירות בפסגה למהירות בתחתית?`,
+        work: `שימור אנרגיה: המתיחות ניצבת לתנועה ולא עושה עבודה. הפרש הגבהים הוא \\(2R = 2\\) מ'.` },
+      { hint: `נציב בשימור האנרגיה. מה יוצא בתחתית?`,
+        work: `\\(\\tfrac12 m v_b^2 = \\tfrac12 m v_t^2 + mg \\cdot 2R\\), ולכן \\(v_b^2 = v_t^2 + 4gR = 25 + 40 = 65\\) מ²/ש².` },
+      { hint: `מה השתנה בכוחות בתחתית?`,
+        work: `המתיחות למעלה, למרכז, והמשקל למטה. \\(T - mg = mv^2/R\\), ולכן \\(T = 5 + 0.5 \\cdot 65 / 1 = 37.5\\) ניוטון. ההפרש מהפסגה הוא 30 ניוטון, שזה בדיוק \\(6mg\\).` },
+    ],
+  });
+  U.Problem(probs, {
+    chapter: CH, section: 'problems', tag: 'שאלה 3: מטוטלת חרוטית',
+    text: `כדור על חוט באורך 1 מ' מסתובב במעגל אופקי, והחוט נוטה ב-37°&lrm; מהאנך (\\(\\sin 37^\\circ = 0.6\\), \\(\\cos 37^\\circ = 0.8\\)). מה רדיוס המעגל, מה המהירות, וכמה זמן לוקח סיבוב?`,
+    fields: [
+      { label: `רדיוס`, answer: 0.6, unit: "מ'" },
+      { label: `מהירות`, answer: 2.12, unit: 'מ/ש' },
+      { label: `זמן מחזור`, answer: 1.78, unit: "ש'" },
+    ],
+    steps: [
+      { hint: `איזה משולש נותן את רדיוס המעגל?`,
+        work: `החוט הוא היתר, והרדיוס הוא הצל האופקי שלו: \\(R = L\\sin 37^\\circ = 1 \\cdot 0.6 = 0.6\\) מ'.` },
+      { hint: `אילו כוחות פועלים על הכדור, ומה עושה כל רכיב של המתיחות?`,
+        work: `המשקל, ומתיחות \\(T\\) שנוטה לציר. הרכיב האנכי מאזן את המשקל: \\(T\\cos\\theta = mg\\). הרכיב האופקי הוא הכוח למרכז: \\(T\\sin\\theta = mv^2/R\\).` },
+      { hint: `נחלק את שתי המשוואות. מה נעלם?`,
+        work: `\\(\\tan\\theta = v^2/(gR)\\). גם המתיחות וגם המסה נעלמות.` },
+      { hint: `נציב את המספרים. כמה יוצא \\(v\\)?`,
+        work: `\\(\\tan 37^\\circ = 0.6 / 0.8 = 0.75\\). לכן \\(v^2 = 0.75 \\cdot 10 \\cdot 0.6 = 4.5\\) מ²/ש², ו-\\(v \\approx 2.12\\) מ/ש.` },
+      { hint: `כמה זמן לוקח סיבוב אחד? מה המרחק ומה המהירות?`,
+        work: `זמן מחזור הוא היקף חלקי מהירות: \\(2\\pi \\cdot 0.6 / 2.12 \\approx 1.78\\) ש'.` },
+    ],
+  });
+
+  /* ---------- 13. Quiz ---------- */
+  U.Quiz($('quiz-host'), {
+    chapter: CH, section: 'quiz',
+    questions: [
+      {
+        type: 'num',
+        q: `קרוסלה ברדיוס 3 מ' מסיימת סיבוב ב-2 ש'. מה המהירות של מי שיושב בקצה?`,
+        answer: 9.42, unit: 'מ/ש',
+        steps: [
+          { hint: `כמה דרך עוברים בסיבוב אחד?`,
+            work: `היקף המעגל: \\(2\\pi R = 2\\pi \\cdot 3 \\approx 18.84\\) מ'.` },
+          { hint: `מהירות היא דרך חלקי זמן. מה יוצא?`,
+            work: `\\(v = 18.84 / 2 \\approx 9.42\\) מ/ש.` },
+        ],
+      },
+      {
+        type: 'mc',
+        q: `תפוח מסתובב על חוט. מכפילים את המהירות פי 3, על אותו מעגל. פי כמה גדל הכוח שהחוט מפעיל?`,
+        options: [`פי 3`, `פי 6`, `פי 9`, `לא משתנה, אותו מעגל`],
+        answer: 2,
+        steps: [
+          { hint: `איך הכוח למרכז תלוי במהירות?`,
+            work: `\\(F = mv^2/R\\): הכוח גדל כמו ריבוע המהירות.` },
+          { hint: `מה עושה הריבוע להכפלה הזאת?`,
+            work: `\\(3^2 = 9\\). הכוח גדל פי 9.` },
+        ],
+      },
+      {
+        type: 'num',
+        q: `דלי מים על חוט באורך 0.9 מ', במעגל אנכי. מה המהירות הכי נמוכה בפסגה שבה המים נשארים בדלי?`,
+        answer: 3, unit: 'מ/ש',
+        steps: [
+          { hint: `מה התנאי הגבולי בפסגה?`,
+            work: `הדלי מפסיק לדחוף את המים, \\(N = 0\\) ניוטון, והמשקל לבדו הוא הכוח למרכז: \\(mg = mv^2/R\\).` },
+          { hint: `נפתור עבור \\(v\\) ונציב.`,
+            work: `\\(v = \\sqrt{gR} = \\sqrt{10 \\cdot 0.9} = 3\\) מ/ש.` },
+        ],
+      },
+      {
+        type: 'num',
+        q: `מסילה בלי חיכוך עם לולאה ברדיוס 4 מ'. מה גובה ההתחלה הנמוך ביותר שעובר את הלולאה?`,
+        answer: 10, unit: "מ'",
+        steps: [
+          { hint: `מה צריכה להיות המהירות בפסגה?`,
+            work: `\\(N = 0\\) ניוטון בפסגה נותן \\(v^2 = gR\\).` },
+          { hint: `נשווה את האנרגיה בהתחלה לאנרגיה בפסגה.`,
+            work: `\\(mgh = mg \\cdot 2R + \\tfrac12 m gR\\), ולכן \\(h = 2.5R\\).` },
+          { hint: `נציב את הרדיוס.`,
+            work: `\\(h = 2.5 \\cdot 4 = 10\\) מ'.` },
+        ],
+      },
+      {
+        type: 'mc',
+        q: `משאית כבדה פי 3 ממכונית נכנסת לאותו סיבוב, על אותו כביש. מה נכון לגבי המהירות המרבית של המשאית?`,
+        options: [`נמוכה יותר, כי היא כבדה`, `גבוהה יותר, כי היא נצמדת לכביש`, `זהה לזו של המכונית`],
+        answer: 2,
+        steps: [
+          { hint: `מה קורה לכוח הדרוש ולחיכוך המרבי כשהמסה גדלה?`,
+            work: `שניהם גדלים פי 3: \\(mv^2/R\\) ו-\\(\\mu m g\\).` },
+          { hint: `מה נשאר כשמשווים ביניהם?`,
+            work: `המסה מצטמצמת: \\(v_{\\max} = \\sqrt{\\mu g R}\\). המהירות המרבית זהה למכונית.` },
+        ],
+      },
+      {
+        type: 'num',
+        q: `<span class="chip">חזרה מפרק 1</span> מהירות של 3 מ/ש מזרחה הופכת למהירות של 4 מ/ש צפונה. מה הגודל של השינוי במהירות?`,
+        answer: 5, unit: 'מ/ש',
+        steps: [
+          { hint: `שינוי במהירות הוא הפרש של חצים. מה הזווית בין הרכיבים שלו?`,
+            work: `\\(\\Delta\\vec v = \\vec v_2 - \\vec v_1\\). יש לו 3 מ/ש מערבה ו-4 מ/ש צפונה, וכיוונים אלה ניצבים.` },
+          { hint: `איך מוצאים אורך של חץ מרכיבים ניצבים?`,
+            work: `פיתגורס: \\(\\sqrt{3^2 + 4^2} = 5\\) מ/ש.` },
+        ],
+      },
+      {
+        type: 'num',
+        q: `<span class="chip">חזרה מפרק 5</span> ניוטון מחליק בלי חיכוך מגובה 5 מ' עד הרצפה. מה המהירות שלו למטה?`,
+        answer: 10, unit: 'מ/ש',
+        steps: [
+          { hint: `איזו אנרגיה יש בהתחלה, ולמה היא הופכת למטה?`,
+            work: `אנרגיית גובה, \\(mgh\\), הופכת לאנרגיית תנועה, \\(\\tfrac12 mv^2\\). המסה מצטמצמת.` },
+          { hint: `נפתור עבור \\(v\\) ונציב.`,
+            work: `\\(v = \\sqrt{2gh} = \\sqrt{2 \\cdot 10 \\cdot 5} = 10\\) מ/ש.` },
+        ],
+      },
+    ],
+  });
+
+  /* ---------- Easter egg: click the cat ---------- */
+  /* The last step whirls a cat around the screen, then lets him go along the tangent, as he deserves. */
+  function whirlCat() {
+    if (U.reduced()) return;
+    const cat = U.h('div', { class: 'egg-cat', 'aria-hidden': 'true', html: PHY.mascot.svg('flying', 'width="84" height="84"') });
+    document.body.appendChild(cat);
+    const cx = window.innerWidth / 2 - 42, cy = window.innerHeight / 2 - 42;
+    const r = Math.min(window.innerWidth, window.innerHeight) * 0.3;
+    const w = 6, T = 2.1;
+    const t0 = performance.now();
+    setTimeout(function () { cat.remove(); }, (T + 1.6) * 1000); /* even if frames stop, he leaves */
+    (function frame(now) {
+      const t = (now - t0) / 1000;
+      let x, y;
+      if (t < T) {
+        x = cx + r * Math.cos(w * t);
+        y = cy + r * Math.sin(w * t);
+      } else {
+        const a = w * T, d = t - T;
+        x = cx + r * Math.cos(a) - r * w * Math.sin(a) * d;
+        y = cy + r * Math.sin(a) + r * w * Math.cos(a) * d;
+      }
+      cat.style.transform = `translate(${x}px, ${y}px) rotate(${(w * Math.min(t, T) * 180) / Math.PI}deg)`;
+      if (t < T + 1.5) requestAnimationFrame(frame);
+    })(t0);
+  }
+  PHY.mascot.easterEgg([
+    { text: 'מיאו. בקו ישר, אלא אם מישהו מחזיק בחוט.', pose: 'standing' },
+    { text: 'הקשה שנייה. אני מתחיל להסתובב, ואין לי מושג מי ממלא את התפקיד.', pose: 'thinking' },
+    { text: 'פי 2 הקשות, פי 4 סחרחורת. ראינו את זה בסעיף 3.', pose: 'dizzy' },
+    { text: 'הגעתי לפסגה של הסבלנות. N = 0.', pose: 'thinking' },
+    { text: 'החוט נקרע! לאורך המשיק! מישהו יתפוס אותי!', pose: 'flying', spin: true, rain: true, action: whirlCat },
+  ]);
+
+  U.initChapter({ id: CH });
+})();
+</script>
+</body>
+</html>

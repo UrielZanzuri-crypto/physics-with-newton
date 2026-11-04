@@ -12,7 +12,7 @@
     opts = Object.assign({ walk: 1.5, locked: true }, opts || {});
     const view = PHY.canvas.create(canvasEl, { aspect: 2, minHeight: 300, maxHeight: 360 });
     const P = H2.pix(view);
-    const S = { walk: opts.walk, t: 0, running: false, resolve: null, lanes: [] };
+    const S = { walk: opts.walk, t: 0, running: false, resolve: null, lanes: [], played: false };
 
     function build() {
       S.lanes = [
@@ -39,7 +39,8 @@
       out.set('t', F.unit(S.t, 's', 1));
       out.set('a', F.unit(S.lanes[0].v, 'ms', 1));
       out.set('b', F.unit(S.lanes[1].v, 'ms', 1));
-      out.set('c', F.unit(S.lanes[2].v, 'ms', 1));
+      /* Before the first run this sum is most of the answer to the guess. */
+      out.set('c', S.played ? F.unit(S.lanes[2].v, 'ms', 1) : '?');
     }
     function step(dt) {
       if (!S.running) return;
@@ -97,6 +98,7 @@
       },
       getState() { return { t: S.t, running: S.running, lanes: S.lanes.map((l) => ({ v: l.v, x: l.x, done: l.done })) }; },
       play() {
+        S.played = true;
         api.reset();
         setLocked(true);
         S.running = true;

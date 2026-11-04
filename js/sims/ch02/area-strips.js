@@ -50,7 +50,8 @@
       S[k] = v;
       S.painted = S.N;
       S.smooth = true;
-      S.split = 1;
+      /* With a < 0 the triangle would overlap the rectangle and shade above the line, so paint the true area. */
+      S.split = S.a < 0 ? 0 : 1;
       S.fresh = false;
       update();
       loop.requestRender();

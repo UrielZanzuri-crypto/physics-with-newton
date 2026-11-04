@@ -86,7 +86,7 @@
       xMin: opts.xMin, xMax: opts.xMax, T: opts.T,
       showV: opts.showV, showA: opts.showA, locked: opts.locked,
       hist: [], lastSample: -1, dragging: false, recording: false, ended: false, target: 0, prevX: 0,
-      m: null, rate: 1, resolve: null, caption: '', marks: [], hold: 0, scriptDone: false, vRange: opts.vRange || null,
+      m: null, rate: 1, resolve: null, caption: '', marks: [], hold: 0, scriptDone: false, vRange: opts.vRange || null, played: false,
     };
     S.target = S.prevX = S.x;
 
@@ -177,7 +177,8 @@
       if (handle) P.circle(px, R.Y - 12, 27, { fill: C.glow });
       H2.drawCar(view, px, R.Y - 1, { w: 44, flip: back });
       P.cat(px + (back ? 4 : -4), R.Y - 20, { pose: S.dragging ? 'sliding' : 'standing', px: 28, flipX: back });
-      if (opts.arrows) {
+      /* Before the first run the car has no story yet, and "v = 0, no red arrow" would teach the trap. */
+      if (opts.arrows && S.played) {
         const ay = R.Y - 74, s = 8, sa = 14;
         if (Math.abs(S.v) > 0.05) {
           const end = Math.max(8, Math.min(R.W - 8, px + S.v * s));
@@ -243,8 +244,9 @@
       if (!out) return;
       out.set('t', F.unit(S.t, 's', 1));
       out.set('x', F.unit(S.x, 'm', 1));
-      out.set('v', F.unit(S.v, 'ms', 1));
-      out.set('a', F.unit(S.a, 'ms2', 1));
+      const blank = opts.arrows && !S.played;
+      out.set('v', blank ? '—' : F.unit(S.v, 'ms', 1));
+      out.set('a', blank ? '—' : F.unit(S.a, 'ms2', 1));
       if (mode === 'free' && S.hist.length > 1) {
         /* The trapezoid sum over the recorded v(t): the painted area, measured, not the formula. */
         const area = S.hist.reduce(function (sum, h, i) {
@@ -603,7 +605,9 @@
         S.x = S.target = S.prevX = start.x;
         S.v = start.v;
         S.a = start.a;
+        S.played = true;
         record(true);
+        updateOut();
         return new Promise(function (res) { S.resolve = res; });
       },
       /* Free mode: run from t = 0 with the current sliders. */

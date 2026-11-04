@@ -61,6 +61,19 @@
 <script src="../js/sims/ch03/shadows-xy.js"></script>
 <script src="../js/sims/ch03/cannon-playground.js"></script>
 <script>
+  /* Chapters 4 on: each chapter owns tests/chNN.js, which lists its sims and registers its tests.
+     Add ?only=NN to the URL to run a single chapter. */
+  window.PHY_T = {
+    only: new URLSearchParams(location.search).get('only'),
+    tests: [],
+    add: function (fn) { this.tests.push(fn); },
+    load: function (paths) { paths.forEach(function (p) { document.write('<script src="../js/sims/' + p + '"><\/script>'); }); },
+  };
+  ['04', '05', '06', '07', '08', '09', '10'].forEach(function (n) {
+    if (!PHY_T.only || PHY_T.only === n) document.write('<script src="ch' + n + '.js"><\/script>');
+  });
+</script>
+<script>
 (async function () {
   var pass = 0, fail = 0;
   var rows = document.getElementById('rows');
@@ -112,7 +125,9 @@
 
   var V = PHY.vec, B = PHY.ballistics, S = PHY.sims;
   await settle();
+  var T = { near: near, same: same, row: row, make: make, run: run, settle: settle, test: test, stage: stage };
 
+  if (!PHY_T.only) {
   await test('פרק 1: חיבור וקטורים', async function () {
     near('3 מ\' ועוד 4 מ\' בניצב', 5, V.len(V.add(V.v(3, 0), V.v(0, 4))));
     near('3 מ\' ועוד 4 מ\' באותו כיוון', 7, V.len(V.add(V.v(3, 0), V.v(4, 0))));
@@ -240,6 +255,10 @@
     near('מהירות הצל על הרצפה', 14.142, (min + max) / 2, 0.01);
     near('פיזור מהירות הצל על הרצפה', 0, max - min, 1e-6);
   });
+
+  }
+
+  for (var ti = 0; ti < PHY_T.tests.length; ti++) await PHY_T.tests[ti](T);
 
   var text = (fail === 0 ? 'PASS ' : 'FAIL ') + pass + '/' + (pass + fail);
   document.getElementById('summary').textContent = text;

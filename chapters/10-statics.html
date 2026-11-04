@@ -1,0 +1,936 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>פרק 10: סטטיקה ומומנטים | פיזיקה עם ניוטון החתול</title>
+<meta name="description" content="איך חתול של 5 ק&quot;ג מרים שק של 100 ק&quot;ג: מדריך אינטראקטיבי למומנטים, שיווי משקל, מרכז כובד, סולמות וקורות.">
+<script>try{var t=localStorage.getItem('phy-theme');document.documentElement.setAttribute('data-theme',t||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'))}catch(e){document.documentElement.setAttribute('data-theme','light')}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700&family=Rubik:wght@500;600;700;800&display=swap">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.11/katex.min.css">
+<link rel="stylesheet" href="../css/style.css">
+<style>
+  /* Chapter 10 only: the box of explanations and the graduation card. */
+  .why-box { margin-top: 14px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-m); padding: 12px 16px; }
+  .why-box summary { cursor: pointer; font-family: var(--font-head); font-weight: 700; min-height: 44px; display: flex; align-items: center; gap: 8px; }
+  .why-box summary::before { content: '▸'; color: var(--accent); }
+  .why-box[open] summary::before { content: '▾'; }
+  .why-box[open] summary { margin-bottom: 8px; }
+  .toggle { min-height: 44px; }
+  .recipe { margin: 8px 0 0; padding-inline-start: 22px; display: grid; gap: 6px; }
+  .grad-card { background: var(--surface); border: 3px double var(--accent); border-radius: var(--radius-l); padding: 22px 18px; box-shadow: var(--shadow-m); text-align: center; }
+  .grad-title { font-size: 1.5rem; color: var(--accent); margin: 0 0 6px; }
+  .grad-line { max-width: 34em; margin: 0 auto 12px; }
+  .grad-total { display: grid; justify-items: center; gap: 2px; margin-bottom: 14px; }
+  .grad-num { font-family: var(--font-head); font-weight: 800; font-size: 2rem; color: var(--ink); }
+  .grad-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; text-align: start; }
+  .grad-row { display: flex; flex-wrap: wrap; align-items: center; gap: 2px 14px; padding: 8px 2px; border-top: 1px dashed var(--line); }
+  .grad-name { font-weight: 600; flex: 1 1 100%; }
+  .grad-stars { display: inline-flex; align-items: center; gap: 6px; min-height: 26px; }
+  .grad-actions { justify-content: center; }
+  @media (min-width: 620px) {
+    .grad-name { flex: 1 1 0; }
+  }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-in">
+    <a class="brand" href="../index.html" aria-label="חזרה לדף הבית"><span data-brand-cat></span><span class="brand-name">ניוטון החתול</span></a>
+    <span class="topbar-spacer"></span>
+    <span class="topbar-title">פרק 10: סטטיקה ומומנטים</span>
+    <span data-theme-slot></span>
+  </div>
+  <div class="chapter-bar"><span data-chapter-bar></span></div>
+</header>
+
+<main>
+
+<!-- 1. HOOK -->
+<section class="section wrap" data-section="hook" id="hook">
+  <span class="kicker">פרק 10: סטטיקה ומומנטים</span>
+  <h1 class="hero-title">חתול נגד שק</h1>
+  <div data-mascot="happy" data-size="118" data-say="5 ק&quot;ג של שריר טהור. שמישהו יזהיר את השק."></div>
+  <p class="lead">הפרק האחרון בקורס, וניוטון מכריז שהוא מרים שק תפוחים של 100 ק"ג. המסה שלו 5 ק"ג, וגם זה אחרי ארוחת צהריים.</p>
+  <p>יש לו קרש ארוך על בסיס גבוה. השק יושב 0.3 מ' מהציר, וניוטון יוצא לטיול על הצד הארוך. הקרש קל מאוד, אז נתעלם ממשקלו.</p>
+  <div id="pc-hook">
+    <figure class="sim"><canvas id="c-hook"></canvas><div class="sim-controls" id="ctl-hook"></div></figure>
+  </div>
+  <p class="block-gap">הקרש לא סופר ק"ג. הוא סופר <b>כוח כפול המרחק מהציר</b>, ולמכפלה הזאת קוראים <b>מומנט</b>. הציר הוא הנקודה שסביבה הקרש מסתובב, ומי שהמומנט שלו גדול יותר מנצח.</p>
+</section>
+
+<!-- 2. CYCLE: torque, the door -->
+<section class="section wrap" data-section="torque" id="torque">
+  <div class="section-head"><span class="section-num">2</span><h2>מה באמת מסובב דלת?</h2></div>
+  <p>כולנו ניסינו לפתוח דלת ליד הצירים שלה, אז אנחנו יודעים: מרחק חשוב. אבל גם הזווית חשובה, ועל זה מדברים פחות.</p>
+  <p>ניוטון דוחף שתי דלתות זהות, במבט מלמעלה: 20 ניוטון, במרחק 1 מ' מהציר. את השמאלית הוא דוחף בניצב לדלת, ואת הימנית בזווית של <bdi>30°</bdi> לדלת.</p>
+  <div id="pc-door">
+    <figure class="sim"><canvas id="c-door"></canvas><div class="sim-controls" id="ctl-door"></div></figure>
+  </div>
+
+  <h3 class="block-gap">מומנט, בשתי קריאות</h3>
+  <div class="formula-main">\[\tau = F\,d\,\sin\theta\]</div>
+  <p>\(\tau\) (האות טאו) הוא המומנט, ונמדד בניוטון·מטר. על המסך הוא החץ המעוקל הירוק, כי הוא לא דוחף אלא מסובב.</p>
+  <p><b>קריאה ראשונה:</b> רק הצל של הכוח בניצב לדלת מסובב, \(F\sin\theta\), כמו הצללים מפרק 1. <b>קריאה שנייה:</b> \(d\sin\theta\) הוא המרחק מהציר אל הקו שעליו פועל הכוח, והוא נקרא <b>זרוע</b>. על המסך זה הקו הכתום, ושתי הקריאות נותנות אותו מספר.</p>
+
+  <figure class="sim block-gap"><canvas id="c-door2"></canvas><div class="sim-controls" id="ctl-door2"></div></figure>
+  <p class="muted small block-gap">ננסה זווית <bdi>0°</bdi> וכוח של 40 ניוטון. הכוח עובר דרך הציר, הזרוע 0 מ', והדלת לא זזה, גם אם ניוטון נקרע במאמץ.</p>
+</section>
+
+<!-- 3. CYCLE: the seesaw -->
+<section class="section wrap" data-section="seesaw" id="seesaw">
+  <div class="section-head"><span class="section-num">3</span><h2>2 ק"ג נגד 3 ק"ג</h2></div>
+  <p>נדנדה עם ציר באמצע. ניוטון יושב בדיוק על הציר, כי זה המקום היחיד שבו הוא לא מפריע לאף אחד.</p>
+  <p>משמאל ארגז של 2 ק"ג, 3 מ' מהציר. מימין ארגז של 3 ק"ג, ואנחנו מחליטים איפה הוא יעמוד.</p>
+  <div id="pc-see">
+    <figure class="sim"><canvas id="c-see"></canvas><div class="sim-controls" id="ctl-see"></div></figure>
+  </div>
+  <p class="block-gap"><b>סימן למומנט:</b> נגד כיוון השעון נספר כחיובי, ועם כיוון השעון כשלילי. זו בחירה שלנו, בדיוק כמו רמת האפס באנרגיה בפרק 5, ורק צריך להישאר איתה עד סוף התרגיל.</p>
+  <p>נדנדה מאוזנת היא נדנדה שסכום המומנטים עליה אפס. המסות לא חייבות להיות שוות, וגם המרחקים לא.</p>
+  <p class="muted small">אחרי הניחוש אפשר לגרור את הארגזים ואת החתול. כל ארגז זז בקפיצות של 0.25 מ'.</p>
+</section>
+
+<!-- 4. CYCLE: two scales -->
+<section class="section wrap" data-section="scales" id="scales">
+  <div class="section-head"><span class="section-num">4</span><h2>קרש על שני מאזניים</h2></div>
+  <p>עכשיו אין נדנדה. קרש קל באורך 4 מ' מונח על שני מאזניים, אחד בכל קצה, וניוטון (5 ק"ג, כלומר 50 ניוטון) יוצא מהקצה השמאלי לטיול.</p>
+  <p>הוא יעצור לרגע 1 מ' מהמאזניים השמאליים, ברבע מאורך הקרש, ואז ימשיך. מי מרגיש אותו יותר?</p>
+  <div id="pc-scales">
+    <figure class="sim"><canvas id="c-scales"></canvas><div class="sim-controls" id="ctl-scales"></div></figure>
+  </div>
+
+  <h3 class="block-gap">שני תנאים, ותו לא</h3>
+  <div class="formula-main">\[\sum F = 0 \qquad\qquad \sum \tau = 0\]</div>
+  <p>גוף נשאר בשקט רק אם שניהם מתקיימים. הראשון אומר שהוא לא יוצא לדרך, והשני אומר שהוא לא מסתובב. למצב הזה קוראים <b>שיווי משקל</b>.</p>
+  <p><b>הטריק הכי שימושי בפרק:</b> את הציר לחישוב אנחנו בוחרים, גם אם שום דבר לא מסתובב שם. שמים אותו על כוח שלא יודעים כמה הוא שווה, הזרוע שלו אפס, והוא נעלם מהמשוואה.</p>
+  <p class="muted small">אחרי הניחוש אפשר לגרור את החתול ולהוסיף מסה לקורה. המשקל של קורה אחידה פועל באמצע שלה, ולכן הוא מתחלק שווה בין שני המאזניים.</p>
+</section>
+
+<!-- 5. CYCLE: center of gravity -->
+<section class="section wrap" data-section="cog" id="cog">
+  <div class="section-head"><span class="section-num">5</span><h2>איפה יושב המשקל?</h2></div>
+  <p>ציירנו את המשקל של קורה באמצע שלה, בלי לשאול למה. לכל גוף יש נקודה אחת שמתנהגת כאילו כל המשקל שלו מרוכז בה: <b>מרכז הכובד</b>.</p>
+  <p>איך מוצאים אותה בלי לחשב? תולים. גוף על מסמר נעצר כשמרכז הכובד שלו ממש מתחת למסמר, ולכן קו אנך מהמסמר עובר דרכו.</p>
+  <p>שתי תליות נותנות שני קווים, ומרכז הכובד הוא איפה שהם נפגשים.</p>
+  <p>ניוטון גזר צורת L מקרטון. הוא גאה בה מאוד.</p>
+  <div id="pc-cog">
+    <figure class="sim"><canvas id="c-cog"></canvas><div class="sim-controls" id="ctl-cog"></div></figure>
+  </div>
+  <p class="block-gap">מרכז כובד הוא חשבון, לא חתיכת חומר. אצל טבעת הוא יושב באמצע החור. קו האנך מכל נקודה עובר דרך אותה נקודה, וזה נכון גם לתלייה שלישית.</p>
+  <p class="muted small">אחרי הניחוש אפשר לתלות מנקודה אחרת ולהחליף צורה. הקווים הישנים מסתובבים יחד עם הצורה, כי הם מצוירים עליה.</p>
+</section>
+
+<!-- 6. CYCLE: tipping and books -->
+<section class="section wrap" data-section="tip" id="tip">
+  <div class="section-head"><span class="section-num">6</span><h2>מתי ארגז מתהפך?</h2></div>
+  <p>ניוטון נכנס לארגז, כי זה מה שחתולים עושים. הארגז ברוחב 0.9 מ' ובגובה 1.2 מ', ומרכז הכובד באמצע שלו.</p>
+  <p>הארגז עומד על מישור מחוספס מאוד, כך שהוא לא יכול להחליק. מרימים את המישור לאט לאט.</p>
+  <div id="pc-box">
+    <figure class="sim"><canvas id="c-box"></canvas><div class="sim-controls" id="ctl-box"></div></figure>
+  </div>
+  <p class="block-gap"><b>הכלל:</b> גוף עומד כל עוד קו אנך ממרכז הכובד נופל בתוך הבסיס. ברגע שהקו יוצא, המשקל מסובב אותו סביב הפינה, ושום דבר לא עוצר את זה. לכן אוטובוס גבוה מתהפך לפני מכונית נמוכה.</p>
+
+  <h3 class="block-gap">אתגר: חמישה ספרים וקצה שולחן</h3>
+  <p>אותו כלל, בלי מדרון. כל ספר צריך שמרכז הכובד של כל מה שמעליו, יחד איתו, יישאר מעל מה שמתחתיו. האם הספר העליון יכול לעמוד כולו מעבר לקצה השולחן, בלי שום דבר מתחתיו?</p>
+  <p>אפשר לגרור כל ספר, והוא לוקח איתו את מי שמעליו. קו האנך בזמן הגרירה מראה את מרכז הכובד של הקבוצה שזזה, ואדום זה סימן רע.</p>
+  <figure class="sim block-gap"><canvas id="c-books"></canvas><div class="sim-controls" id="ctl-books"></div></figure>
+  <details class="why-box">
+    <summary>איך זה בכלל אפשרי (אחרי שניסינו, בבקשה)</summary>
+    <p>בונים מלמעלה. הספר העליון יכול לבלוט חצי ספר מעל זה שתחתיו. שני הספרים העליונים יחד יכולים לבלוט רבע ספר מעל השלישי, שלושה יחד שישית, ארבעה שמינית, וחמישה עשירית.</p>
+    <div class="formula-main">\[\tfrac12 + \tfrac14 + \tfrac16 + \tfrac18 + \tfrac1{10} \approx 1.14\]</div>
+    <p>זה יותר מספר שלם: בערך 34 ס"מ של בליטה, לספר של 30 ס"מ. מרכז הכובד של כל קבוצה יושב בדיוק על הקצה של מה שתחתיה, ולכן כל ס"מ נוסף מפיל אותה.</p>
+  </details>
+</section>
+
+<!-- 7. CYCLE: the ladder -->
+<section class="section wrap" data-section="ladder" id="ladder">
+  <div class="section-head"><span class="section-num">7</span><h2>סולם על קיר</h2></div>
+  <p>סולם באורך 5 מ' ובמסה של 10 ק"ג נשען על קיר חלק, בזווית של <bdi>53°</bdi> לרצפה. נזכיר: \(\sin 53^\circ = 0.8\) ו-\(\cos 53^\circ = 0.6\).</p>
+  <p>קיר חלק דוחף רק בניצב אליו. לכן את כל האחיזה נותן החיכוך ברצפה, במקדם של 0.4.</p>
+  <p>הסולם הריק עומד, וצריך בשביל זה רק מקדם של 0.375. ואז ניוטון (5 ק"ג) מתחיל לטפס.</p>
+  <div id="pc-ladder">
+    <figure class="sim"><canvas id="c-ladder"></canvas><div class="sim-controls" id="ctl-ladder"></div></figure>
+  </div>
+  <p class="block-gap"><b>למה בזווית נמוכה הסולם מחליק?</b> ככל שהסולם שטוח יותר, למשקל יש זרוע ארוכה יותר סביב הרגל, ולכוח מהקיר זרוע קצרה יותר. אז הקיר צריך לדחוף חזק יותר, ואת זה החיכוך צריך להחזיק.</p>
+  <p class="muted small">אחרי הניחוש אפשר לשחק עם הזווית, עם החיכוך ועם מיקום החתול. הפס למעלה מראה כמה חיכוך צריך, והקו הניצב עליו הוא המקסימום. ננסה להוריד את החתול ולמצוא את הזווית הכי נמוכה שבה הסולם עוד עומד.</p>
+</section>
+
+<!-- 8. CYCLE: hinged beam -->
+<section class="section wrap-wide" data-section="cable" id="cable">
+  <div class="section-head"><span class="section-num">8</span><h2>קורה, ציר וכבל</h2></div>
+  <p>השאלה הקלאסית של המכינה. קורה אופקית באורך 2 מ' ובמסה של 10 ק"ג מחוברת לקיר בציר, וכבל מחזיק את הקצה שלה. מהקצה תלוי ארגז, ובתוכו ניוטון: 20 ק"ג ביחד.</p>
+  <p>הכבל מחזיק עד 1000 ניוטון. מורידים את נקודת העיגון לאורך הקיר, והכבל נעשה שטוח יותר. ניוטון מבקש לציין שלא התייעצו איתו.</p>
+  <div id="pc-cable">
+    <figure class="sim"><canvas id="c-cable"></canvas><div class="sim-controls" id="ctl-cable"></div></figure>
+  </div>
+  <p class="block-gap">הכבל הוא הכוח היחיד שמחזיק את הקורה נגד הסיבוב, אבל רק הצל האנכי שלו עוזר. לכן \(T\,L\sin\theta\), כש-\(L\) אורך הקורה ו-\(\theta\) זווית הכבל מעל הקורה, צריך להיות שווה למומנט של המשקלים סביב הציר. הציר בקיר נותן את שאר הכוחות: רכיב אופקי \(H\) שמאזן את המשיכה של הכבל פנימה, ורכיב אנכי \(V\) שמשלים את מה שחסר.</p>
+  <p class="muted small">אחרי הניחוש אפשר לשנות את הזווית, את המטען ואת מקומו. כדאי לראות ש-\(V\) נשאר 50 ניוטון בכל זווית כשהמטען בקצה: הזווית משנה את המתיחות, לא את החלוקה של המשקל.</p>
+</section>
+
+<!-- 9. EARNED FORMULAS -->
+<section class="section wrap" data-section="formula" data-passive id="formula">
+  <div class="section-head"><span class="section-num">9</span><h2>הנוסחאות שהרווחנו</h2></div>
+  <p>כל מה שראינו בפרק נשען על שני תנאים ועל הגדרה אחת. שאר הנוסחאות כאן הן אותו חשבון על גוף אחר.</p>
+
+  <div class="formula">
+    <h3>מומנט</h3>
+    <div class="formula-main">\[\tau = F\,d\,\sin\theta = F\,\ell\]</div>
+    <ul class="legend-list">
+      <li><span class="sym">\(F\)</span><span><span class="c-force">הכוח</span>, בניוטון.</span></li>
+      <li><span class="sym">\(d\)</span><span>המרחק מהציר לנקודה שבה הכוח פועל, במטרים.</span></li>
+      <li><span class="sym">\(\theta\)</span><span>הזווית בין הכוח לקו שמחבר את הציר לנקודה. ב-<bdi>90°</bdi> המומנט הכי גדול, וב-<bdi>0°</bdi> הוא אפס.</span></li>
+      <li><span class="sym">\(\ell\)</span><span>הזרוע: המרחק מהציר אל הקו שעליו פועל הכוח. \(\ell = d\sin\theta\).</span></li>
+      <li><span class="sym">\(\tau\)</span><span>המומנט, בניוטון·מטר. נגד כיוון השעון חיובי, עם כיוון השעון שלילי.</span></li>
+    </ul>
+  </div>
+
+  <div class="formula">
+    <h3>שיווי משקל</h3>
+    <div class="formula-main">\[\sum F_x = 0 \qquad \sum F_y = 0 \qquad \sum \tau = 0\]</div>
+    <p>תנאי הכוחות נכתב בשני כיוונים, ולכן אלה שלוש משוואות, ואפשר לפתור איתן עד שלושה נעלמים. את המומנטים מותר לקחת סביב כל נקודה, גם נקודה באוויר, ולכן כדאי לבחור את זו שמעלימה נעלם.</p>
+    <ol class="recipe">
+      <li>מציירים את כל הכוחות על הגוף, כל משקל במרכז הכובד שלו.</li>
+      <li>בוחרים ציר על כוח שלא יודעים.</li>
+      <li>כותבים שסכום המומנטים אפס, ומוצאים נעלם ראשון.</li>
+      <li>סכום הכוחות נותן את כל השאר.</li>
+    </ol>
+  </div>
+
+  <div class="formula">
+    <h3>מרכז הכובד והתהפכות</h3>
+    <div class="formula-main">\[x_{cg} = \frac{\sum m_i x_i}{\sum m_i} \qquad\qquad \tan\alpha_{\text{max}} = \frac{w}{h}\]</div>
+    <ul class="legend-list">
+      <li><span class="sym">\(x_{cg}\)</span><span>מיקום מרכז הכובד: ממוצע של המיקומים, כשכל מסה נספרת לפי כמה שהיא כבדה. זו אותה נוסחה של מרכז המסה מפרק 7.</span></li>
+      <li><span class="sym">\(\alpha_{\text{max}}\)</span><span>השיפוע שבו ארגז מתהפך. \(w\) הוא הרוחב ו-\(h\) הגובה, ולכן ארגז של 0.9 מ' על 1.2 מ' מתהפך כש-\(\tan\alpha = 0.75\), כלומר ב-<bdi>37°</bdi>. המסה לא משתתפת.</span></li>
+    </ul>
+  </div>
+
+  <div class="formula">
+    <h3>סולם ריק</h3>
+    <div class="formula-main">\[N_f = mg \qquad f = N_w = \frac{mg}{2\tan\theta} \qquad \tan\theta_{\text{min}} = \frac{1}{2\mu}\]</div>
+    <p>\(N_f\) הוא הנורמל מהרצפה, \(N_w\) הדחיפה של הקיר, ו-\(f\) החיכוך. מומנטים סביב רגל הסולם נותנים \(N_w\, L\sin\theta = mg\,\tfrac{L}{2}\cos\theta\).</p>
+    <p>החיכוך מאזן את הקיר, והוא לא יכול לעבור את \(\mu mg\). מכאן הזווית המינימלית, והמסה והאורך מצטמצמים. במקדם של 0.375 יוצא בדיוק <bdi>53°</bdi>.</p>
+  </div>
+
+  <div class="formula">
+    <h3>קורה על ציר, כבל מהקצה</h3>
+    <div class="formula-main">\[T\,L\sin\theta = mg\,\frac{L}{2} + Mg\,x \qquad H = T\cos\theta \qquad V = (m+M)g - T\sin\theta\]</div>
+    <p>מומנטים סביב הציר בקיר מעלימים את \(H\) ואת \(V\). \(L\) הוא אורך הקורה, \(m\) המסה שלה, ו-\(M\) מטען במרחק \(x\) מהציר. כש-\(\theta\) קטנה, \(\sin\theta\) קטן, והמתיחות עולה.</p>
+  </div>
+</section>
+
+<!-- 10. PLAYGROUND -->
+<section class="section wrap-wide" data-section="playground" id="playground">
+  <div class="section-head"><span class="section-num">10</span><h2>מגרש הקורות</h2></div>
+  <p>כאן אין ניחושים. אפשר לגרור את החתול, את הארגזים ואת התומכים, להוסיף משקלים ולשנות את מסת הקורה.</p>
+  <p>שווה לנסות: לגרור את התומך הימני לאט אל אמצע הקורה, כך שהארגז ייצא מעבר לתומך, ולראות מה קורה. תומך יודע רק לדחוף, ולכן ברגע שהחשבון דורש ממנו למשוך, הקורה מתהפכת. ואפשר גם להשאיר תומך אחד ולהפוך את זה לנדנדה.</p>
+  <figure class="sim"><canvas id="c-lab"></canvas><div class="sim-controls" id="ctl-lab"></div></figure>
+</section>
+
+<!-- 11. MINI GAME -->
+<section class="section wrap-wide" data-section="game" id="game">
+  <div class="section-head"><span class="section-num">11</span><h2>משחקון: המובייל של ניוטון</h2></div>
+  <p>ניוטון בנה מובייל לתקרה, והוא הכי עקום בעולם. המוטות מתנדנדים באמת, ומוט לא מאוזן נוטה לצד הכבד. המטרה: להזיז את הלולאה של כל מוט עד שהכול ישר.</p>
+  <p class="muted small">גרירה אחת לכל מוט נותנת 3 נקודות בשלב, עד 2 גרירות מעבר לזה נותנות 2 נקודות, ויותר מזה נקודה אחת. המוטות קלים מאוד, אז נתעלם ממשקלם. כדאי לחשב לפני שגוררים, ואפשר לגרור גם מכל מקום על המוט.</p>
+  <figure class="sim"><canvas id="c-game"></canvas><div class="sim-controls" id="ctl-game"></div></figure>
+</section>
+
+<!-- 12. TRAPS -->
+<section class="section wrap" data-section="traps" id="traps">
+  <div class="section-head"><span class="section-num">12</span><h2>מלכודות</h2></div>
+  <p>ארבע טעויות שחוזרות בכל מבחן מכינה. כדאי ליפול בהן כאן, איפה שזה לא עולה נקודות. את החמישית, "מרכז הכובד תמיד בתוך החומר", כבר פגשנו בסעיף 5.</p>
+  <div id="pc-fish">
+    <figure class="sim"><canvas id="c-fish"></canvas><div class="sim-controls" id="ctl-fish"></div></figure>
+  </div>
+  <div id="pc-wrench">
+    <figure class="sim"><canvas id="c-wrench"></canvas><div class="sim-controls" id="ctl-wrench"></div></figure>
+  </div>
+  <div id="pc-pivot">
+    <figure class="sim"><canvas id="c-pivot"></canvas><div class="sim-controls" id="ctl-pivot"></div></figure>
+  </div>
+  <div id="pc-couple">
+    <figure class="sim"><canvas id="c-couple"></canvas><div class="sim-controls" id="ctl-couple"></div></figure>
+  </div>
+  <p class="block-gap">לשני כוחות שווים ומנוגדים שלא על אותו קו קוראים <b>צמד כוחות</b>. הם לא מזיזים את מרכז הגוף, ובכל זאת מסובבים אותו. ככה מסובבים הגה ברכב, עם שתי ידיים.</p>
+</section>
+
+<!-- 13. EXAM PROBLEMS -->
+<section class="section wrap" data-section="problems" id="problems">
+  <div class="section-head"><span class="section-num">13</span><h2>שאלות מכינה</h2></div>
+  <p>ככה זה נראה במבחן. כדאי לנסות לבד, ואם נתקעים יש רמז לפני כל שלב של הפתרון. אין פה שיפוט, רק חתול.</p>
+  <div id="problems-host"></div>
+</section>
+
+<!-- 14. QUIZ -->
+<section class="section wrap" data-section="quiz" id="quiz">
+  <div class="section-head"><span class="section-num">14</span><h2>בוחן</h2></div>
+  <p>חמש שאלות על הפרק ועוד שתיים שחוזרות לפרקים קודמים. הציון הטוב ביותר נשמר, ואפשר לנסות שוב כמה שרוצים.</p>
+  <div id="quiz-host" class="block-gap"></div>
+</section>
+
+<!-- 15. POCKET CARD -->
+<section class="section wrap" data-section="pocket" data-passive id="pocket">
+  <div class="section-head"><span class="section-num">15</span><h2>כרטיס כיס</h2></div>
+  <div class="pocket">
+    <h3>סטטיקה על רגל אחת</h3>
+    <div class="pocket-grid">
+      <div class="pocket-item"><b>מומנט:</b> \(\tau = F d \sin\theta\). כוח כפול זרוע. כוח דרך הציר נותן אפס.</div>
+      <div class="pocket-item"><b>שיווי משקל:</b> \(\sum F = 0\) וגם \(\sum \tau = 0\). שני התנאים, תמיד.</div>
+      <div class="pocket-item"><b>ציר:</b> כל נקודה מותרת. בוחרים את זו שמעלימה נעלם.</div>
+      <div class="pocket-item"><b>סימן:</b> נגד כיוון השעון חיובי, ונשארים עם זה עד הסוף.</div>
+      <div class="pocket-item"><b>מרכז כובד:</b> \(x_{cg} = \sum m x / \sum m\). יכול לשבת גם באוויר.</div>
+      <div class="pocket-item"><b>התהפכות:</b> קו אנך ממרכז הכובד יוצא מהבסיס. ארגז: \(\tan\alpha = w/h\).</div>
+      <div class="pocket-item"><b>סולם ריק, קיר חלק:</b> \(\tan\theta_{\text{min}} = 1/(2\mu)\). טיפוס למעלה דורש עוד חיכוך.</div>
+      <div class="pocket-item"><b>כבל:</b> רק \(T\sin\theta\) מחזיק. כבל שטוח, מתיחות גדולה.</div>
+    </div>
+    <div class="pocket-quote">"תנו לי קרש ארוך מספיק, ואני מרים כל שק. אחר כך אל תשאלו אותי כמה הלכתי."</div>
+  </div>
+</section>
+
+<!-- 16. GRADUATION -->
+<section class="section wrap" data-section="graduation" data-passive id="graduation">
+  <div class="section-head"><span class="section-num">16</span><h2>הגענו</h2></div>
+  <p>זה היה הפרק האחרון. התחלנו מחץ על דף, ועכשיו יש לנו וקטורים, תנועה, כוחות, אנרגיה, סיבובים, תנע, קפיצים, כוכבי לכת ומומנטים. כל המכניקה של המכינה, בעשרה פרקים וחתול אחד.</p>
+  <p>ניוטון נשמט, נורה מתותח, נזרק לחלל והוסיף להתלונן. הוא ביקש למסור שהוא נחת על הרגליים כל פעם, ושגם אנחנו.</p>
+  <div data-mascot="flying" data-size="118" data-say="אז מה עכשיו? עכשיו תפוחים. הרבה."></div>
+  <div id="grad-host" class="block-gap"></div>
+</section>
+
+</main>
+
+<div data-chapter-nav></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.11/katex.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.11/contrib/auto-render.min.js"></script>
+<script src="../js/core/fmt.js"></script>
+<script src="../js/core/vec.js"></script>
+<script src="../js/core/progress.js"></script>
+<script src="../js/core/canvas.js"></script>
+<script src="../js/core/loop.js"></script>
+<script src="../js/core/mascot.js"></script>
+<script src="../js/core/ui.js"></script>
+<script src="../js/sims/ch02/plot.js"></script>
+<script src="../js/sims/ch03/ballistics.js"></script>
+<script src="../js/sims/ch10/statics.js"></script>
+<script src="../js/sims/ch10/beam.js"></script>
+<script src="../js/sims/ch10/top-rod.js"></script>
+<script src="../js/sims/ch10/hang-shape.js"></script>
+<script src="../js/sims/ch10/box-tip.js"></script>
+<script src="../js/sims/ch10/book-stack.js"></script>
+<script src="../js/sims/ch10/ladder.js"></script>
+<script src="../js/sims/ch10/cable-beam.js"></script>
+<script src="../js/sims/ch10/fish-cut.js"></script>
+<script src="../js/sims/ch10/mobile-game.js"></script>
+<script src="../js/sims/ch10/graduation.js"></script>
+<script>
+(function () {
+  'use strict';
+  const CH = '10';
+  const U = PHY.ui;
+  const $ = (id) => document.getElementById(id);
+  const TAG = 'הניחוש שלך';
+  const F_LRM = PHY.fmt.LRM;
+
+  /* ---------- 1. Hook ---------- */
+  const hook = PHY.sims.beam($('c-hook'), $('ctl-hook'), {
+    world: { xMin: -1.9, xMax: 7.2, yMin: -0.25, yMax: 5.8 }, aspect: 1.5, minHeight: 270, maxHeight: 470,
+    xA: -1, xB: 6.5, y0: 2.4, e: 0.02, timeScale: 2.5, maxTilt: 22, th0: 22, post: true, rise: true, catH: 1.2,
+    panel: 'none', hudLeft: 'השק: ', hudRight: 'ניוטון: ', hudStack: true, captionX: 0.42,
+    items: [
+      { id: 'sack', m: 100, x: -0.3, kind: 'sack', label: '100 ק"ג', noArm: true },
+      { id: 'cat', m: 5, x: 1, kind: 'cat', pose: 'happy', dig: 1 },
+    ],
+  });
+  hook.start();
+  U.PredictCard($('pc-hook'), {
+    chapter: CH, id: 'hook', section: 'hook', tag: TAG,
+    question: `ניוטון הולך לאט אל הקצה הרחוק של הקרש. האם השק של 100 ק"ג יתרומם?`,
+    options: [
+      { text: `אין סיכוי. 100 ק"ג נגד 5 ק"ג, מה יש פה לחשוב?`, why: `ככה זה מרגיש כמעט לכולם, וגם אני הייתי מהמר על השק. אבל הקרש לא סופר ק"ג, הוא סופר כוח כפול מרחק מהציר.` },
+      { text: `רק אם הוא יקפוץ חזק על הקצה.`, why: `קפיצה הייתה עוזרת לרגע, אבל ראינו שאין בה צורך. הליכה איטית מספיקה, כי המרחק עושה את העבודה.` },
+      { text: `כן, אבל רק אם קודם יזיזו את השק ממש על הציר.`, why: `על הציר עצמו השק באמת לא היה מפריע לאף אחד, אבל גם לא היה עולה. הוא נשאר 0.3 מ' מהציר, ועלה, ורק ניוטון הלך.` },
+      { text: `כן, ברגע שהוא יהיה רחוק מהציר פי 20 יותר מהשק.`, correct: true },
+    ],
+    onRun: async () => {
+      hook.reset();
+      hook.markSack();
+      hook.setPose('cat', 'happy');
+      await hook.moveItem('cat', 6.2, 4.2);
+      await hook.settle(4);
+      hook.setParam('caption', 'השק באוויר. ניוטון מוחא כפיים.');
+      await hook.wait(1);
+    },
+    steps: [
+      { hint: `מה כל אחד מהם מנסה לעשות לקרש?`,
+        work: `השק מנסה לסובב את הקרש לצד שלו, וניוטון לצד שלו. מנצח מי שהמכפלה של הכוח במרחק מהציר אצלו גדולה יותר.` },
+      { hint: `נחשב את המכפלה של השק. מה המשקל שלו, ובאיזה מרחק?`,
+        work: `המשקל \\(100 \\cdot 10 = 1000\\) ניוטון, והמרחק 0.3 מ'. המכפלה: 300 ניוטון·מ'.` },
+      { hint: `באיזה מרחק ניוטון, עם 50 ניוטון בלבד, משווה את המספר הזה?`,
+        work: `\\(50 \\cdot d = 300\\), ולכן \\(d = 6\\) מ'. זה פי 20 מהמרחק של השק, בדיוק היחס בין המשקלים.` },
+      { hint: `מה קרה כשהוא עבר את המרחק הזה, ומה היה המחיר?`,
+        work: `ב-6.2 מ' ניוטון נותן 310 ניוטון·מ' מול 300 ניוטון·מ' של השק, והקרש מתהפך. התשובה: כן, ניוטון מרים אותו. המחיר הוא דרך: הוא ירד בערך 4.6 מ', והשק עלה רק 0.22 מ'.` },
+    ],
+    sayRight: 'ידעת, נכון? אני הרי אמרתי מראש שאני חזק.',
+    sayWrong: 'גם השק ניחש ככה. הוא באוויר עכשיו.',
+  });
+
+  /* ---------- 2. Door ---------- */
+  const door = PHY.sims.topRod($('c-door'), $('ctl-door'), {
+    world: { xMin: -0.5, xMax: 4.05, yMin: -0.95, yMax: 1.95 }, aspect: 1.57, hideUntilRun: true, slow: 0.6,
+    rods: [
+      { id: 'A', skin: 'door', hx: 0, hy: 0, L: 1, I: 20, F: 20, d: 1, rel: 90, showCat: true, title: 'בניצב', torqueDeg: 7 },
+      { id: 'B', skin: 'door', hx: 2.1, hy: 0, L: 1, I: 20, F: 20, d: 1, rel: 150, showCat: true, title: 'ב-' + F_LRM + '30°' + F_LRM, torqueDeg: 7, offLabel: [-6, 16] },
+    ],
+  });
+  door.start();
+  const door2 = PHY.sims.topRod($('c-door2'), $('ctl-door2'), {
+    world: { xMin: -0.95, xMax: 2.15, yMin: -0.95, yMax: 1.95 }, aspect: 1.07, minHeight: 320, maxHeight: 460, free: true, inward: true, locked: true, slow: 0.8,
+    rods: [{ id: 'A', skin: 'door', hx: 0, hy: 0, L: 1, I: 20, F: 20, d: 1, rel: 120, showCat: true, torqueDeg: 7 }],
+  });
+  door2.start();
+  U.PredictCard($('pc-door'), {
+    chapter: CH, id: 'door', section: 'torque', tag: TAG,
+    question: `אותו כוח, אותו מרחק מהציר, רק הזווית שונה. מה המומנט על הדלת הימנית, לעומת השמאלית?`,
+    options: [
+      { text: `אותו מומנט. אותו כוח, אותו מרחק, מה השתנה?`, why: `זה מה שנשאר בראש מ"כוח כפול מרחק". אבל בזווית, חלק גדול מהכוח רק מועך את הדלת אל הציר, ולא מסובב כלום.` },
+      { text: `חצי מומנט.`, correct: true },
+      { text: `שליש. <bdi>30°</bdi> זה שליש מ-<bdi>90°</bdi>.`, why: `מפתה לחלק זוויות, אבל מה שקובע הוא הצל של הכוח: \\(\\sin 30^\\circ = 0.5\\), לא שליש.` },
+      { text: `אפס. רק דחיפה בניצב מזיזה דלת.`, why: `הדלת הימנית זזה, ראינו. רק כוח שעובר ממש דרך הציר נותן אפס.` },
+    ],
+    onRun: () => door.play(),
+    steps: [
+      { hint: `איזה חלק של הכוח באמת מסובב את הדלת?`,
+        work: `הצל שלו בניצב לדלת, בדיוק כמו הצללים מפרק 1. החלק שלאורך הדלת רק דוחף אל הציר.` },
+      { hint: `כמה שווה הצל הזה בזווית של <bdi>30°</bdi>?`,
+        work: `\\(F_\\perp = F\\sin 30^\\circ = 20 \\cdot 0.5 = 10\\) ניוטון.` },
+      { hint: `מה המומנט על כל דלת, ומה זה אומר על המירוץ שראינו?`,
+        work: `שמאל: \\(20 \\cdot 1 = 20\\) ניוטון·מ', וימין: \\(10 \\cdot 1 = 10\\) ניוטון·מ'. התשובה: חצי מומנט. כמו שחצי כוח נותן חצי תאוצה וחצי דרך באותו זמן, חצי מומנט נותן חצי זווית: כשהשמאלית הגיעה ל-<bdi>90°</bdi>, הימנית הייתה בדיוק ב-<bdi>45°</bdi>.` },
+    ],
+    explanation: `<p>עכשיו תורך: מתחת להסבר יש דלת עם שלושה סליידרים.</p>`,
+    sayRight: 'חצי. בדיוק. לא שאני ספרתי, אבל חצי.',
+    sayWrong: 'גם אני דחפתי בזווית שנים, וחשבתי שהדלת פשוט שונאת אותי.',
+    onDone: () => door2.setParam('locked', false),
+  });
+
+  /* ---------- 3. Seesaw ---------- */
+  const see = PHY.sims.beam($('c-see'), $('ctl-see'), {
+    held: true, snap: 0.25, catH: 0.95,
+    items: [
+      { id: 'a', m: 2, x: -3, kind: 'block', drag: true },
+      { id: 'b', m: 3, x: 0.75, kind: 'block', drag: true },
+      { id: 'cat', m: 5, x: 0, kind: 'cat', pose: 'thinking', drag: true },
+    ],
+  });
+  see.start();
+  const pcSee = U.PredictCard($('pc-see'), {
+    chapter: CH, id: 'seesaw', section: 'seesaw', tag: TAG,
+    question: `באיזה מרחק מהציר צריך לעמוד הארגז של 3 ק"ג, כדי שהנדנדה תישאר מאוזנת?`,
+    options: [
+      { text: `3 מ'. אותו מרחק, סימטריה יפה.`, x: 3, why: `סימטריה עובדת רק עם מסות שוות. כאן הכבד מקבל את אותה זרוע, ולכן הוא מנצח.` },
+      { text: `2 מ'.`, x: 2, correct: true },
+      { text: `4.5 מ'. הכבד צריך יותר מקום.`, x: 4.5, why: `זה בדיוק הפוך. מרחק גדול נותן עוד מומנט, וכבד שמתרחק רק מכביד יותר על הצד שלו.` },
+      { text: `אי אפשר. מסות שונות לא מתאזנות אף פעם.`, x: 2, why: `הנה הוא, עומד 2 מ' מהציר, והנדנדה מאוזנת. ואת השק מהסעיף הראשון כבר ראינו.` },
+    ],
+    onRun: async (i, opt) => {
+      see.reset();
+      see.setParam('locked', true);
+      see.setPose('cat', 'thinking');
+      await see.moveItem('b', opt.x, 0.9);
+      await see.wait(0.45);
+      see.setParam('held', false);
+      const level = Math.abs(opt.x - 2) < 0.01;
+      see.setPose('cat', level ? 'happy' : 'dizzy');
+      await see.wait(level ? 1.6 : 0.3);
+      await see.settle(2.5);
+      see.setParam('caption', level ? 'מאוזנת. ניוטון מעמיד פנים שזה בזכותו.' : 'לא מאוזנת. ניוטון מחזיק חזק.');
+      await see.wait(0.5);
+      if (pcSee.finished) see.setParam('locked', false);
+    },
+    steps: [
+      { hint: `מה צריך להיות שווה בשני הצדדים: המסות, המרחקים, או משהו אחר?`,
+        work: `המומנטים. מה שמסובב נגד כיוון השעון צריך להיות שווה למה שמסובב עם כיוון השעון.` },
+      { hint: `מה המומנט של הארגז השמאלי?`,
+        work: `משקל \\(2 \\cdot 10 = 20\\) ניוטון, במרחק 3 מ': 60 ניוטון·מ', נגד כיוון השעון.` },
+      { hint: `איזה מרחק נותן לארגז הימני את אותו מספר?`,
+        work: `משקלו 30 ניוטון, אז \\(30 \\cdot d = 60\\), ולכן \\(d = 2\\) מ'. התשובה: 2 מ'. הכבד פי 1.5 יושב קרוב פי 1.5.` },
+    ],
+    explanation: `<p>עכשיו תורך: אפשר לגרור את הארגזים ולהרגיש את זה בידיים.</p>`,
+    sayRight: 'מאוזן. גם אני, בערך.',
+    sayWrong: 'אני יושב על הציר, אז לי זה לא משנה. לך כן.',
+    onDone: () => see.setParam('locked', false),
+  });
+
+  /* ---------- 4. Two scales ---------- */
+  const scales = PHY.sims.beam($('c-scales'), $('ctl-scales'), {
+    world: { xMin: -0.65, xMax: 4.65, yMin: -0.2, yMax: 3.7 }, aspect: 1.4, minHeight: 330, maxHeight: 490,
+    xA: 0, xB: 4, y0: 0.85, snap: 0.25, catH: 0.8, panel: 'scales', graph: true, arms: false, torques: false, mbSlider: true,
+    forceMax: 62, forceMaxSmall: 40,
+    supports: [{ x: 0, kind: 'scale' }, { x: 4, kind: 'scale' }],
+    items: [{ id: 'cat', m: 5, x: 0, kind: 'cat', drag: true }],
+  });
+  scales.start();
+  const pcScales = U.PredictCard($('pc-scales'), {
+    chapter: CH, id: 'scales', section: 'scales', tag: TAG,
+    question: `ניוטון עומד 1 מ' מהמאזניים השמאליים, ברבע מאורך הקרש. מה מראים המאזניים השמאליים?`,
+    options: [
+      { text: `25 ניוטון. שני מאזניים, חצי לכל אחד.`, why: `זה נכון רק כשהוא בדיוק באמצע. כאן הוא קרוב לצד אחד, והצד הזה עובד קשה יותר.` },
+      { text: `12.5 ניוטון. הוא ברבע מהדרך, אז רבע מהמשקל.`, why: `המספר נכון, אבל אצל השכן. זה מה שמראים המאזניים הימניים, הרחוקים ממנו.` },
+      { text: `37.5 ניוטון.`, correct: true },
+      { text: `50 ניוטון. הוא הכי קרוב לשמאל, אז הכול עליו.`, why: `המאזניים השמאליים מרגישים את כל המשקל רק כשהוא עומד ממש עליהם. ברגע שהוא זז, גם הימניים מקבלים חלק.` },
+    ],
+    onRun: async () => {
+      scales.reset();
+      scales.setParam('locked', true);
+      await scales.moveItem('cat', 1, 1.1);
+      scales.setParam('caption', 'רבע מהאורך. לעצור רגע, ולהסתכל על המאזניים.');
+      await scales.wait(1.3);
+      scales.setParam('caption', '');
+      await scales.moveItem('cat', 4, 2.6);
+      await scales.wait(0.25);
+      await scales.moveItem('cat', 1, 1.4);
+      await scales.wait(0.4);
+      if (pcScales.finished) scales.setParam('locked', false);
+    },
+    steps: [
+      { hint: `יש כאן שני כוחות לא ידועים. איפה נשים את הציר כדי שאחד מהם ייעלם?`,
+        work: `על המאזניים הימניים. הכוח שלהם עובר דרך הציר, אז הזרוע שלו 0 מ' והוא לא נכנס למשוואה.` },
+      { hint: `מה נותן שקול מומנטים אפס סביב הציר הזה?`,
+        work: `ניוטון נמצא 3 מ' מהציר, והמאזניים השמאליים 4 מ' ממנו: \\(N_L \\cdot 4 = 50 \\cdot 3\\), ולכן \\(N_L = 37.5\\) ניוטון.` },
+      { hint: `ומה מראים הימניים? איזה תנאי עוד לא השתמשנו בו?`,
+        work: `שקול הכוחות: \\(N_L + N_R = 50\\) ניוטון, ולכן \\(N_R = 12.5\\) ניוטון. התשובה: 37.5 ניוטון. שלושה רבעים מהמשקל על המאזניים הקרובים.` },
+    ],
+    explanation: `<p>עכשיו תורך: אפשר לגרור את ניוטון ולראות איך הקריאות מתחלפות.</p>`,
+    sayRight: 'שלושה רבעים ממני. הטעם הטוב שלי נשאר במקום.',
+    sayWrong: 'גם המאזניים התלבטו, אבל הם לא אומרים את זה בקול.',
+    onDone: () => scales.setParam('locked', false),
+  });
+
+  /* ---------- 5. Center of gravity ---------- */
+  const hang = PHY.sims.hangShape($('c-cog'), $('ctl-cog'), { shape: 'L', locked: true });
+  hang.start();
+  U.PredictCard($('pc-cog'), {
+    chapter: CH, id: 'cog', section: 'cog', tag: TAG,
+    question: `תולים את ה-L משתי נקודות, ומעבירים קו אנך מכל אחת. איפה הקווים נפגשים?`,
+    options: [
+      { text: `בפינה של ה-L, שם יש הכי הרבה חומר.`, why: `הפינה מושכת לכיוונה, אבל שתי הזרועות מושכות החוצה. הממוצע יוצא מהפינה, ואפילו מהחומר.` },
+      { text: `באמצע אחת הזרועות. מרכז הכובד חייב להיות בתוך החומר, לא?`, why: `זו המלכודת הכי מפורסמת של הנושא, וקל ליפול בה. מרכז הכובד הוא ממוצע של מיקומים, וממוצע לא חייב לנחות על משהו.` },
+      { text: `באוויר, ברווח הריק שבין הזרועות.`, correct: true },
+      { text: `הם לא ייפגשו. כל תלייה נותנת נקודה אחרת.`, why: `לכל גוף יש מרכז כובד אחד, וכל קו אנך עובר דרכו. אפשר לנסות תלייה שלישית, והיא תעבור באותה נקודה.` },
+    ],
+    onRun: () => hang.play(),
+    steps: [
+      { hint: `כשגוף תלוי ונעצר, איפה מרכז הכובד שלו ביחס למסמר?`,
+        work: `ממש מתחתיו. אחרת המשקל עדיין יוצר מומנט סביב המסמר, והגוף ממשיך להסתובב. לכן קו האנך עובר דרך מרכז הכובד.` },
+      { hint: `נחשב את ה-L כשני מלבנים. איפה מרכז הכובד של כל אחד?`,
+        work: `המלבן התחתון: 1.7 מ' על 0.32 מ', והמרכז שלו ב-\\(x = 0.85\\) מ', \\(y = 0.16\\) מ'. המלבן העומד: 0.32 מ' על 1.38 מ', והמרכז שלו ב-\\(x = 0.16\\) מ', \\(y = 1.01\\) מ'.` },
+      { hint: `איך מחברים אותם? כל מלבן נספר לפי השטח שלו.`,
+        work: `השטחים 0.544 מ"ר ו-0.442 מ"ר, והממוצע המשוקלל נותן \\(x \\approx y \\approx 0.54\\) מ'. החומר מגיע רק עד 0.32 מ' מהפינה. התשובה: הקווים נפגשים באוויר, ברווח שבין הזרועות.` },
+    ],
+    explanation: `<p>עכשיו תורך: ננסה לתלות מנקודה שלישית, ואז לעבור לטבעת.</p>`,
+    sayRight: 'נקודה באוויר, וזה היה הניחוש שלך. אני עדיין מחפש אותה בקרטון.',
+    sayWrong: 'חיפשתי את מרכז הכובד בקרטון שעה שלמה. הוא לא שם.',
+    onDone: () => hang.setParam('locked', false),
+  });
+
+  /* ---------- 6. Box and books ---------- */
+  const box = PHY.sims.boxTip($('c-box'), $('ctl-box'), { locked: true });
+  box.start();
+  U.PredictCard($('pc-box'), {
+    chapter: CH, id: 'box', section: 'tip', tag: TAG,
+    question: `באיזו זווית של המישור הארגז יתהפך?`,
+    options: [
+      { text: `<bdi>45°</bdi>. בדיוק חצי הדרך לקיר.`, why: `<bdi>45°</bdi> נכון לקובייה, שבה הרוחב שווה לגובה. הארגז הזה גבוה מרוחבו, ולכן הוא מתהפך מוקדם יותר.` },
+      { text: `בערך <bdi>37°</bdi>.`, correct: true },
+      { text: `רק קרוב ל-<bdi>90°</bdi>. הרי הוא לא מחליק.`, why: `חיכוך מונע החלקה, אבל לא התהפכות. המשקל ממשיך לפעול דרך מרכז הכובד, והחיכוך לא יכול לעזור מול המומנט שלו.` },
+      { text: `תלוי במסה. ארגז כבד יחזיק מעמד יותר.`, why: `מסה מגדילה גם את המשקל וגם את מה שמחזיק אותו, והיא מצטמצמת. רק הצורה קובעת.` },
+    ],
+    onRun: () => box.play(),
+    steps: [
+      { hint: `מה צריך לקרות כדי שהארגז יתחיל להסתובב סביב הפינה התחתונה?`,
+        work: `קו אנך ממרכז הכובד צריך לעבור מעבר לפינה. כל עוד הוא נופל על הבסיס, המשקל מחזיר את הארגז למקום.` },
+      { hint: `מתי הקו עובר בדיוק דרך הפינה? נסתכל על המשולש שבין מרכז הכובד, הפינה ואמצע הבסיס.`,
+        work: `הצלעות של המשולש הן חצי רוחב וחצי גובה, והזווית שלו ליד מרכז הכובד שווה לשיפוע, כי הארגז נטוי מהאנך בדיוק בזווית של המישור: \\(\\tan\\alpha = \\dfrac{w/2}{h/2} = \\dfrac{w}{h}\\).` },
+      { hint: `נציב את המידות של הארגז.`,
+        work: `\\(\\tan\\alpha = \\dfrac{0.9}{1.2} = 0.75\\), ולכן \\(\\alpha \\approx 37^\\circ\\). התשובה: בערך <bdi>37°</bdi>, והמסה לא נכנסה לחשבון.` },
+    ],
+    explanation: `<p>עכשיו תורך: אפשר להגביה את הארגז בסליידר, ולראות איך זווית ההתהפכות יורדת.</p>`,
+    sayRight: 'ידעת עוד לפני שאני ידעתי. ואני הייתי בפנים.',
+    sayWrong: 'גם אני הייתי בטוח שיש לי עוד זמן. הייתי בארגז.',
+    onDone: () => box.setParam('locked', false),
+  });
+  const books = PHY.sims.bookStack($('c-books'), $('ctl-books'), {});
+  books.start();
+
+  /* ---------- 7. Ladder ---------- */
+  const ladder = PHY.sims.ladder($('c-ladder'), $('ctl-ladder'), { deg: 53.13, mu: 0.4, cat: false, locked: true });
+  ladder.start();
+  const pcLadder = U.PredictCard($('pc-ladder'), {
+    chapter: CH, id: 'ladder', section: 'ladder', tag: TAG,
+    question: `מקדם החיכוך 0.4, והסולם הריק עומד. מה יקרה בזמן שניוטון מטפס?`,
+    options: [
+      { text: `יותר בטוח. הוא מכביד על הסולם, אז יש יותר חיכוך ברצפה.`, why: `חצי נכון, וזה מה שמפתה: בתחתית הסולם זה באמת עוזר. אבל המקסימום של החיכוך נשאר 60 ניוטון בכל גובה, והחיכוך הדרוש גדל עם כל שלב שהוא עולה.` },
+      { text: `לא ישתנה כלום. 5 ק"ג זה לא הרבה.`, why: `זה חצי ממסת הסולם, וזה יושב בקצה הכי גרוע של הזרוע. סולם לא מתחשב במי שנראה קטן.` },
+      { text: `בהתחלה יהיה בסדר, אבל בשלב מסוים למעלה הסולם יחליק.`, correct: true },
+      { text: `הסולם יחליק ברגע שהוא יעלה עליו.`, why: `דווקא ברגע הראשון הוא עוזר. כשהוא למטה צריך רק מקדם של 0.25, פחות מהסולם הריק.` },
+    ],
+    onRun: async () => {
+      ladder.reset();
+      ladder.setParam('locked', true);
+      await ladder.climb();
+      if (pcLadder.finished) ladder.setParam('locked', false);
+    },
+    steps: [
+      { hint: `אילו כוחות פועלים? ואיזו נקודה מעלימה הכי הרבה מהם?`,
+        work: `המשקלים (100 ניוטון באמצע הסולם, 50 ניוטון אצל ניוטון), דחיפת הקיר \\(N_w\\), ובתחתית הרצפה: נורמל \\(N_f\\) וחיכוך \\(f\\). סביב הרגל של הסולם גם \\(N_f\\) וגם \\(f\\) נעלמים.` },
+      { hint: `נכתוב מומנטים סביב הרגל, כשניוטון במרחק \\(s\\) מהתחתית.`,
+        work: `הזרוע של הקיר היא גובה ראש הסולם, \\(5 \\cdot 0.8 = 4\\) מ', והזרוע של כל משקל היא המרחק האופקי שלו מהרגל: \\(2.5 \\cdot 0.6 = 1.5\\) מ' ו-\\(0.6 s\\) מ'. \\(N_w \\cdot 5 \\cdot 0.8 = (100 \\cdot 2.5 + 50 s) \\cdot 0.6\\), ולכן \\(N_w = 37.5 + 7.5 s\\) ניוטון. החיכוך צריך להיות שווה לזה, כדי ששקול הכוחות האופקי יהיה אפס.` },
+      { hint: `כמה חיכוך הרצפה יכולה לתת לכל היותר?`,
+        work: `\\(N_f = 150\\) ניוטון, והמקסימום הוא \\(0.4 \\cdot 150 = 60\\) ניוטון.` },
+      { hint: `באיזה מרחק לאורך הסולם החיכוך הדרוש עובר את המקסימום?`,
+        work: `\\(37.5 + 7.5 s = 60\\), ולכן \\(s = 3\\) מ'. התשובה: בהתחלה הסולם עומד, וכשניוטון עובר 3 מ' הוא מחליק. למטה מהאמצע הוא דווקא עוזר, ולמעלה מהאמצע הוא מזיק.` },
+    ],
+    explanation: `<p>עכשיו תורך: אפשר להוריד את החתול ולמצוא את הזווית הכי נמוכה שבה הסולם עוד עומד.</p>`,
+    sayRight: 'החלקתי. עשיתי את זה בשביל המדע, ובשביל הדרמה.',
+    sayWrong: 'גם אני חשבתי שאני עוזר. בקומה השלישית הבנתי.',
+    onDone: () => ladder.setParam('locked', false),
+  });
+
+  /* ---------- 8. Hinged beam ---------- */
+  const cable = PHY.sims.cableBeam($('c-cable'), $('ctl-cable'), { deg: 55, locked: true });
+  cable.start();
+  const pcCable = U.PredictCard($('pc-cable'), {
+    chapter: CH, id: 'cable', section: 'cable', tag: TAG,
+    question: `מה קורה למתיחות בכבל, ככל שהוא נעשה שטוח יותר?`,
+    options: [
+      { text: `קטנה. הכבל מתקצר, אז יש לו פחות עבודה.`, why: `הוא באמת מתקצר, אבל האורך שלו לא נכנס לחשבון. מה שקובע הוא כמה מהמתיחות מושכת למעלה.` },
+      { text: `נשארת אותו דבר. אותו משקל, אותה מתיחות.`, why: `המשקל לא השתנה, וגם המומנט שצריך לאזן. אבל רק הצל האנכי של המתיחות עובד נגדו, והצל הזה הולך וקטן.` },
+      { text: `גדלה, ובזווית קטנה היא נהיית עצומה.`, correct: true },
+    ],
+    onRun: async () => {
+      cable.reset();
+      cable.setParam('locked', true);
+      await cable.lower(10, 4);
+      if (pcCable.finished) cable.setParam('locked', false);
+    },
+    steps: [
+      { hint: `סביב איזו נקודה ניקח מומנטים, כדי לא להתעסק בכוח של הציר?`,
+        work: `סביב הציר שבקיר. הזרוע של הכוח שלו שם היא 0 מ', והוא נעלם מהמשוואה.` },
+      { hint: `מה מסובב את הקורה למטה, ובכמה?`,
+        work: `משקל הקורה, 100 ניוטון ב-1 מ', והמטען, 200 ניוטון ב-2 מ'. יחד: \\(100 + 400 = 500\\) ניוטון·מ'.` },
+      { hint: `ומה המומנט של הכבל, אם הזווית שלו מעל הקורה היא \\(\\theta\\)?`,
+        work: `רק הצל האנכי מסובב, בזרוע של 2 מ': \\(T\\sin\\theta \\cdot 2 = 500\\), ולכן \\(T = \\dfrac{250}{\\sin\\theta}\\) ניוטון.` },
+      { hint: `נציב כמה זוויות. איפה עוברים את 1000 ניוטון?`,
+        work: `ב-<bdi>60°</bdi> כ-289 ניוטון, ב-<bdi>30°</bdi> 500 ניוטון, וב-\\(\\sin\\theta = 0.25\\), כלומר בערך <bdi>14.5°</bdi>, בדיוק 1000 ניוטון. התשובה: המתיחות גדלה, ובזווית קטנה הכבל נקרע.` },
+    ],
+    explanation: `<p>עכשיו תורך: אפשר לשנות זווית, מטען ומקום, ולראות את כל הכוחות.</p>`,
+    sayRight: 'ידעת שזה ייקרע, ולא אמרת כלום. אני רושם.',
+    sayWrong: 'גם אני חשבתי שקצר זה טוב. עכשיו אני על הרצפה, ועל הרגליים.',
+    onDone: () => cable.setParam('locked', false),
+  });
+
+  /* ---------- 10. Playground ---------- */
+  const lab = PHY.sims.beam($('c-lab'), $('ctl-lab'), {
+    world: { xMin: -4.7, xMax: 4.7, yMin: -0.45, yMax: 3.8 }, aspect: 2, minHeight: 280, maxHeight: 460,
+    xA: -4, xB: 4, y0: 1.5, mb: 10, e: 0.005, snap: 0.25, locked: false, lab: true, panel: 'lab', dragSupports: true, catH: 0.95,
+    forceMax: 62, forceMaxSmall: 36, hudLeft: 'נגד השעון: ', hudRight: 'עם השעון: ',
+    supports: [{ x: -3, kind: 'wedge' }, { x: 3, kind: 'wedge' }],
+    items: [{ id: 'cat', m: 5, x: -1.5, kind: 'cat', drag: true }, { id: 'b1', m: 10, x: 1.5, kind: 'block', drag: true }],
+    onInteract: () => PHY.progress.markSection(CH, 'playground'),
+  });
+  lab.start();
+
+  /* ---------- 11. Game ---------- */
+  const game = PHY.sims.mobileGame($('c-game'), $('ctl-game'), { chapter: CH, section: 'game' });
+  game.start();
+
+  /* ---------- 12. Traps ---------- */
+  const fish = PHY.sims.fishCut($('c-fish'), $('ctl-fish'), {});
+  fish.start();
+  U.PredictCard($('pc-fish'), {
+    chapter: CH, id: 'trap-fish', section: 'traps', tag: 'מלכודת: מאוזן אומר שווה?',
+    question: `ניוטון רוצה לחלוק דג עם חבר, בהגינות. הוא מאזן את הדג על תומך, וחותך בדיוק מעל התומך. איזה חלק כבד יותר?`,
+    options: [
+      { text: `הם שווים. הדג היה מאוזן, אז כל צד שוקל אותו דבר.`, why: `זו המחשבה הכי טבעית, ואיתה נחתך הדג. איזון אומר מומנטים שווים, לא מסות שוות.` },
+      { text: `הצד של הזנב. הוא ארוך יותר, אז יש בו יותר דג.`, why: `הוא ארוך, אבל דק. הוא מתאזן עם הראש דווקא בגלל שהזרוע שלו ארוכה, ובמסה הוא קטן יותר.` },
+      { text: `הצד של הראש.`, correct: true },
+    ],
+    onRun: () => fish.play(),
+    steps: [
+      { hint: `מה בדיוק שווה בשני הצדדים כשהדג מאוזן על התומך?`,
+        work: `המומנטים: \\(m_1 g d_1 = m_2 g d_2\\), כש-\\(d\\) הוא המרחק ממרכז הכובד של כל חלק אל התומך.` },
+      { hint: `של מי מרכז הכובד רחוק יותר מהתומך, של הראש או של הזנב?`,
+        work: `של הזנב: הוא דק וארוך, ומרכז הכובד שלו בערך 0.68 מ' מהתומך. בראש, הקצר והעבה, המרחק הוא בערך 0.4 מ'.` },
+      { hint: `ומה אומרת המשוואה על המסה של מי שהזרוע שלו קצרה?`,
+        work: `היא גדולה יותר: \\(1.25 \\cdot 0.4 \\approx 0.75 \\cdot 0.68\\). התשובה: הראש כבד יותר, 1.25 ק"ג מול 0.75 ק"ג. איזון דורש מומנטים שווים, לא מסות שוות.` },
+    ],
+    sayRight: 'החבר קיבל את הזנב. לא אמרתי לו למה.',
+    sayWrong: 'אני הצעתי לחבר בדיוק את זה. הוא האמין לי.',
+  });
+
+  const wrench = PHY.sims.topRod($('c-wrench'), $('ctl-wrench'), {
+    world: { xMin: -0.42, xMax: 1.22, yMin: -0.42, yMax: 0.72 }, aspect: 1.45, minHeight: 240, maxHeight: 400, hideUntilRun: true, slow: 0.4, gridStep: 0.1, arrowM: 0.3,
+    rods: [
+      { id: 'A', skin: 'wrench', hx: 0, hy: 0, L: 0.4, I: 1, F: 50, d: 0.4, rel: 30, torqueDeg: 12, pillPrefix: '', title: "0.4 מ', ב-" + F_LRM + '30°' + F_LRM, offLabel: [0, 14] },
+      { id: 'B', skin: 'wrench', hx: 0.75, hy: 0, L: 0.2, I: 1, F: 50, d: 0.2, rel: 90, torqueDeg: 12, pillPrefix: '', title: "0.2 מ', בניצב" },
+    ],
+  });
+  wrench.start();
+  U.PredictCard($('pc-wrench'), {
+    chapter: CH, id: 'trap-wrench', section: 'traps', tag: 'מלכודת: כוח כפול מרחק?',
+    question: `שני מפתחות, אותו בורג, אותו כוח של 50 ניוטון. את השמאלי, הארוך, 0.4 מ', דוחפים בזווית של <bdi>30°</bdi> לידית, ואת הימני, הקצר, 0.2 מ', דוחפים בניצב. מי מסובב חזק יותר?`,
+    options: [
+      { text: `הארוך, פי 2. \\(50 \\cdot 0.4\\) מול \\(50 \\cdot 0.2\\), חשבון פשוט.`, why: `כוח כפול מרחק נכון רק כשהכוח בניצב. בזווית של <bdi>30°</bdi>, הזרוע של הארוך היא רק 0.2 מ'.` },
+      { text: `הקצר. בניצב תמיד מנצח.`, why: `בניצב הוא הכי טוב לאותו מפתח, אבל למפתח הארוך יש יותר אורך לבזבז.` },
+      { text: `אותו דבר.`, correct: true },
+    ],
+    onRun: () => wrench.play(),
+    steps: [
+      { hint: `מה המומנט של המפתח הקצר, שבו הכוח בניצב?`,
+        work: `\\(50 \\cdot 0.2 = 10\\) ניוטון·מ'.` },
+      { hint: `מה הזרוע של המפתח הארוך? כמה רחוק מהבורג עובר קו הכוח?`,
+        work: `\\(0.4 \\cdot \\sin 30^\\circ = 0.2\\) מ'. זה הקו הכתום על המסך.` },
+      { hint: `ומה המומנט שלו?`,
+        work: `\\(50 \\cdot 0.2 = 10\\) ניוטון·מ'. התשובה: אותו דבר. לא כוח כפול מרחק, אלא כוח כפול זרוע.` },
+    ],
+    sayRight: 'שני מפתחות, בורג אחד, אפס התרגשות. יפה.',
+    sayWrong: 'אל תדאגו. גם הבורג לא ידע.',
+  });
+
+  const pivot = PHY.sims.beam($('c-pivot'), $('ctl-pivot'), {
+    world: { xMin: -0.65, xMax: 4.65, yMin: -0.2, yMax: 3.7 }, aspect: 1.4, minHeight: 330, maxHeight: 490,
+    xA: 0, xB: 4, y0: 0.85, catH: 0.8, panel: 'none', arms: false, torques: false, forceMax: 62, forceMaxSmall: 40, hud: false,
+    supports: [{ x: 0, kind: 'scale' }, { x: 4, kind: 'scale' }],
+    items: [{ id: 'cat', m: 5, x: 1, kind: 'cat' }],
+  });
+  pivot.start();
+  U.PredictCard($('pc-pivot'), {
+    chapter: CH, id: 'trap-pivot', section: 'traps', tag: 'מלכודת: איזה ציר מותר?',
+    question: `הקרש בשקט, וצריך ציר כדי לחשב מומנטים. סביב איזו נקודה מותר לחשב?`,
+    options: [
+      { text: `רק סביב מרכז הקרש.`, why: `מרכז הקרש הוא בחירה אפשרית, אבל לא מיוחדת. ראינו שהסכום אפס גם בכל נקודה אחרת.` },
+      { text: `רק סביב נקודה שבאמת נשענת על משהו, כמו אחד המאזניים.`, why: `נוח לבחור שם, כי ככה כוח לא ידוע יוצא מהחשבון. אבל הקרש לא מסתובב סביב שום נקודה, אז אף נקודה לא "אמיתית" יותר מהאחרות.` },
+      { text: `סביב כל נקודה שרוצים, אפילו באוויר.`, correct: true },
+    ],
+    onRun: async () => {
+      pivot.reset();
+      pivot.setSweep(-0.4);
+      await pivot.wait(0.5);
+      await pivot.sweep(0.5, -0.4, 0);
+      pivot.setParam('caption', 'ציר על המאזניים השמאליים: הכוח שלהם נעלם.');
+      await pivot.wait(1.1);
+      pivot.setParam('caption', '');
+      await pivot.sweep(3, 0, 4);
+      pivot.setParam('caption', 'ציר על המאזניים הימניים: עכשיו הכוח שלהם נעלם.');
+      await pivot.wait(1.1);
+      pivot.setParam('caption', '');
+      await pivot.sweep(0.5, 4, 4.4);
+      await pivot.wait(0.3);
+    },
+    steps: [
+      { hint: `מה ידוע על גוף בשיווי משקל, מבחינת הכוחות?`,
+        work: `סכום הכוחות אפס. כאן: 37.5 ניוטון ו-12.5 ניוטון למעלה, מול 50 ניוטון למטה.` },
+      { hint: `אם מזיזים את הציר בכמות \\(a\\), כמה משתנה המומנט של כל כוח?`,
+        work: `כל מומנט משתנה ב-\\(F \\cdot a\\), כשכוח למעלה וכוח למטה מקבלים סימן הפוך. סך השינוי הוא \\(a \\sum F\\).` },
+      { hint: `ומה יוצא מזה, אם \\(\\sum F = 0\\)?`,
+        work: `השינוי אפס, ולכן הסכום נשאר אפס בכל נקודה. התשובה: מותר לבחור כל נקודה, גם באוויר. לכן בוחרים את זו שמעלימה נעלם.` },
+    ],
+    sayRight: 'כל נקודה. גם זו שליד האוזן שלי, לצערי.',
+    sayWrong: 'גם אני חשבתי שיש ציר "אמיתי". הקרש לא התרשם.',
+  });
+
+  const couple = PHY.sims.topRod($('c-couple'), $('ctl-couple'), {
+    world: { xMin: -1.5, xMax: 4.5, yMin: -1.5, yMax: 1.5 }, aspect: 2, minHeight: 230, maxHeight: 400, hideUntilRun: true, slow: 1, T: 3, stopAt: 1e9, arrowM: 0.55,
+    rods: [
+      { id: 'line', hinge: false, hx: 0, hy: 0, L: 2, I: 5, m: 15, title: 'על אותו קו', forces: [{ s: 1, F: 5, rel: 0 }, { s: -1, F: 5, rel: 180 }] },
+      { id: 'couple', hinge: false, hx: 3, hy: 0, L: 2, I: 5, m: 15, title: 'לא על אותו קו', forces: [{ s: 1, F: 5, rel: 90 }, { s: -1, F: 5, rel: -90 }] },
+    ],
+  });
+  couple.start();
+  U.PredictCard($('pc-couple'), {
+    chapter: CH, id: 'trap-couple', section: 'traps', tag: 'מלכודת: שקול אפס, אז כלום לא זז?',
+    question: `שני מוטות על קרח, ובאמצע כל אחד יושב החתול. על כל מוט פועלים שני כוחות של 5 ניוטון, בכיוונים הפוכים, ולכן בשניהם שקול הכוחות אפס. מה יעשה המוט הימני?`,
+    options: [
+      { text: `כלום. הכוחות מבטלים זה את זה, כמו במוט השמאלי.`, why: `הם מבטלים זה את זה בחשבון הכוחות, ולכן המרכז לא זז. אבל הם לא על אותו קו, ויש להם מומנט.` },
+      { text: `יסתובב במקום, והמרכז שלו יישאר.`, correct: true },
+      { text: `יסתובב, וגם יחליק הצידה.`, why: `כדי להחליק צריך שקול כוחות, וכאן הוא אפס. המרכז נשאר בדיוק איפה שהיה.` },
+    ],
+    onRun: () => couple.play(),
+    steps: [
+      { hint: `מה אומר שקול כוחות אפס על התנועה של מרכז המוט?`,
+        work: `שהמרכז לא מאיץ, כמו בחוק השני מפרק 4. הוא נשאר במקום.` },
+      { hint: `ומה המומנט סביב המרכז? מה הזרוע של כל כוח?`,
+        work: `כל כוח במרחק 1 מ' מהמרכז, ושניהם מסובבים לאותו כיוון: \\(5 \\cdot 1 + 5 \\cdot 1 = 10\\) ניוטון·מ'.` },
+      { hint: `אז אילו מהתנאים של שיווי משקל מתקיימים?`,
+        work: `רק \\(\\sum F = 0\\), ו-\\(\\sum \\tau\\) לא אפס. התשובה: המוט מסתובב במקום, והמרכז נשאר. בשביל מנוחה צריך את שני התנאים.` },
+    ],
+    sayRight: 'נכון. ואני מתחיל להרגיש את ארוחת הצהריים.',
+    sayWrong: 'גם אני חשבתי שיהיה רגוע. אני עדיין מסתובב.',
+  });
+
+  /* ---------- 13. Exam problems ---------- */
+  const probs = $('problems-host');
+  U.Problem(probs, {
+    chapter: CH, section: 'problems', tag: 'שאלה 1: קורה על שני תומכים',
+    text: `קורה אחידה באורך 4 מ' ובמסה של 10 ק"ג מונחת על שני תומכים בקצותיה. מטען של 20 ק"ג מונח 1 מ' מהקצה השמאלי. מהו הכוח בכל תומך?`,
+    fields: [
+      { label: 'התומך השמאלי', answer: 200, unit: 'ניוטון' },
+      { label: 'התומך הימני', answer: 100, unit: 'ניוטון' },
+    ],
+    steps: [
+      { hint: `אילו כוחות פועלים על הקורה, ואיפה?`,
+        work: `משקל הקורה, \\(10 \\cdot 10 = 100\\) ניוטון, באמצע, 2 מ' מכל קצה. המטען, \\(20 \\cdot 10 = 200\\) ניוטון, 1 מ' משמאל. ולמעלה, \\(N_L\\) ו-\\(N_R\\) בקצוות.` },
+      { hint: `איפה נשים את הציר, כדי שאחד הנעלמים ייעלם?`,
+        work: `על התומך השמאלי. הזרוע של \\(N_L\\) שם היא 0 מ', והוא נעלם.` },
+      { hint: `מה נותן שקול מומנטים אפס סביב הציר הזה?`,
+        work: `\\(N_R \\cdot 4 = 100 \\cdot 2 + 200 \\cdot 1 = 400\\) ניוטון·מ', ולכן \\(N_R = 100\\) ניוטון.` },
+      { hint: `איך מקבלים את התומך השני, בלי עוד חשבון מומנטים?`,
+        work: `שקול הכוחות: \\(N_L + N_R = 300\\) ניוטון, ולכן \\(N_L = 200\\) ניוטון. התשובה: 200 ניוטון בשמאלי, ו-100 ניוטון בימני. הקרוב למטען נושא יותר.` },
+    ],
+  });
+  U.Problem(probs, {
+    chapter: CH, section: 'problems', tag: 'שאלה 2: קורה על ציר, עם כבל',
+    text: `קורה אחידה אופקית באורך 2 מ' ובמסה של 10 ק"ג מחוברת לקיר בציר. בקצה שלה תלוי מטען של 20 ק"ג, ומאותו קצה יוצא כבל אל הקיר, בזווית של <bdi>30°</bdi> מעל הקורה. מהן המתיחות בכבל ושני רכיבי הכוח בציר?`,
+    fields: [
+      { label: 'המתיחות', answer: 500, unit: 'ניוטון' },
+      { label: 'הציר, רכיב אופקי', answer: 433, unit: 'ניוטון' },
+      { label: 'הציר, רכיב אנכי', answer: 50, unit: 'ניוטון' },
+    ],
+    steps: [
+      { hint: `יש שלושה נעלמים. איזו נקודה מעלימה שניים מהם?`,
+        work: `הציר בקיר: הרכיב האופקי והרכיב האנכי של הכוח שלו עוברים דרכו, והזרוע שלהם אפס מטרים.` },
+      { hint: `אילו מומנטים מסובבים עם כיוון השעון, סביב הציר?`,
+        work: `משקל הקורה, 100 ניוטון באמצע, 1 מ' מהציר. המטען, 200 ניוטון, 2 מ' מהציר. יחד: \\(100 + 400 = 500\\) ניוטון·מ'.` },
+      { hint: `מה המומנט של הכבל, ומה יוצא מהשוואה?`,
+        work: `רק הצל האנכי מסובב, בזרוע של 2 מ': \\(T \\sin 30^\\circ \\cdot 2 = T\\) ניוטון·מ'. לכן \\(T = 500\\) ניוטון.` },
+      { hint: `מה מאזן את המשיכה של הכבל אל הקיר?`,
+        work: `הרכיב האופקי בציר: \\(H = T\\cos 30^\\circ = 500 \\cdot 0.866 \\approx 433\\) ניוטון, הרחק מהקיר.` },
+      { hint: `ומה משלים את הכוחות האנכיים?`,
+        work: `כלפי מטה 300 ניוטון. הכבל מרים \\(T\\sin 30^\\circ = 250\\) ניוטון, ולכן הציר מוסיף \\(V = 50\\) ניוטון למעלה. התשובה: 500 ניוטון, 433 ניוטון ו-50 ניוטון.` },
+    ],
+  });
+  U.Problem(probs, {
+    chapter: CH, section: 'problems', tag: 'שאלה 3: סולם',
+    text: `סולם אחיד באורך 5 מ' ובמסה של 10 ק"ג נשען על קיר חלק, בזווית של <bdi>53°</bdi> לרצפה (\\(\\sin 53^\\circ = 0.8\\), \\(\\cos 53^\\circ = 0.6\\)). מהם הכוח הנורמלי מהרצפה וכוח החיכוך, ומהו מקדם החיכוך המינימלי שמחזיק אותו?`,
+    fields: [
+      { label: 'הנורמל מהרצפה', answer: 100, unit: 'ניוטון' },
+      { label: 'החיכוך', answer: 37.5, unit: 'ניוטון' },
+      { label: 'המקדם המינימלי', answer: 0.375, unit: '' },
+    ],
+    steps: [
+      { hint: `מה הכוחות על הסולם? מה קיר חלק אומר על הכוח ממנו?`,
+        work: `המשקל, \\(mg\\), באמצע הסולם. הקיר דוחף רק בניצב אליו, אופקית: \\(N_w\\). הרצפה נותנת נורמל \\(N_f\\) למעלה וחיכוך \\(f\\) לכיוון הקיר.` },
+      { hint: `אילו כוחות אנכיים יש, ומה זה נותן על הנורמל?`,
+        work: `רק המשקל והנורמל, ולכן \\(N_f = mg = 10 \\cdot 10 = 100\\) ניוטון.` },
+      { hint: `איזו נקודה מעלימה גם את הנורמל וגם את החיכוך?`,
+        work: `רגל הסולם. הזרוע של הקיר היא גובה ראש הסולם, \\(5\\sin 53^\\circ = 4\\) מ', והזרוע של המשקל היא המרחק האופקי שלו מהרגל, \\(2.5\\cos 53^\\circ = 1.5\\) מ'. כלומר \\(N_w \\cdot 4 = 100 \\cdot 1.5 = 150\\) ניוטון·מ', ולכן \\(N_w = 37.5\\) ניוטון.` },
+      { hint: `מה מאזן את הקיר בכיוון האופקי?`,
+        work: `רק החיכוך: \\(f = N_w = 37.5\\) ניוטון.` },
+      { hint: `מה התנאי לכך שהרצפה מסוגלת לתת את החיכוך הזה?`,
+        work: `\\(f \\le \\mu N_f\\), ולכן \\(\\mu \\ge 37.5 / 100 = 0.375\\). התשובה: 100 ניוטון, 37.5 ניוטון, ומקדם של לפחות 0.375.` },
+    ],
+  });
+
+  /* ---------- 14. Quiz ---------- */
+  U.Quiz($('quiz-host'), {
+    chapter: CH, section: 'quiz',
+    questions: [
+      {
+        type: 'num',
+        q: `על נדנדה עם ציר באמצע עומד ארגז של 4 ק"ג, 1.5 מ' מהציר. באיזה מרחק מהציר, בצד השני, צריך להציב ארגז של 3 ק"ג כדי לאזן?`,
+        answer: 2, unit: "מ'",
+        steps: [
+          { hint: `מה צריך להיות שווה בשני הצדדים? מה המשקל של כל ארגז?`,
+            work: `המומנטים. המשקלים הם \\(4 \\cdot 10 = 40\\) ניוטון ו-\\(3 \\cdot 10 = 30\\) ניוטון.` },
+          { hint: `נכתוב את השוויון ונפתור.`,
+            work: `\\(40 \\cdot 1.5 = 30 \\cdot d\\), כלומר \\(60 = 30 d\\), ולכן \\(d = 2\\) מ'.` },
+        ],
+      },
+      {
+        type: 'num',
+        q: `דוחפים ידית של מפתח ברגים באורך 0.5 מ', בקצה שלה, בכוח של 40 ניוטון, בזווית של <bdi>30°</bdi> לידית. מה המומנט על הבורג?`,
+        answer: 10, unit: "ניוטון·מ'",
+        steps: [
+          { hint: `איזה חלק של הכוח מסובב? או: מה הזרוע?`,
+            work: `הזרוע היא \\(0.5 \\cdot \\sin 30^\\circ = 0.25\\) מ'.` },
+          { hint: `נכפול בכוח.`,
+            work: `\\(\\tau = 40 \\cdot 0.25 = 10\\) ניוטון·מ'.` },
+        ],
+      },
+      {
+        type: 'num',
+        q: `קרש קל באורך 6 מ' מונח על שני מאזניים בקצותיו. אדם של 60 ק"ג עומד 2 מ' מהקצה השמאלי. מה מראים המאזניים השמאליים?`,
+        answer: 400, unit: 'ניוטון',
+        steps: [
+          { hint: `איפה נשים ציר, כדי שהנעלם השני ייעלם?`,
+            work: `על המאזניים הימניים. האדם במרחק 4 מ' מהם, והמאזניים השמאליים במרחק 6 מ'.` },
+          { hint: `מה נותן שקול מומנטים אפס?`,
+            work: `\\(N_L \\cdot 6 = 600 \\cdot 4\\), ולכן \\(N_L = 400\\) ניוטון. שני שלישים מהמשקל על הקרובים.` },
+        ],
+      },
+      {
+        type: 'num',
+        q: `סולם אחיד וריק נשען על קיר חלק, ומקדם החיכוך ברצפה הוא 0.5. מהי הזווית הקטנה ביותר מהרצפה שבה הוא עוד עומד?`,
+        answer: 45, unit: 'מעלות',
+        steps: [
+          { hint: `איזו נוסחה קושרת את הזווית המינימלית למקדם החיכוך?`,
+            work: `\\(\\tan\\theta_{\\text{min}} = \\dfrac{1}{2\\mu}\\), ממומנטים סביב רגל הסולם.` },
+          { hint: `נציב.`,
+            work: `\\(\\tan\\theta_{\\text{min}} = \\dfrac{1}{2 \\cdot 0.5} = 1\\), ולכן \\(\\theta_{\\text{min}} = 45^\\circ\\).` },
+        ],
+      },
+      {
+        type: 'mc',
+        q: `איפה נמצא מרכז הכובד של טבעת אחידה?`,
+        options: [`בנקודה העליונה של הטבעת`, `במרכז החור, במקום שאין בו חומר`, `לטבעת אין מרכז כובד`, `בכל נקודה על הטבעת`],
+        answer: 1,
+        steps: [
+          { hint: `מה עושה סימטריה? לאיזה צד הנקודה יכולה להעדיף לזוז?`,
+            work: `הטבעת סימטרית לכל כיוון סביב המרכז שלה, ולכן אין סיבה שהנקודה תזוז לצד כלשהו.` },
+          { hint: `ומה יראו קווי אנך מתלייה בשתי נקודות?`,
+            work: `הם ייפגשו במרכז החור. מרכז כובד הוא ממוצע של מיקומים, ואין צורך שיהיה שם חומר. התשובה: במרכז החור.` },
+        ],
+      },
+      {
+        type: 'num',
+        q: `חזרה לפרק 4: ארגז של 10 ק"ג על רצפה, ומקדם החיכוך הסטטי 0.5. מושכים אותו אופקית ב-30 ניוטון, והוא לא זז. מה כוח החיכוך?`,
+        answer: 30, unit: 'ניוטון',
+        steps: [
+          { hint: `מה החיכוך הסטטי המקסימלי כאן, והאם המשיכה עוברת אותו?`,
+            work: `\\(\\mu N = 0.5 \\cdot 100 = 50\\) ניוטון. המשיכה קטנה מזה, ולכן הארגז לא זז.` },
+          { hint: `הארגז במנוחה. מה זה אומר על שקול הכוחות?`,
+            work: `שהוא אפס, ולכן החיכוך שווה למשיכה: 30 ניוטון, ולא 50 ניוטון. החיכוך הסטטי נותן רק כמה שצריך.` },
+        ],
+      },
+      {
+        type: 'num',
+        q: `חזרה לפרק 7: גוף של 2 ק"ג במהירות 6 מ/ש פוגע בגוף של 1 ק"ג במנוחה, ונדבק אליו. מה המהירות המשותפת?`,
+        answer: 4, unit: 'מ/ש',
+        steps: [
+          { hint: `מה נשמר בכל התנגשות, גם כזו שנדבקים בה? מה ערכו בהתחלה?`,
+            work: `התנע נשמר: \\(p = 2 \\cdot 6 = 12\\) ק"ג·מ/ש.` },
+          { hint: `מה המסה אחרי ההתנגשות, ומה המהירות שיוצאת?`,
+            work: `\\(3 \\cdot v = 12\\), ולכן \\(v = 4\\) מ/ש.` },
+        ],
+      },
+    ],
+  });
+
+  /* ---------- 16. Graduation ---------- */
+  PHY.sims.graduation($('grad-host'), null, {});
+
+  PHY.mascot.easterEgg([
+    { text: 'מיאו. הקשה רחוק מהציר. אני מרגיש את המומנט.', pose: 'standing' },
+    { text: 'עוד הקשה. אני עדיין בשיווי משקל, אבל זה לא קל.', pose: 'thinking' },
+    { text: 'שקול הכוחות על האוזן שלי אפס, ובכל זאת אני מסתחרר.', pose: 'dizzy' },
+    { text: 'אצבע אחת, זרוע ארוכה. מישהו כאן למד את הפרק.', pose: 'thinking' },
+    { text: 'זהו, יצאתי מהבסיס! קו האנך שלי בחוץ! תפוחים לכולם!', pose: 'flying', spin: true, rain: true },
+  ]);
+
+  U.initChapter({ id: CH });
+})();
+</script>
+</body>
+</html>

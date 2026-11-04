@@ -192,17 +192,18 @@
   function PredictCard(host, o) {
     const stage = h('div', { class: 'predict-stage' });
     while (host.firstChild) stage.appendChild(host.firstChild);
-    const tag = h('div', { class: 'predict-tag', text: o.tag || 'נחש קודם' });
+    const tag = h('div', { class: 'predict-tag', text: o.tag || 'קודם ניחוש' });
     const q = h('div', { class: 'predict-q', html: o.question });
     const list = h('div', { class: 'predict-options', role: 'radiogroup', 'aria-label': 'אפשרויות' });
-    const run = h('button', { type: 'button', class: 'btn btn-primary', text: o.runLabel || 'הרץ!', disabled: true });
-    const hint = h('span', { class: 'muted small', text: 'קודם תנחש. ככה זה נשאר בראש.' });
+    const run = h('button', { type: 'button', class: 'btn btn-primary', text: o.runLabel || 'קדימה!', disabled: true });
+    const hint = h('span', { class: 'muted small', text: 'קודם ניחוש. ככה זה נשאר בראש.' });
     const row = h('div', { class: 'btn-row' }, [run, hint]);
     const verdict = h('div', { class: 'predict-verdict' });
     const why = h('div', { class: 'predict-why' });
     const resultIn = h('div', { class: 'predict-result-in' }, [verdict, why]);
     const result = h('div', { class: 'predict-result' }, [resultIn]);
     host.classList.add('predict');
+    host._phyCardId = o.id;
     [tag, q, list, row, stage, result].forEach(function (n) { host.appendChild(n); });
 
     let choice = -1;
@@ -256,7 +257,7 @@
         running = false;
         if (!finished) reveal();
         run.disabled = false;
-        run.textContent = o.againLabel || 'הרץ שוב';
+        run.textContent = o.againLabel || 'עוד פעם';
       });
     });
 
@@ -278,13 +279,14 @@
       if (o.explanation) why.appendChild(h('div', { class: 'predict-after', html: o.explanation }));
       renderMath(why);
       result.classList.add('is-open');
+      releaseHeld(host);
       if (o.chapter) {
         PHY.progress.recordPrediction(o.chapter, o.id, choice, right);
         if (o.section) PHY.progress.markSection(o.chapter, o.section);
       }
       if (PHY.mascot) {
-        if (right) PHY.mascot.say(o.sayRight || 'ידעתי שאתה חכם. אני תמיד אומר את זה לתפוחים.', 'happy');
-        else PHY.mascot.say(o.sayWrong || 'גם אני ניחשתי ככה. אל תספר לאף אחד.', 'thinking');
+        if (right) PHY.mascot.say(o.sayRight || 'ידעתי! אני תמיד אומר את זה לתפוחים.', 'happy');
+        else PHY.mascot.say(o.sayWrong || 'גם אני ניחשתי ככה. זה נשאר בינינו.', 'thinking');
       }
       if (right) burst(buttons[choice], 16);
       if (o.onDone) o.onDone(right, choice);
@@ -316,7 +318,7 @@
       hintLabel.textContent = 'רמז לשלב ' + (shown + 1) + ' מתוך ' + total;
       hintText.innerHTML = steps[shown].hint;
       renderMath(hintText);
-      revealBtn.textContent = shown === total - 1 ? 'חשוף את השלב האחרון' : 'חשוף את שלב ' + (shown + 1);
+      revealBtn.textContent = shown === total - 1 ? 'לחשוף את השלב האחרון' : 'לחשוף את שלב ' + (shown + 1);
     }
 
     function open() {
@@ -395,7 +397,7 @@
     });
     box.appendChild(fieldsBox);
     const row = h('div', { class: 'btn-row' });
-    Button(row, 'בדוק', check, { primary: true });
+    Button(row, 'בדיקה', check, { primary: true });
     box.appendChild(row);
     const fb = h('div', { class: 'problem-feedback', role: 'status' });
     box.appendChild(fb);
@@ -418,10 +420,10 @@
         PHY.mascot.say('תשובה נכונה. מגיע לך תפוח. שלי, אבל מגיע לך.', 'happy');
         finish();
       } else if (empty === fields.length) {
-        fb.textContent = 'כתוב מספר קודם. אל תדאג, אפשר לטעות.';
+        fb.textContent = 'קודם צריך מספר. ואפשר לטעות, זה בסדר.';
         fb.className = 'problem-feedback bad';
       } else {
-        fb.textContent = 'עוד לא. בדוק את הסימנים והיחידות, או קח רמז.';
+        fb.textContent = 'עוד לא. כדאי לבדוק סימנים ויחידות, או לעבור לפתרון בשלבים.';
         fb.className = 'problem-feedback bad';
       }
     }
@@ -456,7 +458,7 @@
         const item = { qd, box, choice: -1, done: false, good: false };
         const checkRow = h('div', { class: 'btn-row' });
         item.checkRow = checkRow;
-        item.checkBtn = Button(checkRow, 'בדוק', function () { checkItem(item); }, { primary: true, disabled: true });
+        item.checkBtn = Button(checkRow, 'בדיקה', function () { checkItem(item); }, { primary: true, disabled: true });
         if (qd.type === 'num') {
           const nf = numField('phy-q-' + ++fieldId, '', qd.unit);
           item.input = nf.input;
@@ -536,7 +538,7 @@
       StepSolution(it.whyBox, {
         steps: qd.steps,
         open: !it.good,
-        startLabel: 'רוצה לראות את הדרך המלאה? לפתרון בשלבים',
+        startLabel: 'איך מגיעים לזה? לפתרון בשלבים',
         onDone: it.good ? null : function () { showAnswer(it); },
       });
       if (items.every(function (x) { return x.done; })) finish();
@@ -554,7 +556,7 @@
       resultBox.innerHTML = '';
       StarScore(resultBox, { value: stars, size: 34, animate: true });
       resultBox.appendChild(h('span', { text: right + ' מתוך ' + items.length + ' נכונות.' }));
-      Button(resultBox, 'נסה שוב', build, { ghost: true });
+      Button(resultBox, 'עוד ניסיון', build, { ghost: true });
       if (score >= 0.9) {
         burst(resultBox, 30);
         PHY.mascot.say('שלושה כוכבים! אני שם אותם על הקיר, בכיוון צפון.', 'happy');
@@ -579,7 +581,7 @@
     const paint = function () {
       const dark = PHY.theme.get() === 'dark';
       b.innerHTML = dark ? ICON_SUN : ICON_MOON;
-      b.setAttribute('aria-label', dark ? 'עבור למצב בהיר' : 'עבור למצב כהה');
+      b.setAttribute('aria-label', dark ? 'מעבר למצב בהיר' : 'מעבר למצב כהה');
       b.title = b.getAttribute('aria-label');
     };
     b.addEventListener('click', PHY.theme.toggle);
@@ -609,6 +611,38 @@
   /* Call once at the bottom of every chapter page.
      Passive sections (data-passive) are marked done when seen for 1 s. All the rest are marked by
      their components, via the `section` option. Also renders math and mounts data-mascot cats. */
+  /* Text right after a card often states its answer, so it stays closed until the reveal.
+     It holds up to the next card, a <nav>, or an element marked data-no-hold. A card answered
+     on an earlier visit holds nothing back. Held elements keep their width, so a canvas inside
+     one stays correctly sized. */
+  function holdAfterCards(chapterId) {
+    const answered = PHY.progress.chapter(chapterId).predictions || {};
+    document.querySelectorAll('.predict').forEach(function (host) {
+      if (host._phyCardId && answered[host._phyCardId]) return;
+      const els = [];
+      for (let n = host.nextElementSibling; n; n = n.nextElementSibling) {
+        if (n.matches('.predict, nav, script, style, [data-no-hold]') || n.querySelector('.predict')) break;
+        els.push(n);
+      }
+      if (!els.length) return;
+      els.forEach(function (el) { el.classList.add('held'); });
+      const note = h('p', { class: 'held-note muted small', text: 'ההמשך ייפתח אחרי הניחוש.' });
+      host.after(note);
+      host._held = { els: els, note: note };
+    });
+  }
+
+  function releaseHeld(host) {
+    const held = host._held;
+    if (!held) return;
+    host._held = null;
+    held.note.remove();
+    held.els.forEach(function (el) {
+      el.classList.remove('held');
+      el.classList.add('held-open');
+    });
+  }
+
   function initChapter(o) {
     const id = o.id;
     const sections = Array.prototype.slice.call(document.querySelectorAll('section[data-section]'));
@@ -655,6 +689,7 @@
         if (s.hasAttribute('data-passive') && !PHY.progress.hasSection(id, s.dataset.section)) io.observe(s);
       });
     }
+    holdAfterCards(id);
     PHY.mascot.autoMount();
     renderMath(document.body);
   }

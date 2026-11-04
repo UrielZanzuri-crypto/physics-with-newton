@@ -66,7 +66,7 @@
       S.attempts = 0;
       S.fails = 0;
       hud.paint(S.level, S.points, false);
-      hud.setTask('נחיתה על <b>' + lv().place + '</b>: תאוצת הנפילה ' + F.unit(lv().g, 'ms2', 1) + '. המנוע נותן ' + F.unit(lv().A, 'ms2', 0) + ' כלפי מעלה, ויש דלק ל-' + F.unit(lv().fuel, 's', 0) + '. תגע בקרקע עם מהירות קטנה מ-' + F.unit(SAFE, 'ms', 0) + '.');
+      hud.setTask('נחיתה על <b>' + lv().place + '</b>: תאוצת הנפילה ' + F.unit(lv().g, 'ms2', 1) + '. המנוע נותן ' + F.unit(lv().A, 'ms2', 0) + ' כלפי מעלה, ויש דלק ל-' + F.unit(lv().fuel, 's', 0) + '. תיגע בקרקע עם מהירות קטנה מ-' + F.unit(SAFE, 'ms', 0) + '.');
       prepare();
       hud.say('');
     }

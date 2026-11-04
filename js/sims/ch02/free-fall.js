@@ -35,8 +35,8 @@
     const out = U.Readouts(controlsEl, [
       { key: 't', label: 'זמן' },
       { key: 'y', label: 'מהירות התפוח', color: 'var(--c-velocity)' },
-      { key: 'a', label: opts.strobe ? 'נפל עד עכשיו' : 'נחיתת התפוח הכבד', color: 'var(--c-displacement)' },
-      { key: 'b', label: opts.strobe ? 'התפוח נחת אחרי' : 'נחיתת התפוח הקל', color: 'var(--c-displacement)' },
+      { key: 'a', label: opts.strobe ? 'נפל עד עכשיו' : 'נחיתת התפוח הכבד', color: opts.strobe ? 'var(--c-displacement)' : undefined },
+      { key: 'b', label: opts.strobe ? 'התפוח נחת אחרי' : 'נחיתת התפוח הקל' },
     ]);
     if (opts.controls) {
       const row = U.h('div', { class: 'sim-row' });
@@ -186,7 +186,7 @@
         S.ghosts = [];
         S.lastMark = 0;
         S.doneT = null;
-        S.caption = S.air ? 'אוויר דולק. עכשיו יש על מי להיתקע.' : '';
+        S.caption = S.air ? 'אוויר דולק. עכשיו יש במה להיתקע.' : '';
         build();
         update();
         loop.requestRender();
