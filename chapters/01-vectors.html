@@ -1,0 +1,513 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>פרק 1: וקטורים וסקלרים | פיזיקה עם ניוטון החתול</title>
+<meta name="description" content="למה 3 מטר ועוד 4 מטר הם לפעמים 5 מטר: מדריך אינטראקטיבי לוקטורים וסקלרים.">
+<script>try{var t=localStorage.getItem('phy-theme');document.documentElement.setAttribute('data-theme',t||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'))}catch(e){document.documentElement.setAttribute('data-theme','light')}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700&family=Rubik:wght@500;600;700;800&display=swap">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.11/katex.min.css">
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-in">
+    <a class="brand" href="../index.html" aria-label="חזרה לדף הבית"><span data-brand-cat></span><span class="brand-name">ניוטון החתול</span></a>
+    <span class="topbar-spacer"></span>
+    <span class="topbar-title">פרק 1: וקטורים וסקלרים</span>
+    <span data-theme-slot></span>
+  </div>
+  <div class="chapter-bar"><span data-chapter-bar></span></div>
+</header>
+
+<main>
+
+<!-- 1. HOOK -->
+<section class="section wrap" data-section="hook" id="hook">
+  <span class="kicker">פרק 1: וקטורים וסקלרים</span>
+  <h1 class="hero-title">לאן, ולא רק כמה</h1>
+  <div data-mascot="standing" data-size="118" data-say="שאלה פשוטה. נכון? נכון?!"></div>
+  <p class="lead">בוא נתחיל בשאלה של כיתה א'. כמעט כולם עונים עליה מהר, וכמעט כולם טועים.</p>
+  <div id="pc-hook">
+    <figure class="sim"><canvas id="c-hook"></canvas><div class="sim-controls" id="ctl-hook"></div></figure>
+  </div>
+</section>
+
+<!-- 2. CYCLE: scalars and vectors -->
+<section class="section wrap" data-section="sort" id="sort">
+  <div class="section-head"><span class="section-num">2</span><h2>כמה, או גם לאן?</h2></div>
+  <p>לא כל דבר צריך כיוון. אם תשאל מישהו "כמה זמן?" ויענה "5 שניות", לא יעלה בדעתך לשאול "5 שניות לאן?".</p>
+  <div id="pc-crate">
+    <figure class="sim"><canvas id="c-crate"></canvas><div class="sim-controls" id="ctl-crate"></div></figure>
+  </div>
+  <h3 class="block-gap">עכשיו אתה: מיין את הקלפים</h3>
+  <p class="muted">שאל את עצמך על כל קלף: אם אוסיף לו "צפונה", זה נשמע הגיוני?</p>
+  <figure class="sim"><div id="sort-host"></div></figure>
+</section>
+
+<!-- 3. CYCLE: head to tail -->
+<section class="section wrap" data-section="add" id="add">
+  <div class="section-head"><span class="section-num">3</span><h2>חיבור ראש לזנב</h2></div>
+  <p>איך מחברים חצים? פשוט הולכים אחריהם. שמים את הזנב של החץ הבא על הראש של הקודם, וממשיכים.</p>
+  <p>החץ מההתחלה עד הסוף נקרא <span class="c-disp">השקול</span>. זה כמו לסכם טיול שלם במשפט אחד: "בסוף הגעתי לשם".</p>
+  <div id="pc-add">
+    <figure class="sim"><canvas id="c-add"></canvas><div class="sim-controls" id="ctl-add"></div></figure>
+  </div>
+</section>
+
+<!-- 4. CYCLE: shadows -->
+<section class="section wrap" data-section="shadow" id="shadow">
+  <div class="section-head"><span class="section-num">4</span><h2>הצל של החץ</h2></div>
+  <p>הנה טריק שחוסך חצי מהצרות בפיזיקה. כל חץ אלכסוני הוא בעצם שני חצים: אחד לאורך הרצפה ואחד לאורך הקיר.</p>
+  <p>איך מוצאים אותם? מדליקים פנס. פנס מלמעלה מטיל צל על הרצפה, ופנס מהצד מטיל צל על הקיר.</p>
+  <div id="pc-shadow">
+    <figure class="sim"><canvas id="c-shadow"></canvas><div class="sim-controls" id="ctl-shadow"></div></figure>
+  </div>
+</section>
+
+<!-- 5. CYCLE: tug of war -->
+<section class="section wrap" data-section="tug" id="tug">
+  <div class="section-head"><span class="section-num">5</span><h2>משיכת חבל בשלושה</h2></div>
+  <p><span class="c-force">כוח</span> הוא וקטור, אז כל מה שלמדת עובד גם עליו. יחידת הכוח נקראת ניוטון. כן, כמו החתול, והוא לא מפסיק לדבר על זה.</p>
+  <p>קשרנו אותו לשלושה חבלים. אם הכוחות מתאזנים הוא נשאר במקום, ואם לא, הוא נגרר.</p>
+  <div id="pc-tug">
+    <figure class="sim"><canvas id="c-tug"></canvas><div class="sim-controls" id="ctl-tug"></div></figure>
+  </div>
+</section>
+
+<!-- 6. EARNED FORMULAS -->
+<section class="section wrap" data-section="formula" data-passive id="formula">
+  <div class="section-head"><span class="section-num">6</span><h2>הנוסחאות שהרווחת</h2></div>
+  <p>כבר ראית את כל מה שיש כאן בעיניים. עכשיו רק נותנים לזה שמות.</p>
+
+  <div class="formula">
+    <h3>צל הוא רכיב</h3>
+    <div class="formula-main">\[A_x = A\cos\theta \qquad A_y = A\sin\theta\]</div>
+    <ul class="legend-list">
+      <li><span class="sym">\(A\)</span><span>אורך החץ, הגודל של הווקטור. למשל 5 מ'.</span></li>
+      <li><span class="sym">\(\theta\)</span><span>הזווית מציר x החיובי, נגד כיוון השעון.</span></li>
+      <li><span class="sym">\(\cos\theta\)</span><span>יחס הצל על הרצפה: איזה חלק מהחץ נפל על ציר x.</span></li>
+      <li><span class="sym">\(\sin\theta\)</span><span>יחס הצל על הקיר: איזה חלק מהחץ נפל על ציר y.</span></li>
+      <li><span class="sym">\(A_x, A_y\)</span><span>הרכיבים, כלומר הצללים עצמם. יש להם יחידות כמו לחץ, והם יכולים להיות שליליים.</span></li>
+    </ul>
+    <div class="table-scroll">
+      <table class="mini" dir="ltr">
+        <tr><th>\(\theta\)</th><td>0°</td><td>30°</td><td>45°</td><td>60°</td><td>90°</td></tr>
+        <tr><th>\(\cos\theta\)</th><td>1</td><td>0.87</td><td>0.71</td><td>0.5</td><td>0</td></tr>
+        <tr><th>\(\sin\theta\)</th><td>0</td><td>0.5</td><td>0.71</td><td>0.87</td><td>1</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="formula">
+    <h3>מרכיבים מהצללים בחזרה לחץ</h3>
+    <div class="formula-main">\[A = \sqrt{A_x^2 + A_y^2} \qquad \tan\theta = \frac{A_y}{A_x}\]</div>
+    <p>הצללים והחץ יוצרים משולש ישר זווית, אז זה פיתגורס. זו בדיוק הסיבה ש-3 מ' ו-4 מ' בזווית ישרה נתנו 5 מ' בשאלת הפתיחה.</p>
+    <p class="muted small">שים לב: \(\tan\theta\) לא מבדיל בין רביעים. תסתכל תמיד בסימנים של הרכיבים כדי לדעת לאן החץ פונה.</p>
+  </div>
+
+  <div class="formula">
+    <h3>חיבור וחיסור בלי לצייר</h3>
+    <div class="formula-main">\[\vec R = \vec A + \vec B \;\Rightarrow\; R_x = A_x + B_x,\;\; R_y = A_y + B_y\]</div>
+    <ul class="legend-list">
+      <li><span class="sym">\(\vec R\)</span><span>השקול: החץ מתחילת המסלול עד סופו.</span></li>
+      <li><span class="sym">\(R_x\)</span><span>חיבור רגיל של מספרים עם סימן, רק על ציר x. על ציר y בנפרד, אותו דבר.</span></li>
+      <li><span class="sym">\(-\vec B\)</span><span>אותו חץ, הפוך. לכן \(\vec A - \vec B = \vec A + (-\vec B)\).</span></li>
+    </ul>
+    <p class="block-gap">זה כל הסוד של וקטורים: <b>מפרקים, מחברים כל ציר לחוד, ומרכיבים בחזרה.</b></p>
+  </div>
+</section>
+
+<!-- 7. PLAYGROUND -->
+<section class="section wrap-wide" data-section="playground" id="playground">
+  <div class="section-head"><span class="section-num">7</span><h2>מגרש משחקים</h2></div>
+  <p>גרור את העיגולים שבקצות החצים. נסה להחזיר את ניוטון הביתה עם שלושה חצים, או לגרום לשני חצים ארוכים לתת שקול קטן.</p>
+  <figure class="sim"><canvas id="c-free"></canvas><div class="sim-controls" id="ctl-free"></div></figure>
+</section>
+
+<!-- 8. MINI GAME -->
+<section class="section wrap-wide" data-section="game" id="game">
+  <div class="section-head"><span class="section-num">8</span><h2>משחקון: מפת האוצר</h2></div>
+  <p>שלושה אוצרות, שלוש דרכים למצוא אותם. כל שלב נותן עד 3 נקודות, ופחות ניסיונות פירושם יותר כוכבים.</p>
+  <figure class="sim"><canvas id="c-game"></canvas><div class="sim-controls" id="ctl-game"></div></figure>
+</section>
+
+<!-- 9. TRAPS -->
+<section class="section wrap" data-section="traps" id="traps">
+  <div class="section-head"><span class="section-num">9</span><h2>מלכודות</h2></div>
+  <p>שלוש טעויות שמפילות תלמידי מכינה שנה אחרי שנה. נסה ליפול בהן כאן, איפה שזה לא עולה נקודות.</p>
+  <div id="pc-trap1">
+    <figure class="sim"><canvas id="c-trap1"></canvas><div class="sim-controls" id="ctl-trap1"></div></figure>
+  </div>
+  <div id="pc-trap2">
+    <figure class="sim"><canvas id="c-trap2"></canvas><div class="sim-controls" id="ctl-trap2"></div></figure>
+  </div>
+  <div id="pc-trap3">
+    <figure class="sim"><canvas id="c-trap3"></canvas><div class="sim-controls" id="ctl-trap3"></div></figure>
+  </div>
+</section>
+
+<!-- 10. EXAM PROBLEMS -->
+<section class="section wrap" data-section="problems" id="problems">
+  <div class="section-head"><span class="section-num">10</span><h2>שאלות מכינה</h2></div>
+  <p>ככה זה נראה במבחן. נסה לבד, ואם נתקעת קח רמז, אין פה שיפוט.</p>
+  <div id="problems-host"></div>
+</section>
+
+<!-- 11. QUIZ -->
+<section class="section wrap" data-section="quiz" id="quiz">
+  <div class="section-head"><span class="section-num">11</span><h2>בוחן</h2></div>
+  <p>חמש שאלות, בלי לחץ. הציון הטוב ביותר נשמר, ואפשר לנסות שוב כמה שתרצה.</p>
+  <div id="quiz-host" class="block-gap"></div>
+</section>
+
+<!-- 12. POCKET CARD -->
+<section class="section wrap" data-section="pocket" data-passive id="pocket">
+  <div class="section-head"><span class="section-num">12</span><h2>כרטיס כיס</h2></div>
+  <div class="pocket">
+    <h3>וקטורים על כף הרגל</h3>
+    <div class="pocket-grid">
+      <div class="pocket-item"><b>סקלר:</b> מספר ויחידה. <b>וקטור:</b> מספר, יחידה וכיוון.</div>
+      <div class="pocket-item"><b>פירוק לרכיבים:</b> \(A_x = A\cos\theta,\;\; A_y = A\sin\theta\)</div>
+      <div class="pocket-item"><b>הרכבה מרכיבים:</b> \(A = \sqrt{A_x^2 + A_y^2},\;\; \tan\theta = A_y / A_x\)</div>
+      <div class="pocket-item"><b>חיבור:</b> \(R_x = A_x + B_x,\;\; R_y = A_y + B_y\)</div>
+      <div class="pocket-item"><b>חיסור:</b> \(\vec A - \vec B = \vec A + (-\vec B)\)</div>
+      <div class="pocket-item"><b>מרחק מול העתק:</b> מרחק סופר צעדים, <span class="c-disp">העתק</span> מודד רק מהתחלה לסוף.</div>
+      <div class="pocket-item"><b>תחום השקול:</b> \(|A-B| \le R \le A+B\)</div>
+    </div>
+    <div class="pocket-quote">"וקטור בלי כיוון הוא סתם מספר עם שאיפות."</div>
+  </div>
+</section>
+
+</main>
+
+<div data-chapter-nav></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.11/katex.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.11/contrib/auto-render.min.js"></script>
+<script src="../js/core/fmt.js"></script>
+<script src="../js/core/vec.js"></script>
+<script src="../js/core/progress.js"></script>
+<script src="../js/core/canvas.js"></script>
+<script src="../js/core/loop.js"></script>
+<script src="../js/core/mascot.js"></script>
+<script src="../js/core/ui.js"></script>
+<script src="../js/sims/ch01/treasure-map.js"></script>
+<script src="../js/sims/ch01/shadow.js"></script>
+<script src="../js/sims/ch01/tug-of-war.js"></script>
+<script src="../js/sims/ch01/sort-game.js"></script>
+<script src="../js/sims/ch01/crate-push.js"></script>
+<script src="../js/sims/ch01/sign-line.js"></script>
+<script>
+(function () {
+  'use strict';
+  const CH = '01';
+  const U = PHY.ui;
+  const $ = (id) => document.getElementById(id);
+  const E = { x: 1, y: 0 };
+
+  /* ---------- 1. Hook ---------- */
+  const hookSim = PHY.sims.treasureMap($('c-hook'), $('ctl-hook'), { mode: 'walk' });
+  hookSim.start();
+  U.PredictCard($('pc-hook'), {
+    chapter: CH, id: 'hook', section: 'hook',
+    question: `ניוטון הלך 3 מטר ואז עוד 4 מטר. כמה הוא רחוק מהבית?`,
+    options: [
+      { text: `7 מ'. 3 ועוד 4, מה יש פה לחשוב?`, why: `זה הניחוש של כמעט כולם. הוא נכון רק אם ניוטון הלך כל הזמן ישר באותו כיוון.` },
+      { text: `5 מ'.`, why: `מרשים! זה נכון כשהוא פונה בזווית ישרה. אבל רק אז.` },
+      { text: `1 מ'.`, why: `נכון אם הוא הסתובב וחזר אחורה. אבל מי אמר שהוא הסתובב?` },
+      { text: `אי אפשר לדעת. תלוי לאן הוא הלך.`, correct: true },
+    ],
+    onRun: () => hookSim.play([
+      { legs: [{ x: 3, y: 0, name: `3 מ'` }, { x: 4, y: 0, name: `4 מ'` }], caption: 'אותו כיוון', result: `אותו כיוון: 7 מ'` },
+      { legs: [{ x: 3, y: 0, name: `3 מ'` }, { x: -4, y: 0, name: `` }], caption: 'הסתובב אחורה', result: `חזר אחורה: 1 מ'` },
+      { legs: [{ x: 3, y: 0, name: `3 מ'` }, { x: 0, y: 4, name: `4 מ'` }], caption: 'פנה בזווית ישרה', result: `זווית ישרה: 5 מ'` },
+    ]),
+    explanation: `
+      <p>אותו 3 מ', אותו 4 מ', ושלוש תשובות שונות. מה השתנה? רק <b>הכיוון</b>.</p>
+      <p>גודל בלי כיוון זה כמו כתובת בלי שם רחוב: "מספר 7", וזהו. גודל ביחד עם כיוון נקרא <b>וקטור</b>, וזה הרעיון של כל הפרק.</p>`,
+    sayRight: 'יפה! רוב האנשים ממהרים ל-7. אתה שאלת לאן.',
+    sayWrong: 'אל תדאג, גם אני חשבתי ככה. ואני הלכתי את זה ברגל.',
+  });
+
+  /* ---------- 2. Scalars and vectors ---------- */
+  const crate = PHY.sims.cratePush($('c-crate'), $('ctl-crate'));
+  crate.start();
+  U.PredictCard($('pc-crate'), {
+    chapter: CH, id: 'crate',
+    question: `חבר אומר לך שני משפטים: "בחוץ 30 מעלות" ו"דחפתי את הארגז ב-30 ניוטון". באיזה מהם חסר לך מידע?`,
+    options: [
+      { text: `באף אחד. מספר זה מספר.`, why: `מספר זה מספר, עד שאתה מנסה לדעת לאן הארגז נסע.` },
+      { text: `רק בטמפרטורה. 30 מעלות לאן?`, why: `טמפרטורה לא פונה לשום מקום, גם אם בחוץ מרגיש שהיא באה ישר אליך.` },
+      { text: `רק בכוח. לאיזה כיוון דחפת?`, correct: true },
+      { text: `בשניהם. תמיד חסר משהו.`, why: `פילוסופי, אבל המדחום מסתדר מצוין בלי כיוון.` },
+    ],
+    onRun: () => crate.play(),
+    explanation: `
+      <p>אותו 30 ניוטון, ובכל פעם הארגז נסע למקום אחר. לעומת זאת 30 מעלות הן 30 מעלות, לא משנה לאן תסתכל.</p>
+      <p>מה שמספיק לו מספר ויחידה נקרא <b>סקלר</b>. מה שצריך גם כיוון נקרא <b>וקטור</b>.</p>`,
+    sayRight: 'בדיוק. המדחום לא אכפת לו לאן אתה פונה. לי דווקא כן, אני על הארגז.',
+    sayWrong: 'ראית? אותו 30 ושלושה מסלולים שונים. אני עדיין מסוחרר.',
+  });
+  PHY.sims.sortGame($('sort-host'), null, { chapter: CH, section: 'sort' });
+
+  /* ---------- 3. Head to tail ---------- */
+  const addSim = PHY.sims.treasureMap($('c-add'), $('ctl-add'), { mode: 'walk' });
+  addSim.start();
+  U.PredictCard($('pc-add'), {
+    chapter: CH, id: 'add', section: 'add',
+    question: `ניוטון הולך 3 מ' מזרחה ואז 4 מ' צפונה. למחרת הוא הולך את אותם שני קטעים בסדר הפוך: קודם 4 מ' צפונה, אחר כך 3 מ' מזרחה. איפה הוא יסיים?`,
+    options: [
+      { text: `במקום אחר. סדר זה סדר.`, why: `בחיים סדר משנה (קודם גרביים, אחר כך נעליים). בחיבור וקטורים לא.` },
+      { text: `באותה נקודה בדיוק.`, correct: true },
+      { text: `באותו מרחק מהבית, אבל בכיוון אחר.`, why: `המרחק אכן אותו דבר, אבל גם הכיוון. שני המסלולים נפגשים באותה פינה.` },
+    ],
+    onRun: () => addSim.play([
+      { legs: [{ x: 3, y: 0, name: `3 מ'` }, { x: 0, y: 4, name: `4 מ'` }], caption: 'יום ראשון: מזרח ואז צפון', result: 'יום ראשון', resultant: false, hold: 0.5 },
+      { legs: [{ x: 0, y: 4, name: `4 מ'` }, { x: 3, y: 0, name: `3 מ'` }], keep: true, caption: 'יום שני: צפון ואז מזרח', result: 'אותה נקודה!', resultantLabel: `R = 5 מ'`, hold: 1.2 },
+    ]),
+    explanation: `
+      <p>שני המסלולים יוצרים מלבן ונפגשים באותה פינה. לכן בחיבור וקטורים, בדיוק כמו ב-3 + 4 ו-4 + 3, הסדר לא משנה.</p>
+      <p>השקול הוא האלכסון של הצורה. כשהזווית לא ישרה הצורה נקראת מקבילית, ולכן תשמע במכינה "שיטת המקבילית". זה אותו דבר כמו ראש לזנב.</p>`,
+    sayRight: 'הלכתי את זה פעמיים כדי לוודא. אתה מוזמן להאמין לי.',
+    sayWrong: 'גם אני הופתעתי. ואני זה שהלך.',
+  });
+
+  /* ---------- 4. Shadow ---------- */
+  let shadowReady = false;
+  let foundSixty = false;
+  const shadowSim = PHY.sims.shadow($('c-shadow'), $('ctl-shadow'), {
+    length: 5, angle: 0, locked: true,
+    onChange(st) {
+      if (shadowReady && !foundSixty && st.angle === 60) {
+        foundSixty = true;
+        U.burst($('c-shadow'), 22);
+        PHY.mascot.say('תפסת! ב-60° הצל הוא בדיוק חצי מהחץ. לא ב-45°.', 'happy');
+      }
+    },
+  });
+  shadowSim.start();
+  shadowSim.setParam('halfMark', true);
+  U.PredictCard($('pc-shadow'), {
+    chapter: CH, id: 'shadow', section: 'shadow',
+    question: `החץ באורך 5 מ' שוכב על הרצפה, אז הצל שלו 5 מ'. עכשיו מרימים אותו ל-45°, חצי מהדרך עד 90°. כמה יהיה הצל על הרצפה?`,
+    options: [
+      { text: `2.5 מ'. חצי זווית, חצי צל.`, why: `הגיוני מאוד, וזו הטעות הכי נפוצה כאן. הצל לא מתקצר בקצב קבוע.` },
+      { text: `בערך 3.5 מ'. יותר מחצי.`, correct: true },
+      { text: `5 מ'. אורך החץ לא השתנה.`, why: `החץ נשאר 5 מ', אבל הצל הוא רק החלק שלו שמונח לאורך הרצפה.` },
+    ],
+    onRun: async () => {
+      shadowReady = false;
+      shadowSim.setParam('locked', true);
+      shadowSim.setParam('length', 5);
+      shadowSim.setParam('angle', 0);
+      await shadowSim.animateTo({ angle: 45 }, 2.2);
+      shadowSim.setParam('locked', false);
+      shadowReady = true;
+    },
+    explanation: `
+      <p>הצל נעצר על 3.54 מ', הרבה אחרי סימן החצי. בהתחלה הוא מתקצר לאט, ורק לקראת 90° הוא נעלם במהירות.</p>
+      <p>המספר "צל חלקי אורך החץ" תלוי רק בזווית. ב-45° הוא 0.71, בכל חץ שתבחר. למספר הזה קוראים <b>קוסינוס</b>, ולמקביל שלו על הקיר קוראים <b>סינוס</b>.</p>
+      <p><b>אתגר:</b> הסליידרים פתוחים עכשיו. באיזו זווית הצל על הרצפה הוא בדיוק חצי מהחץ?</p>`,
+    sayRight: 'בדיוק! וכל זה בלי לפחד מטריגונומטריה.',
+    sayWrong: 'גם אני ניחשתי 2.5. אחר כך הדלקתי פנס.',
+  });
+
+  /* ---------- 5. Tug of war ---------- */
+  const tugSim = PHY.sims.tugOfWar($('c-tug'), $('ctl-tug'), {
+    locked: true,
+    onSolved() { PHY.progress.markSection(CH, 'tug'); },
+  });
+  tugSim.start();
+  U.PredictCard($('pc-tug'), {
+    chapter: CH, id: 'tug', section: 'tug',
+    question: `חבל א' מושך 30 ניוטון ימינה. חבל ב' מושך 40 ניוטון למעלה. חבל ג' מושך באלכסון, בדיוק נגד שניהם. בכמה הוא צריך למשוך כדי שניוטון יישאר במקום?`,
+    options: [
+      { text: `70 ניוטון. 30 ועוד 40.`, F: 70, why: `זו שוב הטעות מהפתיחה: חיברת גדלים בלי כיוון. עם 70 ניוטון הוא נגרר לאחור.` },
+      { text: `50 ניוטון.`, F: 50, correct: true },
+      { text: `10 ניוטון. 40 פחות 30.`, F: 10, why: `חיסור גדלים עובד רק כשהכוחות על אותו קו. כאן הם בזווית ישרה.` },
+    ],
+    onRun: async (i, opt) => {
+      tugSim.setParam('locked', true);
+      tugSim.setPuzzle(0);
+      await tugSim.hold(0.5);
+      await tugSim.animateForces([30, 40, opt.F], 0.8);
+      await tugSim.hold(1.5);
+      if (opt.F !== 50) {
+        await tugSim.animateForces([30, 40, 50], 1);
+        await tugSim.hold(1.2);
+      }
+      tugSim.setParam('locked', false);
+    },
+    explanation: `
+      <p>שני החבלים הראשונים נותנים יחד שקול של 50 ניוטון באלכסון, שוב 3-4-5. כדי לאזן אותו, חבל ג' צריך להיות בדיוק ההפוך שלו.</p>
+      <p>שקול אפס פירושו שהחצים, אם תשים אותם ראש לזנב, נסגרים למשולש וחוזרים להתחלה. תראה את זה שוב בחוקי ניוטון.</p>
+      <p><b>עכשיו תורך:</b> לחץ "חידה חדשה" וכוונן את שלושת החבלים עד ששקול יהיה 0 ניוטון.</p>`,
+    sayRight: 'תודה. זו הפעם הראשונה היום שאף אחד לא גורר אותי.',
+    sayWrong: 'ראית לאן גררו אותי? אני מגיש תלונה.',
+  });
+
+  /* ---------- 7. Playground ---------- */
+  const freeSim = PHY.sims.treasureMap($('c-free'), $('ctl-free'), { mode: 'free', chapter: CH, section: 'playground' });
+  freeSim.start();
+
+  /* ---------- 8. Game ---------- */
+  const gameSim = PHY.sims.treasureMap($('c-game'), $('ctl-game'), { mode: 'game', chapter: CH, section: 'game' });
+  gameSim.start();
+
+  /* ---------- 9. Traps ---------- */
+  const trapDone = {};
+  const trapFinished = (name) => {
+    trapDone[name] = true;
+    if (trapDone.a && trapDone.b && trapDone.c) PHY.progress.markSection(CH, 'traps');
+  };
+
+  const trap1 = PHY.sims.treasureMap($('c-trap1'), $('ctl-trap1'), { mode: 'walk' });
+  trap1.start();
+  U.PredictCard($('pc-trap1'), {
+    chapter: CH, id: 'trap1', tag: 'מלכודת 1: מחברים רק גדלים',
+    question: `ניוטון הולך 5 מ' מזרחה, פונה בחדות שמאלה ב-120°, והולך עוד 5 מ'. כמה הוא רחוק מהבית?`,
+    options: [
+      { text: `10 מ'. 5 ועוד 5.`, why: `גדלים מתחברים ככה רק כשהחצים באותו כיוון בדיוק.` },
+      { text: `5 מ'. כמו שהלך בכל קטע.`, correct: true },
+      { text: `0 מ'. הוא חזר הביתה.`, why: `כדי לחזור הביתה היה צריך לפנות ב-180°, לא ב-120°.` },
+    ],
+    onRun: () => trap1.play([
+      { legs: [{ x: 5, y: 0, name: `5 מ'` }, { x: -2.5, y: 4.33, name: `5 מ'` }], caption: '5 מ\' ועוד 5 מ\'', result: `5 + 5 = 5 ?!`, resultantLabel: `5 מ'`, hold: 1.2 },
+    ]),
+    explanation: `<p>שני החצים והשקול יוצרים משולש שווה צלעות, לכן השקול גם הוא 5 מ'. שני וקטורים בגודל 5 יכולים לתת כל שקול בין 0 מ' ל-10 מ', והכל תלוי בזווית.</p>`,
+    onDone: () => trapFinished('a'),
+  });
+
+  const trap2 = PHY.sims.signLine($('c-trap2'), $('ctl-trap2'));
+  trap2.start();
+  U.PredictCard($('pc-trap2'), {
+    chapter: CH, id: 'trap2', tag: 'מלכודת 2: מינוס פירושו איטי',
+    question: `ניוטון א' נע במהירות של \\(+3\\) מ/ש. ניוטון ב' נע במהירות של \\(-6\\) מ/ש. מי מתרחק מהנקודה 0 מהר יותר?`,
+    options: [
+      { text: `ניוטון א'. מינוס זה פחות, אז ב' מאט.`, why: `מינוס אינו "פחות מהר". זה רק "לכיוון השני".` },
+      { text: `ניוטון ב'. המינוס אומר רק לאן.`, correct: true },
+      { text: `אף אחד. הם מתקזזים.`, why: `הם לא משפיעים זה על זה. כל אחד נוסע בנתיב שלו.` },
+    ],
+    onRun: () => trap2.play(),
+    explanation: `<p>אחרי 2 ש' ניוטון א' במקום 6 מ', וניוטון ב' במקום \\(-12\\) מ': מרחק כפול מהנקודה 0. הסימן הוא כיוון על הציר, לא "איטי".</p><p>והמהירות של ב' גם לא משתנה. "מאט" זה כשגודל המהירות קטן, ועל זה נדבר בפרק 2.</p>`,
+    onDone: () => trapFinished('b'),
+  });
+
+  const trap3 = PHY.sims.treasureMap($('c-trap3'), $('ctl-trap3'), { mode: 'walk' });
+  trap3.start();
+  U.PredictCard($('pc-trap3'), {
+    chapter: CH, id: 'trap3', tag: 'מלכודת 3: מרחק שווה העתק',
+    question: `ניוטון מקיף את הבלוק: 5 מ' מזרחה, 4 מ' צפונה, 5 מ' מערבה, 4 מ' דרומה. מה ההעתק שלו בסוף?`,
+    options: [
+      { text: `18 מ'. סכמתי הכל.`, why: `18 מ' זה המרחק שהוא הלך, ולא ההעתק שלו. שים לב לשני המדים מתחת למפה.` },
+      { text: `0 מ'. הוא חזר הביתה.`, correct: true },
+      { text: `9 מ'. חצי דרך.`, why: `באמצע ההקפה הוא באמת היה רחוק מהבית. בסוף כבר לא.` },
+    ],
+    onRun: () => trap3.play([
+      { legs: [{ x: 5, y: 0, name: `5 מ'` }, { x: 0, y: 4, name: `4 מ'` }, { x: -5, y: 0, name: `5 מ'` }, { x: 0, y: -4, name: `4 מ'` }], caption: 'סיבוב שלם', result: `מרחק 18 מ', העתק 0 מ'`, endPose: 'dizzy', hold: 1.2 },
+    ]),
+    explanation: `<p><b>מרחק</b> הוא סקלר שסופר כל צעד. <span class="c-disp">העתק</span> הוא וקטור שמשווה רק בין נקודת ההתחלה לסוף.</p><p>כמו ריצה של 400 מ' במסלול: התעייפת מאוד, ולא הגעת לשום מקום.</p>`,
+    onDone: () => trapFinished('c'),
+  });
+
+  /* ---------- 10. Problems ---------- */
+  const probs = $('problems-host');
+  U.Problem(probs, {
+    chapter: CH, section: 'problems', tag: 'שאלה 1: שקול של שני כוחות',
+    text: `שני כוחות פועלים על אותה נקודה: \\(F_1 = 10\\) ניוטון לאורך ציר x, ו-\\(F_2 = 10\\) ניוטון בזווית של 60° מעל ציר x. מצא את גודל השקול ואת הזווית שלו מציר x.`,
+    fields: [
+      { label: 'גודל השקול', answer: 17.32, unit: 'ניוטון' },
+      { label: 'הזווית', answer: 30, unit: 'מעלות' },
+    ],
+    steps: [
+      `פרק כל כוח לרכיבים. \\(F_1\\) כולו על x. עבור \\(F_2\\): \\(F_{2x} = 10\\cos 60^\\circ = 5\\) ניוטון, \\(F_{2y} = 10\\sin 60^\\circ \\approx 8.66\\) ניוטון.`,
+      `חבר כל ציר לחוד: \\(R_x = 10 + 5 = 15\\) ניוטון, \\(R_y = 0 + 8.66 = 8.66\\) ניוטון.`,
+      `\\[R = \\sqrt{15^2 + 8.66^2} \\approx 17.3\\ \\text{N}\\] \\[\\tan\\theta = \\frac{8.66}{15} \\approx 0.577 \\Rightarrow \\theta = 30^\\circ\\] שים לב: כוחות שווים נותנים שקול בדיוק על חוצה הזווית, וזו בדיקה מהירה לתשובה.`,
+    ],
+  });
+  U.Problem(probs, {
+    chapter: CH, section: 'problems', tag: 'שאלה 2: פירוק לרכיבים',
+    text: `העתק באורך 20 מ' פונה בזווית של 30° מעל הכיוון החיובי של ציר x. מצא את הרכיבים שלו.`,
+    fields: [
+      { label: '\\(A_x\\)', answer: 17.32, unit: "מ'" },
+      { label: '\\(A_y\\)', answer: 10, unit: "מ'" },
+    ],
+    steps: [
+      `הצל על הרצפה הוא החץ כפול יחס הצל: \\(A_x = A\\cos\\theta\\).`,
+      `\\(\\cos 30^\\circ \\approx 0.87\\) ו-\\(\\sin 30^\\circ = 0.5\\). הזווית קטנה, אז הצל על x אמור לצאת הארוך מבין השניים.`,
+      `\\(A_x = 20 \\cdot 0.866 \\approx 17.3\\) מ' ו-\\(A_y = 20 \\cdot 0.5 = 10\\) מ'. בדיקה: \\(\\sqrt{17.3^2 + 10^2} \\approx 20\\) מ'.`,
+    ],
+  });
+  U.Problem(probs, {
+    chapter: CH, section: 'problems', tag: 'שאלה 3: מסלול',
+    text: `אדם הולך 40 מ' מזרחה, אחר כך 30 מ' צפונה, ובסוף 80 מ' מערבה. מה המרחק הכולל שהלך, ומה גודל ההעתק שלו?`,
+    fields: [
+      { label: 'מרחק כולל', answer: 150, unit: "מ'" },
+      { label: 'גודל ההעתק', answer: 50, unit: "מ'" },
+    ],
+    steps: [
+      `המרחק פשוט מצטבר: \\(40 + 30 + 80\\) מ'. בלי כיוונים, בלי סימנים.`,
+      `להעתק צריך רכיבים. בחר מזרח כ-x חיובי וצפון כ-y חיובי: \\(R_x = 40 - 80 = -40\\) מ', \\(R_y = 30\\) מ'.`,
+      `המרחק הכולל הוא 150 מ'. גודל ההעתק הוא \\(\\sqrt{(-40)^2 + 30^2} = 50\\) מ', בזווית של כ-37° מכיוון מערב לכיוון צפון. המינוס נעלם בריבוע אבל לא נעלם מהכיוון: הוא אומר שהאיש גמר ממערב לבית.`,
+    ],
+  });
+
+  /* ---------- 11. Quiz ---------- */
+  U.Quiz($('quiz-host'), {
+    chapter: CH, section: 'quiz',
+    questions: [
+      {
+        type: 'mc',
+        q: `מה מהבאים הוא וקטור?`,
+        options: [`מסה של 3 ק"ג`, `זמן של 10 ש'`, `מהירות של 5 מ/ש מזרחה`, `מרחק של 200 מ'`],
+        answer: 2,
+        why: `רק במהירות יש כיוון. השאר הם סקלרים: מספר ויחידה.`,
+      },
+      {
+        type: 'num',
+        q: `ניוטון הולך 6 מ' צפונה ואז 8 מ' מזרחה. כמה מטרים הוא רחוק מהבית?`,
+        answer: 10, unit: "מ'",
+        why: `זווית ישרה, אז פיתגורס: \\(\\sqrt{6^2 + 8^2} = 10\\) מ'. שים לב שהוא הלך 14 מ', אבל ההעתק רק 10 מ'.`,
+      },
+      {
+        type: 'mc',
+        q: `\\(A = 3\\) מ' ו-\\(B = 4\\) מ'. איזה גודל של השקול שלהם <b>בלתי אפשרי</b>?`,
+        options: [`1 מ'`, `5 מ'`, `7 מ'`, `8 מ'`],
+        answer: 3,
+        why: `השקול הכי גדול הוא כשהם באותו כיוון: 7 מ'. הכי קטן הוא כשהם מנוגדים: 1 מ'. 8 מ' מחוץ לתחום.`,
+      },
+      {
+        type: 'num',
+        q: `כוח של 40 ניוטון פועל בזווית של 30° מעל ציר x. מה הרכיב שלו על ציר y?`,
+        answer: 20, unit: 'ניוטון',
+        why: `\\(F_y = F\\sin\\theta = 40 \\cdot 0.5 = 20\\) ניוטון.`,
+      },
+      {
+        type: 'mc',
+        q: `\\(\\vec A = (2, 3)\\) ו-\\(\\vec B = (-1, 1)\\), במטרים. מהו \\(\\vec A - \\vec B\\)?`,
+        options: [`\\((1, 4)\\) מ'`, `\\((3, 2)\\) מ'`, `\\((3, 4)\\) מ'`, `\\((1, 2)\\) מ'`],
+        answer: 1,
+        why: `מחסרים כל רכיב לחוד: \\(2 - (-1) = 3\\) ו-\\(3 - 1 = 2\\). מינוס של מינוס הוא פלוס.`,
+      },
+    ],
+  });
+
+  /* ---------- Easter egg: click the cat ---------- */
+  PHY.mascot.easterEgg([
+    { text: 'מיאו. זה סקלר.', pose: 'standing' },
+    { text: 'מיאו לכיוון צפון. זה כבר וקטור.', pose: 'happy' },
+    { text: 'הקשת עליי 3 פעמים. העתק האצבע שלך: 0 מ\'.', pose: 'thinking' },
+    { text: 'אפשר להפסיק? אני מתחיל לראות רכיבים.', pose: 'dizzy' },
+    { text: 'טוב, מגיע לך. תפוחים! שימו לב: הם נופלים רק בכיוון אחד.', pose: 'flying', spin: true, rain: true },
+  ]);
+
+  U.initChapter({ id: CH });
+})();
+</script>
+</body>
+</html>

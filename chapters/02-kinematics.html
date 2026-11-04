@@ -1,0 +1,785 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>פרק 2: קינמטיקה ותנועה יחסית | פיזיקה עם ניוטון החתול</title>
+<meta name="description" content="למה נסיעה ב-60 וחזרה ב-120 קמ&quot;ש נותנת ממוצע 80: מיקום, מהירות, תאוצה, נפילה חופשית ותנועה יחסית, מדריך אינטראקטיבי.">
+<script>try{var t=localStorage.getItem('phy-theme');document.documentElement.setAttribute('data-theme',t||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'))}catch(e){document.documentElement.setAttribute('data-theme','light')}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700&family=Rubik:wght@500;600;700;800&display=swap">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.11/katex.min.css">
+<link rel="stylesheet" href="../css/style.css">
+<style>
+  /* Chapter-local: the map of this long chapter, and a divider before the relative-motion part. */
+  .ch-map { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 18px; }
+  .ch-map a { padding: 4px 12px; border-radius: 99px; background: var(--surface-2); color: var(--ink); text-decoration: none; font-size: 0.9rem; font-weight: 500; min-height: 32px; display: inline-flex; align-items: center; }
+  .ch-map a:hover { background: var(--accent-soft); }
+  .part-title { font-family: var(--font-head); font-weight: 800; font-size: clamp(1.3rem, 4vw, 1.7rem); color: var(--accent); margin-bottom: 12px; }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-in">
+    <a class="brand" href="../index.html" aria-label="חזרה לדף הבית"><span data-brand-cat></span><span class="brand-name">ניוטון החתול</span></a>
+    <span class="topbar-spacer"></span>
+    <span class="topbar-title">פרק 2: קינמטיקה ותנועה יחסית</span>
+    <span data-theme-slot></span>
+  </div>
+  <div class="chapter-bar"><span data-chapter-bar></span></div>
+</header>
+
+<main>
+
+<!-- 1. HOOK -->
+<section class="section wrap" data-section="hook" id="hook">
+  <span class="kicker">פרק 2: קינמטיקה ותנועה יחסית</span>
+  <h1 class="hero-title">כמה מהר, באמת?</h1>
+  <div data-mascot="standing" data-size="118" data-say="אני נוהג. אל תשאל מי נתן לי רישיון."></div>
+  <p class="lead">קינמטיקה היא מילה מפחידה לשאלה פשוטה: איך דברים זזים. לא למה, רק איך. נתחיל בחשבון שכל נהג בטוח שהוא יודע לעשות.</p>
+  <div id="pc-hook">
+    <figure class="sim"><canvas id="c-hook"></canvas><div class="sim-controls" id="ctl-hook"></div></figure>
+  </div>
+  <nav class="ch-map" aria-label="מפת הפרק">
+    <a href="#position">מיקום</a>
+    <a href="#velocity">מהירות</a>
+    <a href="#acceleration">תאוצה</a>
+    <a href="#detective">בלש הגרפים</a>
+    <a href="#area">שטח והעתק</a>
+    <a href="#fall">נפילה</a>
+    <a href="#catch">תפוס את התפוח</a>
+    <a href="#top">הקפאה בשיא</a>
+    <a href="#formula">הנוסחאות</a>
+    <a href="#playground">מגרש משחקים</a>
+    <a href="#game">נחיתה רכה</a>
+    <a href="#relative">תנועה יחסית</a>
+    <a href="#traps">מלכודות</a>
+    <a href="#problems">שאלות מכינה</a>
+    <a href="#quiz">בוחן</a>
+    <a href="#pocket">כרטיס כיס</a>
+  </nav>
+</section>
+
+<!-- 2. POSITION AND TIME -->
+<section class="section wrap" data-section="position" id="position">
+  <div class="section-head"><span class="section-num">2</span><h2>איפה, ומתי</h2></div>
+  <p>כדי לדבר על תנועה צריך רק שני דברים: איפה המכונית, ומתי. כל הפרק נבנה מהשניים האלה.</p>
+  <p><b>מיקום</b> הוא מספר על סרגל שמונח לאורך הכביש. אתה בוחר איפה האפס (הוא נקרא <b>ראשית</b>), וכל מקום הוא כמה מטרים ממנו. למספר הזה קוראים \(x\).</p>
+  <p><b>זמן</b> הוא מה שמראה שעון עצר שהפעלת בהתחלה, וקוראים לו \(t\). כל רגע בנסיעה הוא זוג מספרים: בזמן הזה, הייתי שם.</p>
+  <p>נצייר את הזוגות האלה נקודה אחרי נקודה ונקבל <b>גרף x–t</b>: הזמן רץ ימינה, והגובה אומר איפה המכונית. זה הכל.</p>
+  <div id="pc-position">
+    <figure class="sim"><canvas id="c-position"></canvas><div class="sim-controls" id="ctl-position"></div></figure>
+  </div>
+</section>
+
+<!-- 3. VELOCITY -->
+<section class="section wrap" data-section="velocity" id="velocity">
+  <div class="section-head"><span class="section-num">3</span><h2>מהירות היא שיפוע</h2></div>
+  <p>עכשיו המכונית זזה. ניוטון נוסע קדימה 5 שניות, מסתובב, וחוזר. הכביש ישר לגמרי, בלי שום פנייה.</p>
+  <div id="pc-tent">
+    <figure class="sim"><canvas id="c-tent"></canvas><div class="sim-controls" id="ctl-tent"></div></figure>
+  </div>
+  <h3 class="block-gap">גרף חדש: לא איפה, אלא כמה מהר</h3>
+  <p>אפשר לצייר לאותה נסיעה גרף אחר. ב<b>גרף v–t</b> הגובה הוא המהירות באותו רגע. פלוס פירושו קדימה, ומינוס פירושו אחורה.</p>
+  <div id="pc-vt">
+    <figure class="sim"><canvas id="c-vt"></canvas><div class="sim-controls" id="ctl-vt"></div></figure>
+  </div>
+</section>
+
+<!-- 4. ACCELERATION -->
+<section class="section wrap" data-section="acceleration" id="acceleration">
+  <div class="section-head"><span class="section-num">4</span><h2>תאוצה: המהירות של המהירות</h2></div>
+  <p>שמת לב שבהמראה אתה נדחף לכיסא, ובטיסה עצמה לא? ב-900 קמ"ש אתה יכול לשפוך קפה בנחת. מה שמרגישים זה לא המהירות, אלא <b>השינוי</b> במהירות.</p>
+  <p>נבדוק את זה. שתי מכוניות מטפטפות טיפת שמן בדיוק פעם בשנייה. הראשונה נוסעת במהירות קבועה. השנייה לוחצת על הגז, ובכל שנייה המהירות שלה גדלה ב-2 מ/ש.</p>
+  <div id="pc-drip">
+    <figure class="sim"><canvas id="c-drip"></canvas><div class="sim-controls" id="ctl-drip"></div></figure>
+  </div>
+</section>
+
+<!-- 5. DETECTIVE GAME -->
+<section class="section wrap-wide" data-section="detective" id="detective">
+  <div class="section-head"><span class="section-num">5</span><h2>בלש הגרפים</h2></div>
+  <p>עכשיו אתה קורא גרפים. כל גרף הוא עדות של נסיעה אחת, ואתה צריך להבין מה קרה שם. נכון בניסיון הראשון שווה נקודה, ויש 9 תיקים.</p>
+  <figure class="sim"><canvas id="c-detective"></canvas><div class="sim-controls" id="ctl-detective"></div></figure>
+</section>
+
+<!-- 6. AREA -->
+<section class="section wrap" data-section="area" id="area">
+  <div class="section-head"><span class="section-num">6</span><h2>השטח שמתחת לגרף</h2></div>
+  <p>הנה שאלה שיודעים לענות עליה: 5 מ/ש במשך 4 ש'. כמה מטרים? 20 מ', כי 5 כפול 4.</p>
+  <p>עכשיו תסתכל על הגרף למטה ולחץ על "צבע". בגרף v–t מהירות קבועה היא מלבן בגובה 5 וברוחב 4, ו-5 כפול 4 הוא גם השטח שלו. במקרה? בוא נבדוק כשהמהירות משתנה.</p>
+  <div class="btn-row" id="area-warm"></div>
+  <div id="pc-area" class="block-gap">
+    <figure class="sim"><canvas id="c-area"></canvas><div class="sim-controls" id="ctl-area"></div></figure>
+  </div>
+</section>
+
+<!-- 7. FREE FALL -->
+<section class="section wrap" data-section="fall" id="fall">
+  <div class="section-head"><span class="section-num">7</span><h2>מי נוחת קודם?</h2></div>
+  <p>כל מה שלמדת על תאוצה קיבל מתנה מהטבע: ליד פני כדור הארץ, כל דבר שנופל מקבל תאוצה של בערך 10 מ/ש². למספר הזה קוראים \(g\).</p>
+  <p>ניוטון, תפוח כבד ותפוח קל על מדף בגובה 20 מ'. ניוטון התנדב. אף אחד לא שאל אותו שוב.</p>
+  <div id="pc-fall">
+    <figure class="sim"><canvas id="c-fall"></canvas><div class="sim-controls" id="ctl-fall"></div></figure>
+  </div>
+  <h3 class="block-gap">כמה רחוק הוא נופל בכל שנייה?</h3>
+  <p>נשמוט עכשיו תפוח מגובה 45 מ', ונשאיר צל שלו כל שנייה. בשנייה הראשונה הוא נופל 5 מ'.</p>
+  <div id="pc-strobe">
+    <figure class="sim"><canvas id="c-strobe"></canvas><div class="sim-controls" id="ctl-strobe"></div></figure>
+  </div>
+</section>
+
+<!-- 8. CATCH THE APPLE -->
+<section class="section wrap-wide" data-section="catch" id="catch">
+  <div class="section-head"><span class="section-num">8</span><h2>תפוס את התפוח</h2></div>
+  <p>סמן איפה התפוח יהיה, ואז שחרר אותו. עד 2 מ' של טעות שווים 3 נקודות. זה אימון לעיניים: בסוף תדע בלי לחשב שפי 2 זמן הוא פי 4 מרחק.</p>
+  <figure class="sim"><canvas id="c-catch"></canvas><div class="sim-controls" id="ctl-catch"></div></figure>
+</section>
+
+<!-- 9. FREEZE AT THE TOP -->
+<section class="section wrap" data-section="top" id="top">
+  <div class="section-head"><span class="section-num">9</span><h2>הקפאה בשיא</h2></div>
+  <p>עד עכשיו דברים רק נפלו. הפעם ניוטון זורק תפוח ישר למעלה ב-20 מ/ש. התפוח עולה, מאט, נעצר לרגע, ונופל חזרה.</p>
+  <p>על התפוח מצוירים שני חצים: <span class="c-vel">מהירות</span> בכחול ו<span class="c-acc">תאוצה</span> באדום. בפרק הזה למעלה הוא הכיוון החיובי, אז כל מה שפונה למטה מקבל מינוס.</p>
+  <div id="pc-top">
+    <figure class="sim"><canvas id="c-top"></canvas><div class="sim-controls" id="ctl-top"></div></figure>
+  </div>
+</section>
+
+<!-- 10. EARNED FORMULAS -->
+<section class="section wrap" data-section="formula" data-passive id="formula">
+  <div class="section-head"><span class="section-num">10</span><h2>הנוסחאות שהרווחת</h2></div>
+  <p>הכל כבר היה על המסך. עכשיו רק נותנים לזה אותיות.</p>
+
+  <div class="formula">
+    <h3>מהירות ותאוצה: שני שיפועים</h3>
+    <div class="formula-main">\[v = \frac{\Delta x}{\Delta t} \qquad a = \frac{\Delta v}{\Delta t}\]</div>
+    <ul class="legend-list">
+      <li><span class="sym">\(\Delta\)</span><span>"כמה השתנה". \(\Delta x\) הוא המיקום בסוף פחות המיקום בהתחלה, כלומר ה<span class="c-disp">העתק</span>.</span></li>
+      <li><span class="sym">\(v\)</span><span><span class="c-vel">מהירות</span>: השיפוע של גרף x–t. כמה מטרים נוספים בכל שנייה. במ/ש, ועם סימן.</span></li>
+      <li><span class="sym">\(a\)</span><span><span class="c-acc">תאוצה</span>: השיפוע של גרף v–t. כמה מ/ש נוספים בכל שנייה. במ/ש², ועם סימן.</span></li>
+    </ul>
+  </div>
+
+  <div class="formula">
+    <h3>תאוצה קבועה, שורה אחת לכל דבר</h3>
+    <div class="formula-main">\[v = v_0 + at\]</div>
+    <p>התחלת ב-\(v_0\), ובכל שנייה נוסף \(a\). אחרי \(t\) שניות נוסף \(at\). זה הקו הישר בגרף v–t.</p>
+    <div class="formula-main">\[x = x_0 + v_0 t + \tfrac{1}{2} a t^2\]</div>
+    <p>זה בדיוק הטרפז שצבעת. המלבן נותן \(v_0 t\). המשולש, ברוחב \(t\) ובגובה \(at\), נותן \(\tfrac{1}{2} \cdot t \cdot at = \tfrac{1}{2}at^2\). מוסיפים את נקודת ההתחלה \(x_0\), וזה כל הסיפור.</p>
+    <ul class="legend-list">
+      <li><span class="sym">\(x_0, v_0\)</span><span>המיקום והמהירות ברגע \(t = 0\). הקטן למטה פירושו "בהתחלה".</span></li>
+      <li><span class="sym">\(t^2\)</span><span>מכאן הגיע "פי 2 זמן, פי 4 מרחק", כשמתחילים ממנוחה.</span></li>
+    </ul>
+  </div>
+
+  <div class="formula">
+    <h3>בלי זמן: כשלא נותנים לך \(t\)</h3>
+    <div class="formula-main">\[v^2 = v_0^2 + 2a\,\Delta x\]</div>
+    <p>גם זו יוצאת מהטרפז. השטח שלו הוא הגובה הממוצע כפול הרוחב: \(\Delta x = \frac{v_0 + v}{2}\, t\). מהנוסחה הראשונה \(t = \frac{v - v_0}{a}\). מציבים, ו-\(t\) נעלם.</p>
+    <p class="muted small">הממוצע \(\frac{v_0 + v}{2}\) נכון רק בתאוצה קבועה. בנסיעה מהפתיחה המהירות קפצה בין 60 ל-120 קמ"ש, ושם הממוצע הוא 80 ולא 90.</p>
+  </div>
+
+  <div class="formula">
+    <h3>נפילה וזריקה אנכית</h3>
+    <div class="formula-main">\[v = v_0 - gt \qquad y = y_0 + v_0 t - \tfrac{1}{2} g t^2\]</div>
+    <p>אותן נוסחאות בדיוק, עם \(a = -g\), כשלמעלה הוא החיובי. \(g = 10\) מ/ש². המסה לא מופיעה כאן בכלל, וזו הסיבה שהתפוחים נחתו יחד.</p>
+    <div class="table-scroll">
+      <table class="mini" dir="ltr">
+        <tr><th>\(t\) (ש')</th><td>1</td><td>2</td><td>3</td><td>4</td></tr>
+        <tr><th>\(v\) (מ/ש)</th><td>10</td><td>20</td><td>30</td><td>40</td></tr>
+        <tr><th>נפל (מ')</th><td>5</td><td>20</td><td>45</td><td>80</td></tr>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- 11. PLAYGROUND -->
+<section class="section wrap-wide" data-section="playground" id="playground">
+  <div class="section-head"><span class="section-num">11</span><h2>מגרש משחקים</h2></div>
+  <p>בחר מיקום התחלתי, מהירות התחלתית ותאוצה, ולחץ "סע!". הקווים המקווקווים הם תחזית, והרציפים הם מה שקרה. שים לב: השטח הסגול של גרף המהירות תמיד שווה לשינוי במיקום.</p>
+  <p class="muted">נסה: מהירות \(+8\) מ/ש עם תאוצה \(-2\) מ/ש². מתי המכונית עוצרת? ומה קורה לתאוצה באותו רגע?</p>
+  <figure class="sim"><canvas id="c-free"></canvas><div class="sim-controls" id="ctl-free"></div></figure>
+</section>
+
+<!-- 12. MINI GAME -->
+<section class="section wrap-wide" data-section="game" id="game">
+  <div class="section-head"><span class="section-num">12</span><h2>משחקון: נחיתה רכה</h2></div>
+  <p>ניוטון בחללית, ואתה על הדחף. בלי דחף התאוצה היא של הכוכב, ועם דחף היא פתאום כלפי מעלה. צריך לגעת בקרקע עם מהירות קטנה מ-2 מ/ש, לפני שנגמר הדלק.</p>
+  <p class="muted">במחשב אפשר להחזיק גם את מקש הרווח. גרף המהירות מצטייר בזמן אמת: השיפוע שלו הוא התאוצה שאתה בוחר.</p>
+  <figure class="sim"><canvas id="c-game"></canvas><div class="sim-controls" id="ctl-game"></div></figure>
+</section>
+
+<!-- 13. RELATIVE MOTION -->
+<section class="section wrap" data-section="relative" id="relative">
+  <div class="part-title">החלק השני: תנועה יחסית</div>
+  <div class="section-head"><span class="section-num">13</span><h2>מהירות ביחס למה?</h2></div>
+  <p>ברכבת אתה יכול לשבת רגוע ולקרוא, ובו זמנית לנוע ב-100 קמ"ש. שני המשפטים נכונים, כי כל מהירות נמדדת ביחס למשהו. עד עכשיו זה היה הכביש, ולא היה צריך להגיד.</p>
+  <p>נתחיל מדרגנוע, במהירות 1 מ/ש ובאורך 30 מ'. מי שעומד עליו מגיע אחרי 30 ש'. מי שהולך על רצפה רגילה ב-1.5 מ/ש מגיע אחרי 20 ש'.</p>
+  <div id="pc-esc">
+    <figure class="sim"><canvas id="c-esc"></canvas><div class="sim-controls" id="ctl-esc"></div></figure>
+  </div>
+  <h3 class="block-gap">סירה בנהר</h3>
+  <p>עכשיו אותו רעיון בשני ממדים. הנהר זורם ב-3 מ/ש, וניוטון חותר ב-4 מ/ש ביחס למים. החרטום מכוון ישר לגדה שממול.</p>
+  <div id="pc-boat">
+    <figure class="sim"><canvas id="c-boat"></canvas><div class="sim-controls" id="ctl-boat"></div></figure>
+  </div>
+  <h3 class="block-gap">איך חוצים הכי מהר?</h3>
+  <p>שלוש סירות מתחילות יחד, וכולן מהירות באותה מידה ביחס למים. רק החרטום שונה. הנהר ברוחב 60 מ', והזרם 3 מ/ש.</p>
+  <div id="pc-race">
+    <figure class="sim"><canvas id="c-race"></canvas><div class="sim-controls" id="ctl-race"></div></figure>
+  </div>
+  <div class="formula block-gap">
+    <h3>הכלל של התנועה היחסית</h3>
+    <div class="formula-main">\[\vec v_{\text{boat, shore}} = \vec v_{\text{boat, water}} + \vec v_{\text{water, shore}}\]</div>
+    <p>מהירויות מתחברות בדיוק כמו חצים בפרק 1, ראש לזנב. על קו אחד זה חיבור מספרים עם סימן, כמו בדרגנוע. בזווית זה פיתגורס, כמו בנהר.</p>
+    <ul class="legend-list">
+      <li><span class="sym">\(t\)</span><span>זמן הצליחה: רוחב הנהר חלקי הרכיב של הסירה לעבר הגדה, \(t = \frac{d}{v_{\perp}}\).</span></li>
+      <li><span class="sym">סחף</span><span>מה שהזרם עשה בזמן הזה, ועוד הרכיב של הסירה לאורך הנהר: \(\Delta x = (u + v_{\parallel})\, t\), כש-\(u\) הוא מהירות הזרם.</span></li>
+    </ul>
+  </div>
+</section>
+
+<!-- 14. RIVER GAME -->
+<section class="section wrap-wide" data-section="rivergame" id="rivergame">
+  <div class="section-head"><span class="section-num">14</span><h2>רב-חובל ניוטון</h2></div>
+  <p>כוון את החרטום והבא את ניוטון לאן שצריך. פחות ניסיונות הם יותר כוכבים. המתג "מבט מתוך הנהר" עובד גם כאן, וזה לפעמים מקל על המחשבה.</p>
+  <figure class="sim"><canvas id="c-river"></canvas><div class="sim-controls" id="ctl-river"></div></figure>
+</section>
+
+<!-- 15. TRAPS -->
+<section class="section wrap" data-section="traps" id="traps">
+  <div class="section-head"><span class="section-num">15</span><h2>מלכודות</h2></div>
+  <p>ארבע טעויות שמפילות תלמידי מכינה שנה אחרי שנה. כאן הן לא עולות נקודות, אז עדיף ליפול כאן.</p>
+  <div id="pc-trap1">
+    <figure class="sim"><canvas id="c-trap1"></canvas><div class="sim-controls" id="ctl-trap1"></div></figure>
+  </div>
+  <div id="pc-trap2">
+    <figure class="sim"><canvas id="c-trap2"></canvas><div class="sim-controls" id="ctl-trap2"></div></figure>
+  </div>
+  <div id="pc-trap3">
+    <figure class="sim"><canvas id="c-trap3"></canvas><div class="sim-controls" id="ctl-trap3"></div></figure>
+  </div>
+  <div id="pc-trap4">
+    <figure class="sim"><canvas id="c-trap4"></canvas><div class="sim-controls" id="ctl-trap4"></div></figure>
+  </div>
+</section>
+
+<!-- 16. EXAM PROBLEMS -->
+<section class="section wrap" data-section="problems" id="problems">
+  <div class="section-head"><span class="section-num">16</span><h2>שאלות מכינה</h2></div>
+  <p>ככה זה נראה במבחן. נסה לבד, ואם נתקעת קח רמז. במספרים לא צריך לכתוב יחידה, היא כתובה ליד השדה.</p>
+  <div id="problems-host"></div>
+</section>
+
+<!-- 17. QUIZ -->
+<section class="section wrap" data-section="quiz" id="quiz">
+  <div class="section-head"><span class="section-num">17</span><h2>בוחן</h2></div>
+  <p>חמש שאלות על הפרק, ועוד שתיים מפרק 1 כדי שלא יישכח. הציון הטוב ביותר נשמר, ואפשר לנסות שוב כמה שתרצה.</p>
+  <div id="quiz-host" class="block-gap"></div>
+</section>
+
+<!-- 18. POCKET CARD -->
+<section class="section wrap" data-section="pocket" data-passive id="pocket">
+  <div class="section-head"><span class="section-num">18</span><h2>כרטיס כיס</h2></div>
+  <div class="pocket">
+    <h3>תנועה בקו ישר, על כף הרגל</h3>
+    <div class="pocket-grid">
+      <div class="pocket-item"><b>x–t:</b> הגובה הוא איפה, השיפוע הוא <span class="c-vel">המהירות</span>.</div>
+      <div class="pocket-item"><b>v–t:</b> הגובה הוא כמה מהר, השיפוע הוא <span class="c-acc">התאוצה</span>, והשטח הוא <span class="c-disp">ההעתק</span>.</div>
+      <div class="pocket-item"><b>תאוצה קבועה:</b> \(v = v_0 + at\)</div>
+      <div class="pocket-item"><b>מיקום:</b> \(x = x_0 + v_0 t + \tfrac{1}{2} a t^2\)</div>
+      <div class="pocket-item"><b>בלי זמן:</b> \(v^2 = v_0^2 + 2a\,\Delta x\)</div>
+      <div class="pocket-item"><b>נפילה:</b> \(a = -g\), \(g = 10\) מ/ש². נפל 5, 20, 45 מ' אחרי 1, 2, 3 ש'.</div>
+      <div class="pocket-item"><b>זריקה למעלה:</b> \(t_{\text{top}} = v_0 / g\), \(h = v_0^2 / 2g\). בשיא \(v = 0\) ו-\(a = -g\).</div>
+      <div class="pocket-item"><b>ממוצע:</b> מרחק כולל חלקי זמן כולל. אף פעם לא ממוצע של מהירויות, אלא אם הזמנים שווים.</div>
+      <div class="pocket-item"><b>סימנים:</b> \(v\) ו-\(a\) באותו סימן: מאיץ. בסימן הפוך: מאט.</div>
+      <div class="pocket-item"><b>תנועה יחסית:</b> \(\vec v_{\text{boat, shore}} = \vec v_{\text{boat, water}} + \vec v_{\text{water, shore}}\)</div>
+    </div>
+    <div class="pocket-quote">"בשיא הזריקה התפוח עצר לרגע. לתאוצה אף אחד לא אמר."</div>
+  </div>
+</section>
+
+</main>
+
+<div data-chapter-nav></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.11/katex.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.11/contrib/auto-render.min.js"></script>
+<script src="../js/core/fmt.js"></script>
+<script src="../js/core/vec.js"></script>
+<script src="../js/core/progress.js"></script>
+<script src="../js/core/canvas.js"></script>
+<script src="../js/core/loop.js"></script>
+<script src="../js/core/mascot.js"></script>
+<script src="../js/core/ui.js"></script>
+<script src="../js/sims/ch02/plot.js"></script>
+<script src="../js/sims/ch02/trip-average.js"></script>
+<script src="../js/sims/ch02/car-graph.js"></script>
+<script src="../js/sims/ch02/drip-car.js"></script>
+<script src="../js/sims/ch02/area-strips.js"></script>
+<script src="../js/sims/ch02/free-fall.js"></script>
+<script src="../js/sims/ch02/catch-the-apple.js"></script>
+<script src="../js/sims/ch02/freeze-at-top.js"></script>
+<script src="../js/sims/ch02/lunar-lander.js"></script>
+<script src="../js/sims/ch02/escalator.js"></script>
+<script src="../js/sims/ch02/river-boat.js"></script>
+<script>
+(function () {
+  'use strict';
+  const CH = '02';
+  const U = PHY.ui;
+  const $ = (id) => document.getElementById(id);
+  const SIM = {};   /* keeps a handle on every sim, for the page's own wiring and for testing */
+
+  /* ---------- 1. Hook ---------- */
+  const hook = SIM.hook = PHY.sims.tripAverage($('c-hook'), $('ctl-hook'), { mode: 'distance', km: 120 });
+  hook.start();
+  U.PredictCard($('pc-hook'), {
+    chapter: CH, id: 'hook', section: 'hook',
+    question: `נסעת לתל אביב ב-60 קמ"ש, וחזרת באותו כביש ב-120 קמ"ש. מה המהירות הממוצעת של כל הנסיעה?`,
+    options: [
+      { text: `90 קמ"ש. באמצע בין 60 ל-120, מה יש פה לחשוב?`, why: `זה הניחוש של כמעט כולם. אבל בחישוב הזה לשתי המהירויות יש אותו משקל, והן לא נמשכו אותו זמן.` },
+      { text: `80 קמ"ש.`, correct: true },
+      { text: `אי אפשר לדעת. תלוי כמה רחוק תל אביב.`, why: `נשמע חכם מאוד, וזה בדיוק מה שחשבתי לבדוק. הזז את הסליידר אחרי הריצה: המרחק משתנה, והממוצע נשאר 80 קמ"ש.` },
+    ],
+    onRun: () => hook.play(),
+    explanation: `
+      <p>120 ק"מ הלוך ב-60 קמ"ש לוקחים 2 שעות, ו-120 ק"מ חזור ב-120 קמ"ש לוקחים שעה. סך הכל 240 ק"מ ב-3 שעות, וזה 80 קמ"ש.</p>
+      <p>תסתכל על הגרף: הבלוק האיטי רחב פי 2 מהמהיר. דווקא במהירות הנמוכה בילית את רוב הזמן, ולכן הממוצע נמשך אליה.</p>
+      <p><b>מהירות ממוצעת היא מרחק כולל חלקי זמן כולל.</b> לא ממוצע של מספרים. בשביל לראות למה, נצטרך להתחיל מההתחלה.</p>`,
+    sayRight: 'יפה! רוב הנהגים עונים 90, ואז מאחרים.',
+    sayWrong: 'גם אני אמרתי 90. נסעתי את זה פעמיים כדי לוודא.',
+  });
+
+  /* ---------- 2. Position ---------- */
+  const pos = SIM.position = PHY.sims.carGraph($('c-position'), $('ctl-position'), { mode: 'drag', x0: 30, xMax: 50, T: 12, locked: true });
+  pos.start();
+  U.PredictCard($('pc-position'), {
+    chapter: CH, id: 'position', section: 'position',
+    question: `המכונית חונה 30 מ' מהראשית, ולא זזה במשך 6 ש'. איך נראה גרף x–t שלה?`,
+    options: [
+      { text: `אין גרף. היא לא זזה, אז אין מה לצייר.`, why: `הגיוני, אבל השעון ממשיך לרוץ גם כשהמכונית עומדת. בכל רגע יש לה מיקום, אז בכל רגע יש נקודה.` },
+      { text: `קו אופקי בגובה 30 מ'.`, correct: true },
+      { text: `קו שעולה בהתמדה, כי הזמן עובר.`, why: `הזמן אכן עובר, אבל הוא רץ ימינה. הגובה הוא רק המיקום, והמיקום לא השתנה.` },
+    ],
+    onRun: () => {
+      pos.setParam('locked', true);
+      return pos.play([{ T: 6, v: 0 }], { x0: 30 });
+    },
+    explanation: `
+      <p>כל רגע מוסיף נקודה: ימינה בגלל הזמן, ובאותו גובה כי המיקום לא השתנה. עמידה במקום היא קו אופקי. זכור אותו, הוא יחזור.</p>
+      <p><b>עכשיו אתה:</b> גרור את המכונית ימינה ושמאלה וצפה בגרף. אתה ממש מצייר בזמן אמת. נסה לצייר הר, ואז מדרגות.</p>`,
+    sayRight: 'בדיוק. גם אני עומד ככה רוב היום, ומשום מה זה לא נחשב.',
+    sayWrong: 'גם אני חשבתי שאם לא זזים לא קורה כלום. ואז קיבלתי דוח חניה.',
+    onDone: () => pos.setParam('locked', false),
+  });
+
+  /* ---------- 3. Velocity ---------- */
+  const tent = SIM.tent = PHY.sims.carGraph($('c-tent'), $('ctl-tent'), { mode: 'script', x0: 5, xMax: 40, T: 10, locked: true, noClear: true });
+  tent.start();
+  U.PredictCard($('pc-tent'), {
+    chapter: CH, id: 'tent',
+    question: `המכונית נוסעת 5 ש' קדימה בקצב קבוע, ואז 5 ש' אחורה באותו קצב, בכביש ישר. איך נראה גרף x–t?`,
+    options: [
+      { text: `קו ישר אחד, הלוך ושוב על אותו מקום. הכביש ישר, לא?`, why: `זו הטעות הכי נפוצה בגרפים: לחשוב שהגרף הוא מפה. אבל הוא לא מראה איפה הכביש, הוא מראה מיקום מול זמן, והזמן לא חוזר אחורה.` },
+      { text: `שיפוע עולה ואז שיפוע יורד, כמו גג של אוהל.`, correct: true },
+      { text: `קו שרק עולה. הזמן תמיד מתקדם.`, why: `הזמן באמת מתקדם ימינה. אבל הגובה הוא המיקום, ובדרך חזרה המיקום קטן.` },
+    ],
+    onRun: () => tent.play([{ T: 5, v: 6 }, { T: 5, v: -6 }], { x0: 5 }),
+    explanation: `
+      <p>הגרף הוא לא מפה של הכביש. הוא סיפור בזמן: ימינה זה "מאוחר יותר", ולמעלה זה "רחוק יותר".</p>
+      <p>עכשיו תסתכל על התלילות. המכונית עברה 30 מ' ב-5 ש', כלומר 6 מ' בכל שנייה. <b>כמה תלול הקו, ככה מהר היא נוסעת.</b> זו ה<span class="c-vel">מהירות</span>, וקוראים לה \\(v\\).</p>
+      <p>קו יורד הוא שיפוע שלילי, ולכן מהירות שלילית: \\(-6\\) מ/ש, כלומר אחורה. זה שוב המינוס מפרק 1. הוא אומר לאן, לא "לאט".</p>`,
+    sayRight: 'בדיוק. עכשיו אתה קורא גרף כמו נהג מונית.',
+    sayWrong: 'זו הטעות של כולם. גם אני ציירתי פעם כביש במקום גרף.',
+  });
+
+  const vtSim = SIM.vt = PHY.sims.carGraph($('c-vt'), $('ctl-vt'), { mode: 'drag', twoPlots: true, x0: 5, xMax: 40, T: 12, showV: true, locked: true });
+  vtSim.start();
+  U.PredictCard($('pc-vt'), {
+    chapter: CH, id: 'vt', section: 'velocity',
+    question: `אותה נסיעה בדיוק: 5 ש' קדימה ב-6 מ/ש, ו-5 ש' אחורה. איך נראה גרף <b>v–t</b>?`,
+    options: [
+      { text: `גם הוא גג של אוהל. אותה נסיעה, אותו גרף.`, why: `זו המלכודת הקלאסית. אוהל פירושו שהמהירות גדלה לאט ואז קטנה לאט, והמכונית שלנו נסעה בקצב קבוע לכל אורך הדרך.` },
+      { text: `שני קווים אופקיים: \\(+6\\) מ/ש ואז \\(-6\\) מ/ש.`, correct: true },
+      { text: `קו ישר על 0 מ/ש. היא חזרה לאן שהתחילה.`, why: `המיקום הסופי אכן שווה להתחלתי, אבל במהלך הדרך היא בהחלט נסעה. הגרף מראה את המהירות בכל רגע, לא רק בסוף.` },
+    ],
+    onRun: () => {
+      vtSim.setParam('locked', true);
+      return vtSim.play([{ T: 5, v: 6 }, { T: 5, v: -6 }], { x0: 5, vRange: [-10, 10] });
+    },
+    explanation: `
+      <p>שיפוע קבוע ב-x–t הוא גובה קבוע ב-v–t. הגובה של הגרף התחתון הוא התלילות של העליון, ברגע המקביל.</p>
+      <p>שים לב לחישוב שחוזר מהפתיחה. <b>מהירות ממוצעת</b> היא 6 מ/ש, כי עבר 60 מ' ב-10 ש'. אבל <span class="c-disp">ההעתק</span> הוא 0 מ', כי חזר להתחלה. במכינה "מהירות ממוצעת וקטורית" היא העתק חלקי זמן, וכאן היא 0 מ/ש.</p>
+      <p><b>עכשיו אתה:</b> גרור את המכונית. נסה לגרום לגרף המהירות להישאר ישר, ותגלה כמה זה קשה ביד.</p>`,
+    sayRight: 'נכון! זה הרגע שבו הגרפים מפסיקים להיות ציור.',
+    sayWrong: 'גם אני ציפיתי לאוהל. הכל פה מסתורי עד שקוראים את הציר.',
+    onDone: () => vtSim.setParam('locked', false),
+  });
+
+  /* ---------- 4. Acceleration ---------- */
+  const drip = SIM.drip = PHY.sims.dripCar($('c-drip'), $('ctl-drip'), { showButtons: true });
+  drip.start();
+  U.PredictCard($('pc-drip'), {
+    chapter: CH, id: 'drip', section: 'acceleration',
+    question: `איך ייראו המרווחים בין טיפות השמן של המכונית השנייה, זו שלוחצת על הגז?`,
+    options: [
+      { text: `שווים. הטיפות נוטפות כל שנייה בדיוק, אז גם המרווחים שווים.`, why: `נכון רק למכונית הראשונה. הזמן בין הטיפות קבוע, אבל במכונית השנייה בכל שנייה היא נוסעת מהר יותר, אז היא עוברת יותר.` },
+      { text: `הולכים וגדלים.`, correct: true },
+      { text: `הולכים וקטנים, כי המנוע מתעייף.`, why: `מנועים נחמדים לא מתעייפים אחרי 5 ש'. ובלימה דווקא נותנת מרווחים שקטנים, נראה את זה עוד רגע.` },
+    ],
+    onRun: () => drip.play(),
+    explanation: `
+      <p>המרווחים הם 1, 3, 5, 7, 9 מ'. בכל שנייה נוספים 2 מ/ש למהירות, ולכן בכל שנייה עוברים עוד 2 מ' מעבר לשנייה הקודמת.</p>
+      <p>הקצב שבו המהירות משתנה נקרא <span class="c-acc">תאוצה</span>, ומסמנים אותה ב-\\(a\\). כאן "2 מ/ש בכל שנייה" נכתב בקיצור 2 מ/ש². בגרף v–t התאוצה היא השיפוע, כמו שהמהירות היא השיפוע של x–t. המדרגות האדומות הן אותה תוספת בכל שנייה.</p>
+      <p>לחץ על "בולמת" כדי לראות תאוצה שלילית: המהירות יורדת ב-2 מ/ש בכל שנייה, והמרווחים קטנים. ושים לב למשהו מוזר: כל המכוניות מגיעות ל-25 מ' באותו רגע.</p>`,
+    sayRight: 'בדיוק. המרווחים מספרים הכל, גם בלי מד מהירות.',
+    sayWrong: 'גם אני חשבתי ששנייה זו שנייה. אבל היא שווה יותר כשנוסעים מהר.',
+  });
+
+  /* ---------- 5. Detective ---------- */
+  const det = SIM.detective = PHY.sims.carGraph($('c-detective'), $('ctl-detective'), { mode: 'detective', chapter: CH, section: 'detective' });
+  det.start();
+
+  /* ---------- 6. Area ---------- */
+  const area = SIM.area = PHY.sims.areaStrips($('c-area'), $('ctl-area'), { v0: 5, a: 0, T: 4, locked: true });
+  area.start();
+  const warmBtn = U.Button($('area-warm'), 'צבע את המלבן', () => area.rectangle(5, 4));
+  U.PredictCard($('pc-area'), {
+    chapter: CH, id: 'area', section: 'area',
+    question: `המכונית מתחילה ב-2 מ/ש ומאיצה ב-2 מ/ש², עד 10 מ/ש אחרי 4 ש'. כמה מטרים היא עברה?`,
+    options: [
+      { text: `40 מ'. המהירות 10 מ/ש כפול 4 ש'.`, why: `זה נכון רק אילו נסעה 10 מ/ש מהרגע הראשון. היא הגיעה ל-10 מ/ש רק בסוף.` },
+      { text: `24 מ'.`, correct: true },
+      { text: `8 מ'. המהירות ההתחלתית כפול הזמן.`, why: `ככה זה היה בלי תאוצה. אלה 8 מ' אמיתיים, והם רק החלק התחתון של התשובה: המלבן.` },
+    ],
+    onRun: () => { warmBtn.disabled = true; return area.play(2, 2, 4); },
+    explanation: `
+      <p>חתכנו את הזמן לרצועות דקות. בכל רצועה המכונית כמעט לא משנה מהירות, אז הדרך שעברה בה היא מהירות כפול זמן קצר, בדיוק השטח של הרצועה. לכן <b>השטח מתחת לגרף v–t הוא ה<span class="c-disp">העתק</span></b>.</p>
+      <p>עכשיו הנוסחה מקבלת את שלה. המלבן: גובה \\(v_0\\) ורוחב \\(t\\). המשולש: רוחב \\(t\\) וגובה \\(at\\), כי זו תוספת המהירות. יחד:</p>
+      \\[\\Delta x = v_0 t + \\tfrac{1}{2} a t^2 = 2 \\cdot 4 + \\tfrac{1}{2} \\cdot 2 \\cdot 4^2 = 8 + 16 = 24\\ \\text{m}\\]
+      <p><b>עכשיו אתה:</b> הסליידרים פתוחים. כמה רצועות צריך כדי שהסכום יגיע קרוב ל-24 מ'? ומה קורה לשטח כשהתאוצה שלילית והגרף יורד מתחת לאפס?</p>`,
+    sayRight: 'נכון. ואתה חישבת שטח כדי למצוא דרך. פיזיקאי לכל דבר.',
+    sayWrong: 'גם אני כפלתי את המהירות הסופית. המד הראה 10 מ/ש, רק לא כל הזמן.',
+  });
+
+  /* ---------- 7. Free fall ---------- */
+  const fall = SIM.fall = PHY.sims.freeFall($('c-fall'), $('ctl-fall'), { height: 20 });
+  fall.start();
+  fall.setParam('locked', true);
+  U.PredictCard($('pc-fall'), {
+    chapter: CH, id: 'fall', section: 'fall',
+    question: `התפוח הכבד שוקל פי 3 מהקל. משחררים את כולם יחד מגובה 20 מ', בלי אוויר. מי נוחת קודם?`,
+    options: [
+      { text: `הכבד, ברור. הוא כבד יותר.`, why: `זה מה שחשבו גם ב-2,000 השנים עד גלילאו. כדור הארץ אכן מושך אותו חזק יותר, אבל גם קשה יותר להזיז אותו, והשניים מתקזזים בדיוק.` },
+      { text: `נוחתים יחד.`, correct: true },
+      { text: `הקל, כי הוא זריז יותר.`, why: `שום דבר אצל תפוח לא זריז. בלי אוויר אין גם מי שיעכב את אחד מהם.` },
+    ],
+    onRun: () => fall.play(),
+    explanation: `
+      <p>כולם נחתו אחרי 2 ש', גם ניוטון. התאוצה היא 10 מ/ש² לכולם, והמסה בכלל לא משתתפת. בחוקי ניוטון בפרק 4 נראה בדיוק למה.</p>
+      <p>בדיקה מהטרפז: אחרי 2 ש' המהירות 20 מ/ש, והשטח הוא \\(\\tfrac{1}{2} \\cdot 2 \\cdot 20 = 20\\) מ'. בדיוק הגובה.</p>
+      <p><b>עכשיו הדלק את האוויר.</b> הוספנו גם נוצה. התפוחים כמעט לא מרגישים, והנוצה מרחפת הרבה אחריהם. האוויר הוא מי שמבדיל, לא המשקל. אסטרונאוט עשה את זה על הירח ב-1971 עם פטיש ונוצה, והם נחתו יחד.</p>`,
+    sayRight: 'נחתנו יחד. אני על הרגליים, התפוחים פחות.',
+    sayWrong: 'גם אני הימרתי על הכבד. חסכתי לעצמי את המדף אם הייתי שואל.',
+    onDone: () => { fall.setParam('feather', true); fall.setParam('locked', false); },
+  });
+
+  const strobe = SIM.strobe = PHY.sims.freeFall($('c-strobe'), $('ctl-strobe'), { height: 45, bodies: ['heavy'], strobe: true, controls: false });
+  strobe.start();
+  U.PredictCard($('pc-strobe'), {
+    chapter: CH, id: 'strobe',
+    question: `בשנייה הראשונה התפוח נפל 5 מ'. כמה ייפול בסך הכל אחרי 2 ש'?`,
+    options: [
+      { text: `10 מ'. פי 2 זמן, פי 2 מרחק.`, why: `ככה זה במהירות קבועה. כאן המהירות גדלה כל הזמן, אז השנייה השנייה הרבה יותר מהירה מהראשונה.` },
+      { text: `15 מ'.`, why: `קרוב מאוד למשהו נכון: 15 מ' זה מה שהוא נופל <b>בשנייה השנייה לבדה</b>. צריך להוסיף את ה-5 מ' של הראשונה.` },
+      { text: `20 מ'.`, correct: true },
+    ],
+    onRun: () => strobe.play(),
+    explanation: `
+      <p>בכל שנייה הוא נופל יותר: 5, ואז 15, ואז 25 מ'. בסך הכל 5, 20, 45 מ'. פי 2 זמן נתן פי 4 מרחק, ופי 3 זמן נתן פי 9.</p>
+      <p>זה ה-\\(t^2\\) של המשולש: \\(\\tfrac{1}{2} g t^2\\). עם \\(g = 10\\) מ/ש² זה פשוט \\(5t^2\\) במטרים.</p>`,
+    sayRight: 'מרשים. ואני נופל לך כאן כל היום בשביל זה.',
+    sayWrong: 'גם אני חשבתי שזה 10. ואז נפלתי וזה הרגיש כמו 20.',
+  });
+
+  /* ---------- 8. Catch the apple ---------- */
+  const catchSim = SIM.catch = PHY.sims.catchTheApple($('c-catch'), $('ctl-catch'), { chapter: CH, section: 'catch' });
+  catchSim.start();
+
+  /* ---------- 9. Freeze at the top ---------- */
+  const top = SIM.top = PHY.sims.freezeAtTop($('c-top'), $('ctl-top'), { v0: 20, freeze: true, locked: true });
+  top.start();
+  U.PredictCard($('pc-top'), {
+    chapter: CH, id: 'top', section: 'top',
+    question: `התפוח נעצר לרגע בשיא, כלומר \\(v = 0\\). מה התאוצה שלו באותו רגע?`,
+    options: [
+      { text: `0 מ/ש². הוא עומד, אז הכל עומד.`, why: `זו המלכודת הכי נפוצה במכינה. אם התאוצה הייתה באמת 0 מ/ש² באותו רגע, המהירות הייתה נשארת 0 מ/ש, והתפוח היה תלוי באוויר לתמיד.` },
+      { text: `10 מ/ש² למטה, כמו כל הזמן.`, correct: true },
+      { text: `10 מ/ש² למעלה, כי הוא עלה עד עכשיו.`, why: `הוא עלה בזכות המהירות שקיבל מהיד, לא בזכות תאוצה. מרגע שעזב את היד, התאוצה רק מורידה ממנו מהירות.` },
+    ],
+    onRun: () => top.play({ freeze: true }),
+    explanation: `
+      <p>החץ האדום לא זז ולו במילימטר, גם כשהכחול נעלם. ובגרף v–t רואים את זה: הקו עובר דרך האפס בלי להתכופף. השיפוע שלו הוא \\(-10\\) מ/ש² כל הדרך, גם בנקודה שבה \\(v = 0\\).</p>
+      <p><b>מהירות אומרת מה קורה עכשיו. תאוצה אומרת מה עומד להשתנות.</b> בשיא המהירות 0 מ/ש, אבל היא בדיוק עומדת להיות שלילית, ולכן התאוצה לא 0.</p>
+      <p>התפוח עלה 20 מ' ב-2 ש'. <b>עכשיו אתה:</b> לחץ "הפשר", כוון מהירות אחרת, וזרוק שוב. כמה זמן לוקחת הירידה לעומת העלייה?</p>`,
+    sayRight: 'בדיוק! הרבה מהנדסים עם תואר היו עונים אחרת.',
+    sayWrong: 'הרגשתי כמוך, עד שהתפוח ירד לי על הראש.',
+    onDone: () => top.setParam('locked', false),
+  });
+
+  /* ---------- 11. Playground ---------- */
+  const free = SIM.free = PHY.sims.carGraph($('c-free'), $('ctl-free'), { mode: 'free', chapter: CH, section: 'playground' });
+  free.start();
+
+  /* ---------- 12. Game ---------- */
+  const lander = SIM.lander = PHY.sims.lunarLander($('c-game'), $('ctl-game'), { chapter: CH, section: 'game' });
+  lander.start();
+
+  /* ---------- 13. Relative motion ---------- */
+  const esc = SIM.esc = PHY.sims.escalator($('c-esc'), $('ctl-esc'), { walk: 1.5, locked: true });
+  esc.start();
+  U.PredictCard($('pc-esc'), {
+    chapter: CH, id: 'esc',
+    question: `ניוטון הולך ב-1.5 מ/ש על הדרגנוע, בכיוון שבו הוא נע. אחרי כמה זמן יגיע לסוף?`,
+    options: [
+      { text: `25 ש'. באמצע בין 30 ש' ל-20 ש'.`, why: `שוב ממוצע של מספרים. זמנים לא מתחברים ככה, מהירויות כן.` },
+      { text: `12 ש'.`, correct: true },
+      { text: `50 ש'. 30 ועוד 20, כי צריך גם וגם.`, why: `הוא לא עושה קודם את זה ואחר כך את זה. שני הדברים קורים באותו זמן, וזה מקצר.` },
+    ],
+    onRun: () => esc.play(),
+    explanation: `
+      <p>ביחס לדרגנוע הוא נע ב-1.5 מ/ש. הדרגנוע נע ביחס לבניין ב-1 מ/ש. אז ביחס לבניין: \\(1.5 + 1 = 2.5\\) מ/ש, ו-30 מ' לוקחים 12 ש'.</p>
+      <p><b>עכשיו אתה:</b> הזז את מהירות ההליכה ל-\\(-1\\) מ/ש. ניוטון הולך נגד הדרגנוע ונשאר בדיוק במקום, בלי שזה יקצר לו את הדרך. אם יש לך ילדים, כבר ראית את זה.</p>`,
+    sayRight: 'בדיוק. ואני לא עשיתי כלום, רק עמדתי על הדבר הנכון.',
+    sayWrong: 'גם אני ניחשתי ככה. ואז הדרגנוע נגמר לי באף.',
+    onDone: () => esc.setParam('locked', false),
+  });
+
+  const boat = SIM.boat = PHY.sims.riverBoat($('c-boat'), $('ctl-boat'), { mode: 'free', u: 3, b: 4, heading: 0, locked: true, uSlider: true });
+  boat.start();
+  U.PredictCard($('pc-boat'), {
+    chapter: CH, id: 'boat', section: 'relative',
+    question: `החרטום מכוון ישר לגדה: 4 מ/ש ביחס למים. הזרם 3 מ/ש הצידה. מה המהירות של הסירה ביחס לחוף?`,
+    options: [
+      { text: `7 מ/ש. 4 ועוד 3, כמו בדרגנוע.`, why: `זה נכון רק כשהם באותו כיוון. כאן הם בזווית ישרה, וזו שוב הטעות מהפתיחה של פרק 1.` },
+      { text: `5 מ/ש.`, correct: true },
+      { text: `4 מ/ש. הזרם רק דוחף הצידה.`, why: `4 מ/ש זו המהירות של הסירה ביחס למים. אבל החוף רואה גם את התנועה הצידה, והיא מוסיפה לגודל הכולל.` },
+      { text: `1 מ/ש. הזרם מפריע לו.`, why: `חיסור נכון רק כשהם מנוגדים לגמרי. הזרם כאן לא נגד הסירה, אלא בניצב לה.` },
+    ],
+    onRun: () => {
+      boat.setParam('locked', true);
+      return boat.play(0);
+    },
+    explanation: `
+      <p>שני החצים בזווית ישרה, אז זה 3-4-5 מפרק 1: \\(\\sqrt{4^2 + 3^2} = 5\\) מ/ש. הסירה חצתה 60 מ' ב-15 ש', ובזמן הזה נסחפה 45 מ'.</p>
+      <p><b>עכשיו הדלק את "מבט מתוך הנהר" והשט שוב.</b> מתוך הנהר המים עומדים, והמסלול ישר לגדה שממול. הסירה עושה בדיוק אותו דבר בשני המבטים, רק המסלול נראה אחרת.</p>
+      <p>זה לא תעלול של המסך. שתי התשובות נכונות, כי מהירות היא תמיד ביחס למשהו. אפשר גם לשנות את החרטום ואת הזרם.</p>`,
+    sayRight: 'בדיוק. גם 3-4-5 מפרק 1 שמח לראות אותך.',
+    sayWrong: 'גם אני חיברתי 7. ואז נסחפתי והיה לי זמן לחשוב על זה.',
+    onDone: () => boat.setParam('locked', false),
+  });
+
+  const race = SIM.race = PHY.sims.riverBoat($('c-race'), $('ctl-race'), { mode: 'free', u: 3, b: 4, heading: 0, locked: true });
+  race.start();
+  U.PredictCard($('pc-race'), {
+    chapter: CH, id: 'race',
+    question: `איזו סירה מגיעה ראשונה לגדה שממול?`,
+    options: [
+      { text: `זו שמכוונת נגד הזרם. היא נוסעת בקו הכי קצר, ישר למזח.`, why: `הקו הכי קצר הוא לא הקו הכי מהיר. כדי לבטל את הזרם היא "מבזבזת" חלק גדול מהמהירות שלה לאורך הנהר, ונשאר לה מעט לעבר הגדה.` },
+      { text: `זו שמכוונת ישר לגדה.`, correct: true },
+      { text: `זו שמכוונת עם הזרם. הנהר עוזר לה.`, why: `הנהר עוזר לה רק לאורך הנהר. לעבור את הרוחב הוא לא עוזר בכלל, והיא גם מבזבזת חלק מהמהירות בכיוון שלא מקרב לגדה.` },
+    ],
+    onRun: () => race.race([-48.6, 0, 25]),
+    explanation: `
+      <p>הזרם זז לאורך הנהר, ולכן הוא לא משנה בכלום את המהירות לרוחב. <b>כדי לחצות מהר, כל המהירות צריכה להיות לרוחב</b>: 60 מ' חלקי 4 מ/ש הם 15 ש'.</p>
+      <p>הסירה שנגד הזרם הגיעה בדיוק מול נקודת היציאה, אבל אחרי 22.7 ש'. היא הראשונה רק למי שאכפת לו <i>איפה</i> ולא <i>מתי</i>. שני התנאים הם שתי שאלות שונות במבחן.</p>`,
+    sayRight: 'נכון. זה גם מה שאמרתי לו, אחרי שנסחפתי.',
+    sayWrong: 'גם אני כיוונתי ישר למזח. הגעתי, אחרון ומרוצה.',
+  });
+
+  /* ---------- 14. River game ---------- */
+  const river = SIM.river = PHY.sims.riverBoat($('c-river'), $('ctl-river'), { mode: 'game', u: 3, b: 4, chapter: CH, section: 'rivergame' });
+  river.start();
+
+  /* ---------- 15. Traps ---------- */
+  const trapDone = {};
+  const trapFinished = (name) => {
+    trapDone[name] = true;
+    if (trapDone.a && trapDone.b && trapDone.c && trapDone.d) PHY.progress.markSection(CH, 'traps');
+  };
+
+  const trap1 = SIM.trap1 = PHY.sims.tripAverage($('c-trap1'), $('ctl-trap1'), { mode: 'time' });
+  trap1.start();
+  U.PredictCard($('pc-trap1'), {
+    chapter: CH, id: 'trap1', tag: 'מלכודת 1: "הממוצע תמיד 80"',
+    question: `למדת את הלקח מהפתיחה. עכשיו: נסעת <b>חצי מהזמן</b> ב-60 קמ"ש וחצי מהזמן ב-120 קמ"ש, באותו כיוון. מה הממוצע?`,
+    options: [
+      { text: `80 קמ"ש. כמו בפתיחה, את זה כבר למדתי.`, why: `כמעט. בפתיחה חילקנו את <b>הדרך</b> חצי-חצי, וכאן את <b>הזמן</b>. שינוי קטן בשאלה, ותשובה אחרת.` },
+      { text: `90 קמ"ש.`, correct: true },
+      { text: `אי אפשר לדעת, כי לא נאמר כמה זמן.`, why: `לא צריך. כל זמן שתבחר ייתן אותו יחס בין המרחקים, והזמן מצטמצם.` },
+    ],
+    onRun: () => trap1.play(),
+    explanation: `<p>שעתיים ב-60 קמ"ש ושעתיים ב-120 קמ"ש הן 360 ק"מ ב-4 שעות, כלומר 90 קמ"ש. כשהזמנים שווים, לשתי המהירויות באמת יש אותו משקל.</p><p>לכן אל תזכור "80" ואל תזכור "90". תזכור <b>מרחק כולל חלקי זמן כולל</b>, וזה יעבוד תמיד.</p>`,
+    onDone: () => trapFinished('a'),
+  });
+
+  const trap2 = SIM.trap2 = PHY.sims.carGraph($('c-trap2'), $('ctl-trap2'), { mode: 'script', arrows: true, twoPlots: true, showV: true, xMin: -2, xMax: 12, x0: 0, T: 6, locked: true, noClear: true, vRange: [-8, 8] });
+  trap2.start();
+  U.PredictCard($('pc-trap2'), {
+    chapter: CH, id: 'trap2', tag: 'מלכודת 2: מהירות 0 פירושה תאוצה 0',
+    question: `מכונית נוסעת ב-\\(+6\\) מ/ש ובולמת בתאוצה של \\(-2\\) מ/ש². אחרי 3 ש' היא עוצרת לרגע, ואז מתחילה לנסוע לאחור. מה התאוצה באותו רגע של עצירה?`,
+    options: [
+      { text: `0 מ/ש². היא עומדת.`, why: `הרגע הזה נראה כמו עמידה, אבל הוא רק רגע אחד. אם התאוצה הייתה 0 מ/ש², היא הייתה נשארת עומדת לתמיד.` },
+      { text: `\\(-2\\) מ/ש². בדיוק כמו קודם.`, correct: true },
+      { text: `\\(+2\\) מ/ש². היא משנה כיוון.`, why: `המהירות משנה כיוון, לא התאוצה. אחרי העצירה המהירות נעשית שלילית, כי התאוצה ממשיכה למשוך לאותו צד.` },
+    ],
+    onRun: () => trap2.play([{ T: 6, v0: 6, a: -2 }], { x0: 0, marks: [{ t: 3, text: 'v = 0, והחץ האדום עדיין שם', hold: 1.6 }] }),
+    explanation: `<p>החץ האדום לא השתנה לאורך כל הדרך, והקו בגרף v–t ישר גם כשהוא חוצה את האפס. מהירות 0 היא מקום על הגרף. התאוצה היא השיפוע, ולמקום אין קשר לשיפוע.</p><p>זה אותו דבר כמו התפוח בשיא, בלי תפוח. אם זה יופיע במבחן עם מעלית או רכבת, התשובה לא משתנה.</p>`,
+    onDone: () => trapFinished('b'),
+  });
+
+  const trap3 = SIM.trap3 = PHY.sims.carGraph($('c-trap3'), $('ctl-trap3'), { mode: 'script', arrows: true, twoPlots: true, showV: true, xMin: -30, xMax: 4, x0: 0, T: 4, locked: true, noClear: true, vRange: [-12, 2] });
+  trap3.start();
+  U.PredictCard($('pc-trap3'), {
+    chapter: CH, id: 'trap3', tag: 'מלכודת 3: תאוצה שלילית פירושה האטה',
+    question: `מכונית נוסעת במהירות \\(-2\\) מ/ש, והתאוצה שלה \\(-2\\) מ/ש². מה קורה לה?`,
+    options: [
+      { text: `מאטה. תאוצה שלילית זו האטה, לא?`, why: `זה נכון רק כשהמהירות חיובית. מינוס בתאוצה אומר לאן נוספת המהירות, לא שהיא קטנה.` },
+      { text: `מאיצה: נעשית מהירה יותר ויותר, לאחור.`, correct: true },
+      { text: `עוצרת, כי שני המינוסים מתבטלים.`, why: `מינוס כפול מינוס זה פלוס בכפל. כאן אין כפל, יש שני חצים שפונים לאותו צד.` },
+    ],
+    onRun: () => trap3.play([{ T: 4, v0: -2, a: -2 }], { x0: 0 }),
+    explanation: `<p>אחרי 4 ש' המהירות כבר \\(-10\\) מ/ש, פי 5 מההתחלה, והחצים הכחול והאדום פונים לאותו צד. המכונית נוסעת לאחור יותר ויותר מהר.</p><p><b>הכלל:</b> \\(v\\) ו-\\(a\\) באותו סימן: מאיץ. בסימנים הפוכים: מאט. הסימן לבדו לא אומר כלום, כי את הכיוון החיובי בחרת אתה.</p>`,
+    onDone: () => trapFinished('c'),
+  });
+
+  const trap4 = SIM.trap4 = PHY.sims.freezeAtTop($('c-trap4'), $('ctl-trap4'), { v0: 20, freeze: false, showPath: true, locked: true });
+  trap4.start();
+  U.PredictCard($('pc-trap4'), {
+    chapter: CH, id: 'trap4', tag: 'מלכודת 4: מרחק מול העתק בזריקה',
+    question: `תפוח נזרק למעלה ב-20 מ/ש, וחוזר ליד אחרי 4 ש'. מה ההעתק שלו?`,
+    options: [
+      { text: `40 מ'. 20 למעלה ועוד 20 למטה.`, why: `40 מ' זה המרחק שעבר. העתק משווה רק בין ההתחלה לסוף, בדיוק כמו שראית בפרק 1.` },
+      { text: `20 מ'. הגובה המרבי.`, why: `20 מ' זה ההעתק רק ברגע שבשיא. בסוף התפוח כבר לא שם.` },
+      { text: `0 מ'.`, correct: true },
+    ],
+    onRun: () => trap4.play({ freeze: false }),
+    explanation: `<p>שני המדים מתחת לגרף מספרים את הסיפור: מרחק 40 מ', העתק 0 מ'. לכן גם המהירות הממוצעת הווקטורית היא 0 מ/ש, ואילו מהירות הדרך הממוצעת היא 10 מ/ש.</p><p>אפשר גם לבדוק מהנוסחה, בלי לחלק לעלייה וירידה: \\(y = 20 \\cdot 4 - 5 \\cdot 4^2 = 0\\) מ'. הנוסחה יודעת על כל הדרך, גם בלי שתספר לה מתי התפוח הסתובב.</p>`,
+    onDone: () => { trapFinished('d'); trap4.setParam('locked', false); },
+  });
+
+  /* ---------- 16. Problems ---------- */
+  const probs = $('problems-host');
+  U.Problem(probs, {
+    chapter: CH, section: 'problems', tag: 'שאלה 1: רודף ונרדף',
+    text: `מכונית חולפת על פני ניידת שעומדת בצד הכביש, במהירות קבועה של 20 מ/ש. באותו רגע הניידת יוצאת אחריה בתאוצה קבועה של 2 מ/ש². מתי הניידת משיגה אותה, כמה מטרים עברה עד אז, ומה מהירות הניידת ברגע זה?`,
+    fields: [
+      { label: 'זמן', answer: 20, unit: "ש'" },
+      { label: 'מרחק', answer: 400, unit: "מ'" },
+      { label: 'מהירות הניידת', answer: 40, unit: 'מ/ש' },
+    ],
+    steps: [
+      `בחר ראשית במקום הניידת ו-\\(t = 0\\) ברגע החלוף. המכונית: \\(x_1 = 20t\\). הניידת: \\(x_2 = \\tfrac{1}{2} \\cdot 2 \\cdot t^2 = t^2\\).`,
+      `"משיגה" פירושו אותו מקום באותו זמן: \\(x_1 = x_2\\), כלומר \\(20t = t^2\\). יש שני פתרונות: \\(t = 0\\) (רגע החלוף) ו-\\(t = 20\\) ש'.`,
+      `\\(t = 20\\) ש'. המרחק: \\(x = 20 \\cdot 20 = 400\\) מ'. מהירות הניידת: \\(v = at = 2 \\cdot 20 = 40\\) מ/ש. שים לב: פי 2 ממהירות המכונית, כי שתיהן עברו אותה דרך באותו זמן, ולכן אותה מהירות ממוצעת.`,
+    ],
+  });
+  U.Problem(probs, {
+    chapter: CH, section: 'problems', tag: 'שאלה 2: אבן נזרקת למעלה',
+    text: `אבן נזרקת ישר למעלה מהקרקע במהירות 30 מ/ש. מצא את הזמן עד לשיא, את הגובה המרבי, ואת הזמן עד שהיא חוזרת לקרקע.`,
+    fields: [
+      { label: 'זמן עד לשיא', answer: 3, unit: "ש'" },
+      { label: 'גובה מרבי', answer: 45, unit: "מ'" },
+      { label: 'זמן עד לקרקע', answer: 6, unit: "ש'" },
+    ],
+    steps: [
+      `בשיא \\(v = 0\\). מ-\\(v = v_0 - gt\\) מקבלים \\(0 = 30 - 10t\\).`,
+      `הגובה: אפשר מהטרפז (משולש): \\(\\tfrac{1}{2} \\cdot 3 \\cdot 30\\). או מ-\\(v^2 = v_0^2 - 2gh\\), שנותן \\(0 = 900 - 20h\\).`,
+      `\\(t = 3\\) ש', \\(h = 45\\) מ'. בקרקע \\(y = 0\\): \\(30t - 5t^2 = 0\\), כלומר \\(t = 6\\) ש'. העלייה והירידה לוקחות אותו זמן, והאבן חוזרת ב-\\(-30\\) מ/ש.`,
+    ],
+  });
+  U.Problem(probs, {
+    chapter: CH, section: 'problems', tag: 'שאלה 3: סירה חוצה נהר',
+    text: `נהר ברוחב 60 מ' זורם במהירות 3 מ/ש. סירה נעה ב-4 מ/ש ביחס למים, והחרטום שלה מכוון כל הזמן בניצב לגדה. כמה זמן נמשכת הצליחה, כמה מטרים הסירה נסחפת, ומה גודל מהירותה ביחס לחוף?`,
+    fields: [
+      { label: 'זמן', answer: 15, unit: "ש'" },
+      { label: 'סחף', answer: 45, unit: "מ'" },
+      { label: 'מהירות ביחס לחוף', answer: 5, unit: 'מ/ש' },
+    ],
+    steps: [
+      `הפרד לשני כיוונים, כמו בפרק 1. לרוחב הנהר יש רק את הסירה, 4 מ/ש. לאורך הנהר יש רק את הזרם, 3 מ/ש.`,
+      `הזמן נקבע מהרוחב בלבד: \\(t = \\frac{60}{4}\\). הסחף הוא הזרם כפול אותו זמן.`,
+      `\\(t = 15\\) ש', הסחף \\(3 \\cdot 15 = 45\\) מ'. המהירות ביחס לחוף: \\(\\sqrt{4^2 + 3^2} = 5\\) מ/ש. בדיקה: המסלול באורך \\(\\sqrt{60^2 + 45^2} = 75\\) מ', ו-\\(75 / 15 = 5\\) מ/ש.`,
+    ],
+  });
+
+  /* ---------- 17. Quiz ---------- */
+  U.Quiz($('quiz-host'), {
+    chapter: CH, section: 'quiz',
+    questions: [
+      {
+        type: 'mc',
+        q: `גרף x–t של מכונית הוא קו אופקי. מה זה אומר?`,
+        options: [`המכונית נוסעת במהירות קבועה`, `המכונית עומדת`, `התאוצה קבועה ולא אפס`, `המכונית נוסעת לאחור`],
+        answer: 1,
+        why: `הגובה לא משתנה, אז המיקום לא משתנה. מהירות קבועה היא קו אופקי בגרף <b>v–t</b>, ואת שני אלה הכי קל לבלבל.`,
+      },
+      {
+        type: 'num',
+        q: `שתי מכוניות נוסעות זו מול זו על כביש ישר. המרחק ביניהן 300 מ', ומהירויותיהן 20 מ/ש ו-10 מ/ש. אחרי כמה שניות הן נפגשות?`,
+        answer: 10, unit: "ש'",
+        why: `\\(x_1 = 20t\\) ו-\\(x_2 = 300 - 10t\\). משווים: \\(30t = 300\\), כלומר \\(t = 10\\) ש'. הן נפגשות 200 מ' מהראשונה.`,
+      },
+      {
+        type: 'num',
+        q: `גרף v–t עולה בקו ישר מ-4 מ/ש ל-12 מ/ש במשך 4 ש'. מה ההעתק באותו זמן?`,
+        answer: 32, unit: "מ'",
+        why: `השטח מתחת לגרף: מלבן \\(4 \\cdot 4 = 16\\) מ', ומשולש \\(\\tfrac{1}{2} \\cdot 4 \\cdot 8 = 16\\) מ'. יחד 32 מ'.`,
+      },
+      {
+        type: 'num',
+        q: `אבן נזרקת ישר למעלה ב-15 מ/ש. לאיזה גובה מרבי היא מגיעה?`,
+        answer: 11.25, unit: "מ'",
+        why: `לא נתון זמן, אז \\(v^2 = v_0^2 - 2gh\\): \\(0 = 225 - 20h\\), כלומר \\(h = 11.25\\) מ'.`,
+      },
+      {
+        type: 'mc',
+        q: `סירה נעה ב-8 מ/ש ביחס למים, בניצב לזרם של 6 מ/ש. מה גודל מהירותה ביחס לחוף?`,
+        options: [`14 מ/ש`, `10 מ/ש`, `8 מ/ש`, `2 מ/ש`],
+        answer: 1,
+        why: `המהירויות בזווית ישרה, אז פיתגורס: \\(\\sqrt{8^2 + 6^2} = 10\\) מ/ש.`,
+      },
+      {
+        type: 'num',
+        q: `<b>חזרה מפרק 1:</b> תפוח נזרק ב-10 מ/ש בזווית של 30° מעל האופק. מה הרכיב האנכי של מהירותו?`,
+        answer: 5, unit: 'מ/ש',
+        why: `\\(v_y = v\\sin\\theta = 10 \\cdot 0.5 = 5\\) מ/ש. הצל על הקיר. תצטרך את זה בדיוק ככה בפרק הבא.`,
+      },
+      {
+        type: 'mc',
+        q: `<b>חזרה מפרק 1:</b> ניוטון הלך 6 מ' מזרחה, ואז 6 מ' מערבה. מה המרחק ומה גודל ההעתק?`,
+        options: [`מרחק 12 מ', העתק 12 מ'`, `מרחק 12 מ', העתק 0 מ'`, `מרחק 0 מ', העתק 12 מ'`, `מרחק 0 מ', העתק 0 מ'`],
+        answer: 1,
+        why: `המרחק סופר כל צעד: 12 מ'. ההעתק משווה רק התחלה וסוף, והוא חזר הביתה: 0 מ'.`,
+      },
+    ],
+  });
+
+  /* ---------- Easter egg: click the cat ---------- */
+  PHY.mascot.easterEgg([
+    { text: 'מיאו. אני עומד. בגרף x–t זה קו אופקי.', pose: 'standing' },
+    { text: 'עוד הקשה אחת, ואני נע בתאוצה קבועה לכיוון המקרר.', pose: 'happy' },
+    { text: 'בשנייה הראשונה נופלים 5 מ\'. כן, בדקתי. כמה פעמים.', pose: 'thinking' },
+    { text: 'די! השיפוע שלי נהיה שלילי.', pose: 'dizzy' },
+    { text: 'טוב, מגיע לך. גשם תפוחים: הכבדים והקלים נוחתים יחד.', pose: 'flying', spin: true, rain: true },
+  ]);
+
+  U.initChapter({ id: CH });
+})();
+</script>
+</body>
+</html>

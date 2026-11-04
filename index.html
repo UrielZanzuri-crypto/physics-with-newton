@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>פיזיקה עם ניוטון החתול</title>
+<meta name="description" content="מדריך אינטראקטיבי למכניקה ברמת מכינה, למי שמעולם לא למד פיזיקה.">
+<script>try{var t=localStorage.getItem('phy-theme');document.documentElement.setAttribute('data-theme',t||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'))}catch(e){document.documentElement.setAttribute('data-theme','light')}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700&family=Rubik:wght@500;600;700;800&display=swap">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-in">
+    <span class="brand"><span data-brand-cat></span><span class="brand-name">ניוטון החתול</span></span>
+    <span class="topbar-spacer"></span>
+    <span data-theme-slot></span>
+  </div>
+</header>
+
+<main class="wrap-wide">
+  <section class="home-hero">
+    <div>
+      <h1>פיזיקה עם ניוטון החתול</h1>
+      <p class="lead">מכניקה ברמת מכינה, למי שמעולם לא למד פיזיקה. קודם מנחשים, אחר כך רואים, ורק בסוף נוסחה.</p>
+    </div>
+    <div id="home-cat"></div>
+    <div class="home-actions" id="home-actions"></div>
+  </section>
+
+  <h2>מפת הפרקים</h2>
+  <ol class="map" id="map"></ol>
+
+  <section class="card legend-card">
+    <h3>שלושה דברים שנכונים בכל המדריך</h3>
+    <div class="color-legend" aria-label="צבעי הווקטורים">
+      <span class="c-vel" style="color:var(--c-velocity)"><i></i>מהירות</span>
+      <span class="c-acc" style="color:var(--c-acceleration)"><i></i>תאוצה</span>
+      <span class="c-force" style="color:var(--c-force)"><i></i>כוח</span>
+      <span class="c-disp" style="color:var(--c-displacement)"><i></i>העתק</span>
+    </div>
+    <p>לכל וקטור צבע קבוע משלו, בכל ציור ובכל פרק. אחרי כמה דקות תזהה חץ לפי הצבע.</p>
+    <p>תאוצת הנפילה היא g = 10 מ/ש², כמו במכינה. הערך המדויק יותר הוא 9.8 מ/ש², אבל עם 10 אפשר לחשב בראש.</p>
+    <p>בתוך הציורים ציר x פונה ימינה וציר y למעלה, כמו בספרים, גם כשהטקסט מסביב בעברית.</p>
+  </section>
+</main>
+
+<footer class="footer wrap-wide">
+  <p>בהשראת ההרצאות של פרופ' מריו ליביו במכינת הטכניון. ההתקדמות נשמרת בדפדפן שלך בלבד.
+  <button type="button" class="link-btn" id="reset-progress">איפוס התקדמות</button></p>
+</footer>
+
+<script src="js/core/fmt.js"></script>
+<script src="js/core/vec.js"></script>
+<script src="js/core/progress.js"></script>
+<script src="js/core/canvas.js"></script>
+<script src="js/core/loop.js"></script>
+<script src="js/core/mascot.js"></script>
+<script src="js/core/ui.js"></script>
+<script>
+(function () {
+  'use strict';
+  const U = PHY.ui, P = PHY.progress;
+  const h = U.h;
+
+  PHY.ui.themeButton(document.querySelector('[data-theme-slot]'));
+  document.querySelector('[data-brand-cat]').innerHTML = '<span class="mascot-figure">' + PHY.mascot.svg('standing', 'aria-hidden="true"') + '</span>';
+
+  function started(c) {
+    const pc = P.chapter(c.id);
+    return pc.sections.length > 0 || pc.quiz || pc.game;
+  }
+
+  function paint() {
+    const map = document.getElementById('map');
+    map.innerHTML = '';
+    PHY.course.forEach(function (c) {
+      const active = c.status === 'active';
+      const pc = P.chapter(c.id);
+      const frac = P.fraction(c.id);
+      const done = active && frac >= 1;
+      const li = h('li', { class: 'map-item ' + (active ? 'is-active' : 'is-soon') + (done ? ' is-done' : '') });
+      li.appendChild(h('span', { class: 'map-node', 'aria-hidden': 'true', text: String(+c.id) }));
+      const titleRow = h('div', { class: 'map-title-row' }, [
+        h('span', { class: 'map-title', text: 'פרק ' + +c.id + ': ' + c.title }),
+        active ? null : h('span', { class: 'badge-soon', text: 'בקרוב' }),
+      ]);
+      const card = h(active ? 'a' : 'div', { class: 'map-card', href: active ? 'chapters/' + c.file : null }, [
+        titleRow,
+        h('p', { class: 'map-desc', text: c.desc }),
+      ]);
+      if (active && started(c)) {
+        const bar = h('div', { class: 'map-bar' }, [h('span', { style: 'width:' + Math.round(frac * 100) + '%' })]);
+        const meta = h('div', { class: 'map-meta' });
+        const quizBox = h('span', { text: 'בוחן' });
+        U.StarScore(quizBox, { value: P.quizStars(pc.quiz || 0) });
+        const gameBox = h('span', { text: 'משחקון' });
+        U.StarScore(gameBox, { value: pc.game || 0 });
+        meta.appendChild(quizBox);
+        meta.appendChild(gameBox);
+        meta.appendChild(h('span', { text: Math.round(frac * 100) + '% מהפרק' }));
+        card.appendChild(bar);
+        card.appendChild(meta);
+      }
+      li.appendChild(card);
+      map.appendChild(li);
+    });
+
+    const actions = document.getElementById('home-actions');
+    actions.innerHTML = '';
+    const nextUp = PHY.course.find(function (c) { return c.status === 'active' && P.fraction(c.id) < 1; }) || PHY.course[0];
+    const anyStarted = PHY.course.some(started);
+    actions.appendChild(h('a', {
+      class: 'btn btn-primary',
+      href: 'chapters/' + nextUp.file,
+      text: (anyStarted ? 'להמשיך: ' : 'להתחיל: ') + 'פרק ' + +nextUp.id,
+    }));
+  }
+
+  PHY.mascot.mount(document.getElementById('home-cat'), {
+    pose: 'happy', size: 130,
+    text: 'אני ניוטון. אני אפול, אעוף, אחליק ואשוגר מתותח, הכל בשביל המדע. ובשביל תפוחים.',
+  });
+  PHY.mascot.easterEgg([
+    { text: 'מיאו.', pose: 'standing' },
+    { text: 'עוד פעם? יש פרקים שלמים שמחכים לך.', pose: 'thinking' },
+    { text: 'טוב, טוב. תפוחים.', pose: 'flying', spin: true, rain: true },
+  ]);
+
+  document.getElementById('reset-progress').addEventListener('click', function () {
+    if (window.confirm('למחוק את כל ההתקדמות והכוכבים?')) {
+      P.reset();
+      paint();
+    }
+  });
+
+  paint();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="he" dir="rtl" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>בדיקות פיזיקה</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+  body { padding: 16px; }
+  table { border-collapse: collapse; width: 100%; max-width: 900px; font-size: 14px; }
+  td, th { border-bottom: 1px solid #ccc; padding: 6px 8px; text-align: right; }
+  td.num { direction: ltr; font-family: monospace; }
+  .ok { color: #1a7f37; font-weight: 700; }
+  .bad { color: #c62828; font-weight: 700; }
+  #stage { position: absolute; left: -9999px; top: 0; width: 640px; }
+  #stage canvas { display: block; width: 640px; }
+</style>
+<script>
+  /* Runs the real sims on a manual clock, so results do not depend on tab visibility or frame rate.
+     This must load before js/core/loop.js. */
+  (function () {
+    var queue = [], now = 1000, id = 0;
+    window.requestAnimationFrame = function (fn) { queue.push(fn); return ++id; };
+    window.cancelAnimationFrame = function () {};
+    window.IntersectionObserver = function (cb) {
+      this.observe = function () { Promise.resolve().then(function () { cb([{ isIntersecting: true }]); }); };
+      this.disconnect = this.unobserve = function () {};
+    };
+    window.__frame = function () {
+      now += 50;
+      var run = queue; queue = [];
+      run.forEach(function (fn) { fn(now); });
+    };
+  })();
+</script>
+</head>
+<body>
+<h1>בדיקות פיזיקה</h1>
+<p id="summary">רץ...</p>
+<table><thead><tr><th>בדיקה</th><th>צפוי</th><th>התקבל</th><th></th></tr></thead><tbody id="rows"></tbody></table>
+<div id="stage"></div>
+
+<script src="../js/core/fmt.js"></script>
+<script src="../js/core/vec.js"></script>
+<script src="../js/core/progress.js"></script>
+<script src="../js/core/canvas.js"></script>
+<script src="../js/core/loop.js"></script>
+<script src="../js/core/mascot.js"></script>
+<script src="../js/core/ui.js"></script>
+<script src="../js/sims/ch01/shadow.js"></script>
+<script src="../js/sims/ch02/plot.js"></script>
+<script src="../js/sims/ch02/free-fall.js"></script>
+<script src="../js/sims/ch02/freeze-at-top.js"></script>
+<script src="../js/sims/ch02/trip-average.js"></script>
+<script src="../js/sims/ch02/area-strips.js"></script>
+<script src="../js/sims/ch02/river-boat.js"></script>
+<script src="../js/sims/ch02/escalator.js"></script>
+<script src="../js/sims/ch03/ballistics.js"></script>
+<script src="../js/sims/ch03/monkey-hunter.js"></script>
+<script src="../js/sims/ch03/two-balls.js"></script>
+<script src="../js/sims/ch03/shadows-xy.js"></script>
+<script src="../js/sims/ch03/cannon-playground.js"></script>
+<script>
+(async function () {
+  var pass = 0, fail = 0;
+  var rows = document.getElementById('rows');
+  var stage = document.getElementById('stage');
+
+  function row(name, expected, got, ok) {
+    if (ok) pass++; else fail++;
+    var tr = document.createElement('tr');
+    [name, expected, got, ok ? '✔' : '✘'].forEach(function (text, i) {
+      var td = document.createElement('td');
+      td.textContent = text;
+      if (i === 1 || i === 2) td.className = 'num';
+      if (i === 3) td.className = ok ? 'ok' : 'bad';
+      tr.appendChild(td);
+    });
+    rows.appendChild(tr);
+  }
+  function near(name, expected, got, tol) {
+    var t = tol === undefined ? 0.01 : tol;
+    var ok = typeof got === 'number' && isFinite(got) && Math.abs(got - expected) <= t;
+    row(name, expected + ' ±' + t, typeof got === 'number' ? +got.toFixed(4) : String(got), ok);
+  }
+  function same(name, expected, got) { row(name, String(expected), String(got), expected === got); }
+
+  function make(factory, opts) {
+    var canvas = document.createElement('canvas');
+    var controls = document.createElement('div');
+    stage.appendChild(canvas);
+    stage.appendChild(controls);
+    var sim = factory(canvas, controls, opts);
+    sim.start();
+    return sim;
+  }
+  /* Pumps frames until the promise settles. Fails rather than hangs if it never does. */
+  async function run(promise, maxFrames) {
+    var done = false, limit = maxFrames || 4000;
+    promise.then(function () { done = true; });
+    for (var i = 0; i < limit && !done; i++) {
+      window.__frame();
+      await Promise.resolve();
+      if (i % 200 === 0) await new Promise(function (r) { setTimeout(r, 0); });
+    }
+    if (!done) throw new Error('animation did not finish');
+  }
+  async function settle() { for (var i = 0; i < 3; i++) { await Promise.resolve(); window.__frame(); } }
+  async function test(name, fn) {
+    try { await fn(); } catch (e) { row(name, 'ללא שגיאה', String(e && e.message || e), false); }
+  }
+
+  var V = PHY.vec, B = PHY.ballistics, S = PHY.sims;
+  await settle();
+
+  await test('פרק 1: חיבור וקטורים', async function () {
+    near('3 מ\' ועוד 4 מ\' בניצב', 5, V.len(V.add(V.v(3, 0), V.v(0, 4))));
+    near('3 מ\' ועוד 4 מ\' באותו כיוון', 7, V.len(V.add(V.v(3, 0), V.v(4, 0))));
+    near('3 מ\' ועוד 4 מ\' בכיוונים הפוכים', 1, V.len(V.add(V.v(3, 0), V.v(-4, 0))));
+  });
+
+  await test('פרק 1: צל', async function () {
+    var a = make(S.shadow, { length: 5, angle: 60 }).getState();
+    near('צל על x, 5 מ\' ב-60°', 2.5, a.ax);
+    near('יחס הצל ב-60°', 0.5, a.ratioX);
+    var b = make(S.shadow, { length: 5, angle: 45 }).getState();
+    near('צל על y, 5 מ\' ב-45°', 3.536, b.ay, 0.001);
+  });
+
+  await test('פרק 2: נפילה חופשית', async function () {
+    var f = make(S.freeFall, { height: 20 });
+    await run(f.play());
+    f.getState().bodies.forEach(function (b) {
+      near('נפילה מ-20 מ\' (' + b.key + '), זמן נחיתה', 2, b.land, 0.02);
+    });
+    var g = make(S.freeFall, { height: 45 });
+    await run(g.play());
+    near('נפילה מ-45 מ\', זמן נחיתה', 3, g.getState().bodies[0].land, 0.02);
+  });
+
+  await test('פרק 2: זריקה למעלה', async function () {
+    var t = make(S.freezeAtTop, { v0: 20, freeze: false });
+    await run(t.play({ freeze: false }));
+    var s = t.getState();
+    near('זמן לשיא ב-20 מ/ש', 2, s.peakT);
+    near('גובה שיא ב-20 מ/ש', 20, s.peakY);
+    near('זמן חזרה', 4, s.landT);
+    near('תאוצה לאורך כל הדרך', -10, s.a);
+    near('דרך כוללת', 40, s.distance, 0.05);
+    near('העתק כולל', 0, s.displacement, 0.05);
+    var z = make(S.freezeAtTop, { v0: 20, freeze: true });
+    await run(z.play({ freeze: true }));
+    var q = z.getState();
+    same('הקפאה בשיא', true, q.frozen);
+    near('מהירות בהקפאה', 0, q.v, 0.02);
+    near('תאוצה בהקפאה', -10, q.a);
+  });
+
+  await test('פרק 2: מהירות ממוצעת', async function () {
+    var d = make(S.tripAverage, { mode: 'distance', km: 120 });
+    await run(d.play());
+    near('60 הלוך ו-120 חזור, קמ"ש', 80, d.getState().avg, 0.1);
+    var h = make(S.tripAverage, { mode: 'time', slider: false });
+    await run(h.play());
+    near('חצי זמן 60 וחצי זמן 120, קמ"ש', 90, h.getState().avg, 0.1);
+  });
+
+  await test('פרק 2: שטח מתחת לגרף', async function () {
+    var a = make(S.areaStrips, { v0: 2, a: 2, T: 4 }).getState();
+    near('נוסחה: 2 מ/ש, 2 מ/ש², 4 ש', 24, a.formula);
+    near('סכום רצועות מול נוסחה', a.formula, a.area, 0.01);
+  });
+
+  await test('פרק 2: תנועה יחסית', async function () {
+    var r = make(S.riverBoat, { u: 3, b: 4, heading: 0, width: 60 });
+    await run(r.play(0));
+    var s = r.getState();
+    near('סירה 4 מ/ש בנהר 3 מ/ש', 5, s.groundSpeed);
+    near('אותה מהירות נמדדת מהמסלול', 5, s.measured, 0.02);
+    near('זמן חציית 60 מ\'', 15, s.boats[0].land, 0.05);
+    near('סחף', 45, s.boats[0].x, 0.1);
+    var e = make(S.escalator, { walk: 1.5 });
+    await run(e.play());
+    var l = e.getState().lanes;
+    near('עומד על הדרגנוע, 30 מ\'', 30, l[0].done);
+    near('הולך על רצפה, 30 מ\'', 20, l[1].done);
+    near('הולך על הדרגנוע, 30 מ\'', 12, l[2].done);
+  });
+
+  await test('פרק 3: נוסחאות קליע', async function () {
+    near('טווח ב-45°, 20 מ/ש', 40, B.range(20, 45));
+    near('גובה מרבי ב-45°, 20 מ/ש', 10, B.maxHeight(20, 45));
+    near('זמן טיסה ב-45°, 20 מ/ש', 2.828, B.flightTime(20, 45), 0.001);
+    near('טווח ב-30°', 34.641, B.range(20, 30), 0.001);
+    near('טווח ב-60° שווה לטווח ב-30°', B.range(20, 30), B.range(20, 60), 1e-9);
+    var best = 0;
+    for (var a = 0; a <= 90; a++) if (B.range(20, a) > B.range(20, best)) best = a;
+    same('הזווית הטובה ביותר', 45, best);
+  });
+
+  await test('פרק 3: מגרש תותחים', async function () {
+    var c = make(S.cannonPlayground, { angle: 45, speed: 20 });
+    var s = c.getState();
+    near('טווח על המסך', 40, s.R);
+    await run(c.fire());
+    same('הטיסה הסתיימה', false, c.getState().flying);
+  });
+
+  await test('פרק 3: הקוף והצייד', async function () {
+    var m = make(S.monkeyHunter, { speed: 20, height: 15, distance: 20 });
+    await run(m.play({ gravity: true }));
+    var s = m.getState();
+    same('פגיעה עם כבידה', 'hit', s.result);
+    near('זמן פגיעה', 1.25, s.tHit, 0.02);
+    near('גובה מפגש', 15 - 0.5 * 10 * 1.25 * 1.25, s.meetY, 0.05);
+    var n = make(S.monkeyHunter, { speed: 25, height: 10, distance: 20 });
+    await run(n.play({ gravity: true }));
+    same('פגיעה במהירות וגובה אחרים', 'hit', n.getState().result);
+    var o = make(S.monkeyHunter, { speed: 20, height: 15, distance: 20 });
+    await run(o.play({ gravity: false }));
+    same('פגיעה בלי כבידה', 'hit', o.getState().result);
+  });
+
+  await test('פרק 3: אופקי ואנכי בלתי תלויים', async function () {
+    var t = make(S.twoBalls, { height: 20, speed: 10 });
+    await run(t.play());
+    var s = t.getState();
+    near('זמן נחיתה מ-20 מ\'', 2, s.T);
+    var worst = 0;
+    s.stamps.forEach(function (st) { st.ys.forEach(function (y) { worst = Math.max(worst, Math.abs(y - st.y)); }); });
+    same('יש חותמות סטרובוסקופ', true, s.stamps.length > 0);
+    near('הפרש גובה מרבי בין התפוחים', 0, worst, 1e-6);
+    var x = make(S.shadowsXy, { speed: 20, angle: 45 });
+    await run(x.play());
+    var q = x.getState(), st = q.stamps, min = Infinity, max = -Infinity;
+    for (var i = 1; i < st.length; i++) {
+      var dx = (st[i].x - st[i - 1].x) / (st[i].t - st[i - 1].t);
+      min = Math.min(min, dx); max = Math.max(max, dx);
+    }
+    near('מהירות הצל על הרצפה', 14.142, (min + max) / 2, 0.01);
+    near('פיזור מהירות הצל על הרצפה', 0, max - min, 1e-6);
+  });
+
+  var text = (fail === 0 ? 'PASS ' : 'FAIL ') + pass + '/' + (pass + fail);
+  document.getElementById('summary').textContent = text;
+  document.getElementById('summary').className = fail === 0 ? 'ok' : 'bad';
+  document.title = text;
+  document.documentElement.setAttribute('data-result', fail === 0 ? 'pass' : 'fail');
+  stage.innerHTML = '';
+})().catch(function (e) {
+  document.getElementById('summary').textContent = 'CRASH ' + (e && e.stack || e);
+  document.documentElement.setAttribute('data-result', 'crash');
+});
+</script>
+</body>
+</html>

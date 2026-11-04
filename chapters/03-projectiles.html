@@ -1,0 +1,589 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>פרק 3: קליעים | פיזיקה עם ניוטון החתול</title>
+<meta name="description" content="למה תפוח שנורה מתותח פוגע בחתול שנופל: מדריך אינטראקטיבי לקליעים ולזריקה משופעת.">
+<script>try{var t=localStorage.getItem('phy-theme');document.documentElement.setAttribute('data-theme',t||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'))}catch(e){document.documentElement.setAttribute('data-theme','light')}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700&family=Rubik:wght@500;600;700;800&display=swap">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.11/katex.min.css">
+<link rel="stylesheet" href="../css/style.css">
+<style>
+  /* Chapter 3 only: the discovery quests and the 3D view. */
+  .quest-list { display: grid; gap: 8px; padding-top: 4px; }
+  .quest { display: flex; gap: 10px; align-items: flex-start; font-weight: 500; line-height: 1.5; }
+  .quest-mark { flex: none; width: 24px; height: 24px; border-radius: 50%; border: 2px solid var(--line-strong); display: grid; place-items: center; font-size: 0.82rem; font-weight: 800; color: var(--good); }
+  .quest.is-done { color: var(--ink-soft); }
+  .quest.is-done .quest-mark { background: var(--good-soft); border-color: var(--good); }
+  .why-box { margin-top: 14px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-m); padding: 12px 16px; }
+  .why-box summary { cursor: pointer; font-family: var(--font-head); font-weight: 700; min-height: 44px; display: flex; align-items: center; gap: 8px; }
+  .why-box summary::before { content: '▸'; color: var(--accent); }
+  .why-box[open] summary::before { content: '▾'; }
+  .toggle { min-height: 44px; }
+  .why-box[open] summary { margin-bottom: 8px; }
+  .c3d-stage { position: relative; width: 100%; min-height: 230px; background: var(--canvas-bg); overflow: hidden; }
+  .c3d-stage canvas { display: block; }
+  .c3d-stage.is-fallback { height: auto !important; min-height: 0; }
+  .c3d-status { position: absolute; inset: 0; display: grid; place-items: center; padding: 16px; text-align: center; color: var(--ink-soft); }
+  .c3d-status[hidden] { display: none; }
+  .c3d-fallback { padding: 18px; }
+  .egg-cat { position: fixed; left: 0; top: 0; z-index: 61; width: 84px; height: 84px; pointer-events: none; }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-in">
+    <a class="brand" href="../index.html" aria-label="חזרה לדף הבית"><span data-brand-cat></span><span class="brand-name">ניוטון החתול</span></a>
+    <span class="topbar-spacer"></span>
+    <span class="topbar-title">פרק 3: קליעים</span>
+    <span data-theme-slot></span>
+  </div>
+  <div class="chapter-bar"><span data-chapter-bar></span></div>
+</header>
+
+<main>
+
+<!-- 1. HOOK -->
+<section class="section wrap" data-section="hook" id="hook">
+  <span class="kicker">פרק 3: קליעים</span>
+  <h1 class="hero-title">התותח והחתול</h1>
+  <div data-mascot="onBranch" data-size="118" data-say="למה יש כאן תותח? למה הוא מכוון אליי?!"></div>
+  <p class="lead">ניוטון תלוי על ענף. יש תותח תפוחים שמכוון בדיוק אליו, והחתול, שהיה יכול פשוט לבקש, נבהל.</p>
+  <p>ברגע הירייה הוא עוזב את הענף. הוא בטוח שזה יציל אותו, ובוא נראה.</p>
+  <div id="pc-hook">
+    <figure class="sim"><canvas id="c-hook"></canvas><div class="sim-controls" id="ctl-hook"></div></figure>
+  </div>
+</section>
+
+<!-- 2. CYCLE: dropped vs fired -->
+<section class="section wrap" data-section="drop" id="drop">
+  <div class="section-head"><span class="section-num">2</span><h2>מי נוחת קודם?</h2></div>
+  <p>כדי להבין מה קרה בענף, נפרק את הסיפור. קח שני תפוחים על מגדל בגובה 20 מ'.</p>
+  <p>את הזהוב ניוטון משמיט מהיד. את האדום התותח יורה אופקית ב-10 מ/ש, בדיוק באותו רגע.</p>
+  <div id="pc-drop">
+    <figure class="sim"><canvas id="c-drop"></canvas><div class="sim-controls" id="ctl-drop"></div></figure>
+  </div>
+</section>
+
+<!-- 3. CYCLE: twice as fast -->
+<section class="section wrap" data-section="faster" id="faster">
+  <div class="section-head"><span class="section-num">3</span><h2>ואם יורים חזק יותר?</h2></div>
+  <p>התפוח האדום נחת אחרי 2 ש', במרחק 20 מ'. עכשיו מוסיפים לידו עוד תפוח, הפעם נורה ב-20 מ/ש, כפול מהראשון.</p>
+  <div id="pc-fast">
+    <figure class="sim"><canvas id="c-fast"></canvas><div class="sim-controls" id="ctl-fast"></div></figure>
+  </div>
+</section>
+
+<!-- 4. CYCLE: the shadows -->
+<section class="section wrap" data-section="shadows" id="shadows">
+  <div class="section-head"><span class="section-num">4</span><h2>הצללים של הקליע</h2></div>
+  <p>זוכר את הפנסים מפרק 1? פנס מלמעלה נתן צל על הרצפה, ופנס מהצד נתן צל על הקיר. עכשיו הם מאירים חתול שנורה ב-45°.</p>
+  <p>הוא עולה, מאט, ואז נופל ומאיץ. לפני שתריץ, תחליט מה עושה הצל שלו על הרצפה.</p>
+  <div id="pc-shadow">
+    <figure class="sim"><canvas id="c-shadow"></canvas><div class="sim-controls" id="ctl-shadow"></div></figure>
+  </div>
+</section>
+
+<!-- 5. CYCLE: the twin apple -->
+<section class="section wrap" data-section="twin" id="twin">
+  <div class="section-head"><span class="section-num">5</span><h2>התאום על הקיר</h2></div>
+  <p>אם הצל על הקיר הוא פשוט זריקה למעלה, אפשר לבדוק את זה עם תפוח אמיתי. ניוטון נורה ב-20 מ/ש בזווית של 30°.</p>
+  <p>באותו רגע, מישהו זורק תפוח ישר למעלה ב-10 מ/ש. זה רק חצי מהמהירות של ניוטון, ובלי שום זווית.</p>
+  <div id="pc-twin">
+    <figure class="sim"><canvas id="c-twin"></canvas><div class="sim-controls" id="ctl-twin"></div></figure>
+  </div>
+</section>
+
+<!-- 6. EARNED FORMULAS -->
+<section class="section wrap" data-section="formula" data-passive id="formula">
+  <div class="section-head"><span class="section-num">6</span><h2>הנוסחאות שהרווחת</h2></div>
+  <p>הקליע הוא שני סרטים שרצים יחד: צל על הרצפה וצל על הקיר. את שניהם כבר פתרת בפרק 2, כך שאין כאן נוסחה חדשה באמת.</p>
+
+  <div class="formula">
+    <h3>מפרקים את הירייה</h3>
+    <div class="formula-main">\[v_{0x} = v_0\cos\theta \qquad v_{0y} = v_0\sin\theta\]</div>
+    <p>אלה הצללים של חץ <span class="c-vel">המהירות</span> ברגע הירייה, בדיוק כמו בפרק 1.</p>
+    <ul class="legend-list">
+      <li><span class="sym">\(v_0\)</span><span><span class="c-vel">מהירות הירי</span>, למשל 20 מ/ש.</span></li>
+      <li><span class="sym">\(\theta\)</span><span>זווית הירי מעל הרצפה.</span></li>
+    </ul>
+  </div>
+
+  <div class="formula">
+    <h3>שני סרטים, שעון אחד</h3>
+    <div class="formula-main">\[x = v_{0x}\,t \qquad\qquad v_x = v_{0x}\]</div>
+    <div class="formula-main">\[y = h + v_{0y}\,t - \tfrac{1}{2} g t^2 \qquad v_y = v_{0y} - g t\]</div>
+    <ul class="legend-list">
+      <li><span class="sym">\(x\)</span><span>הצל על הרצפה. אין תאוצה אופקית, לכן הוא נע בקצב קבוע וזה מה שראית בצעדים השווים.</span></li>
+      <li><span class="sym">\(y\)</span><span>הצל על הקיר. זו זריקה למעלה מפרק 2, עם <span class="c-acc">תאוצה</span> \(g = 10\) מ/ש² כלפי מטה.</span></li>
+      <li><span class="sym">\(h\)</span><span>גובה הירי. מהרצפה הוא 0 מ', ומצוק הוא גובה הצוק.</span></li>
+      <li><span class="sym">\(t\)</span><span>הדבר היחיד ששני הסרטים חולקים. x ו-y לא יודעים זה על זה כלום, מלבד מה השעה.</span></li>
+    </ul>
+  </div>
+
+  <div class="formula">
+    <h3>שיא, זמן טיסה וטווח</h3>
+    <div class="formula-main">\[t_H = \frac{v_{0y}}{g} \qquad H = \frac{v_{0y}^2}{2g} \qquad T = \frac{2 v_{0y}}{g} \qquad R = v_{0x}\, T\]</div>
+    <ul class="legend-list">
+      <li><span class="sym">\(t_H\)</span><span>הזמן עד השיא. בשיא \(v_y = 0\), אז פותרים \(0 = v_{0y} - g t\).</span></li>
+      <li><span class="sym">\(H\)</span><span>הגובה המרבי: מציבים את \(t_H\) בנוסחה של \(y\).</span></li>
+      <li><span class="sym">\(T\)</span><span>זמן הטיסה, כשנוחתים באותו גובה שממנו ירו: זמן עלייה ועוד אותו זמן ירידה.</span></li>
+      <li><span class="sym">\(R\)</span><span>הטווח. הצל על הרצפה נע בקצב קבוע במשך כל הזמן באוויר, אז המרחק הוא מהירות כפול זמן.</span></li>
+    </ul>
+    <p class="block-gap">בוא נבדוק על ניוטון מהסעיף הקודם, 20 מ/ש ב-30°. \(v_{0x} = 17.3\) מ/ש ו-\(v_{0y} = 10\) מ/ש, ולכן \(T = 2\) ש', \(H = 5\) מ' ו-\(R = 17.3 \cdot 2 = 34.6\) מ'.</p>
+    <p class="muted small">ירית מצוק או למטרה בגובה אחר? \(T\) ו-\(R\) לא חלים כאן. פותרים את \(y(t)\) עם הגובה של הנחיתה, ואז מציבים את הזמן ב-\(x\).</p>
+  </div>
+
+  <div class="formula">
+    <h3>המהירות בכל רגע</h3>
+    <div class="formula-main">\[v = \sqrt{v_x^2 + v_y^2} \qquad \tan\alpha = \frac{v_y}{v_x}\]</div>
+    <p>מרכיבים את שני הצללים בחזרה לחץ אחד, כמו בפרק 1. \(\alpha\) היא הזווית של <span class="c-vel">המהירות</span> מעל הרצפה באותו רגע.</p>
+  </div>
+
+  <div class="formula">
+    <h3>למה הפתיח תמיד פוגע</h3>
+    <div class="formula-main">\[y_A = x\tan\theta - \tfrac{1}{2} g t^2 \qquad y_N = h_N - \tfrac{1}{2} g t^2\]</div>
+    <ul class="legend-list">
+      <li><span class="sym">\(y_A\)</span><span>גובה התפוח. \(x\tan\theta\) הוא הגובה של קו הכיוון באותו מרחק, והכבידה מורידה ממנו.</span></li>
+      <li><span class="sym">\(y_N\)</span><span>גובה ניוטון. \(h_N\) הוא גובה הענף, והכבידה מורידה ממנו בדיוק אותו דבר.</span></li>
+    </ul>
+    <p class="block-gap">כשהתפוח מגיע למרחק של ניוטון, קו הכיוון נמצא בדיוק בגובה הענף, כי לשם כיוונו. לכן \(y_A = y_N\), והם נפגשים.</p>
+    <p class="muted small">התנאי היחיד: התפוח צריך להגיע לשם לפני שהם מגיעים לרצפה. ראית את זה בסליידר של המהירות.</p>
+  </div>
+</section>
+
+<!-- 7. PLAYGROUND -->
+<section class="section wrap-wide" data-section="playground" id="playground">
+  <div class="section-head"><span class="section-num">7</span><h2>מגרש תותחים</h2></div>
+  <p>כאן אתה התותחן. אפשר להזיז את הסליידרים או לגרור את החץ הכחול, והמסלול המקווקו מתעדכן מיד.</p>
+  <p>כל שיגור משאיר אחריו מסלול. יש כאן שתי משימות גילוי, ואף אחד לא יגיד לך את התשובה עד שתמצא אותה.</p>
+  <figure class="sim"><canvas id="c-play"></canvas><div class="sim-controls" id="ctl-play"></div></figure>
+
+  <details class="why-box">
+    <summary>מצאת? למה זה קורה (אחרי שניסית, בבקשה)</summary>
+    <p>מציבים את הרכיבים ב-\(R = v_{0x} T\), ומקבלים נוסחה אחת. היא נכונה רק כשנוחתים באותו גובה שממנו יורים.</p>
+    <div class="formula-main">\[R = \frac{v_0^2 \sin 2\theta}{g}\]</div>
+    <p><b>למה 45°?</b> הטווח גדול ביותר כש-\(\sin 2\theta = 1\), כלומר כש-\(2\theta = 90^\circ\). ב-20 מ/ש זה נותן \(R = 40\) מ', ובאותה ירייה הגובה הוא 10 מ'.</p>
+    <p><b>למה זוויות משלימות?</b> \(\sin 60^\circ = \sin 120^\circ\), ולכן 30° ו-60° מגיעות לאותה נקודה, 34.6 מ' ב-20 מ/ש. זווית אחת טסה מהר ונמוך, והשנייה לאט וגבוה: מה שאחת מרוויחה ב-\(v_{0x}\) השנייה מרוויחה ב-\(T\).</p>
+  </details>
+
+  <h3 class="block-gap">אותה טיסה, מהמושב של ניוטון</h3>
+  <p class="muted">אותה פיזיקה, אותם מספרים, ומצלמה שרודפת אחרי החתול. שים לב לעיגול הכהה על הרצפה: זה הצל מסעיף 4, והוא עדיין נע בקצב קבוע.</p>
+  <figure class="sim"><div id="c3d-host"></div><div class="sim-controls" id="ctl-3d"></div></figure>
+</section>
+
+<!-- 8. MINI GAME -->
+<section class="section wrap-wide" data-section="game" id="game">
+  <div class="section-head"><span class="section-num">8</span><h2>משחקון: ניוטון הכועס</h2></div>
+  <p>שלושה סלי תפוחים, חתול אחד, תותח אחד. בכל שלב אפשר לנסות כמה שתרצה, אבל פחות ניסיונות פירושם יותר כוכבים.</p>
+  <p class="muted small">1-2 ניסיונות נותנים 3 נקודות, 3-4 נותנים 2 נקודות, ויותר מזה נקודה אחת. אפשר לחשב לפני שיורים, ומומלץ.</p>
+  <figure class="sim"><canvas id="c-game"></canvas><div class="sim-controls" id="ctl-game"></div></figure>
+</section>
+
+<!-- 9. TRAPS -->
+<section class="section wrap" data-section="traps" id="traps">
+  <div class="section-head"><span class="section-num">9</span><h2>מלכודות</h2></div>
+  <p>שלוש טעויות שחוזרות בכל מבחן מכינה. נסה ליפול בהן כאן, איפה שזה לא עולה נקודות.</p>
+  <div id="pc-trap1">
+    <figure class="sim"><canvas id="c-trap1"></canvas><div class="sim-controls" id="ctl-trap1"></div></figure>
+  </div>
+  <div id="pc-trap2">
+    <figure class="sim"><canvas id="c-trap2"></canvas><div class="sim-controls" id="ctl-trap2"></div></figure>
+  </div>
+  <div id="pc-trap3">
+    <figure class="sim"><canvas id="c-trap3"></canvas><div class="sim-controls" id="ctl-trap3"></div></figure>
+  </div>
+</section>
+
+<!-- 10. EXAM PROBLEMS -->
+<section class="section wrap" data-section="problems" id="problems">
+  <div class="section-head"><span class="section-num">10</span><h2>שאלות מכינה</h2></div>
+  <p>ככה זה נראה במבחן. נסה לבד, ואם נתקעת קח רמז, אין פה שיפוט.</p>
+  <div id="problems-host"></div>
+</section>
+
+<!-- 11. QUIZ -->
+<section class="section wrap" data-section="quiz" id="quiz">
+  <div class="section-head"><span class="section-num">11</span><h2>בוחן</h2></div>
+  <p>חמש שאלות על הפרק ועוד שתיים שחוזרות לפרקים הקודמים. הציון הטוב ביותר נשמר, ואפשר לנסות שוב כמה שתרצה.</p>
+  <div id="quiz-host" class="block-gap"></div>
+</section>
+
+<!-- 12. POCKET CARD -->
+<section class="section wrap" data-section="pocket" data-passive id="pocket">
+  <div class="section-head"><span class="section-num">12</span><h2>כרטיס כיס</h2></div>
+  <div class="pocket">
+    <h3>קליעים על כף הרגל</h3>
+    <div class="pocket-grid">
+      <div class="pocket-item"><b>הרעיון:</b> אופקי ואנכי בלתי תלויים. הדבר היחיד המשותף הוא הזמן.</div>
+      <div class="pocket-item"><b>פירוק:</b> \(v_{0x} = v_0\cos\theta,\;\; v_{0y} = v_0\sin\theta\)</div>
+      <div class="pocket-item"><b>אופקי, קצב קבוע:</b> \(x = v_{0x} t,\;\; v_x = v_{0x}\)</div>
+      <div class="pocket-item"><b>אנכי, נפילה חופשית:</b> \(y = h + v_{0y} t - \tfrac12 g t^2,\;\; v_y = v_{0y} - g t\)</div>
+      <div class="pocket-item"><b>שיא:</b> \(v_y = 0\) ו-\(v_x\) לא משתנה. \(H = v_{0y}^2 / 2g\)</div>
+      <div class="pocket-item"><b>אותו גובה:</b> \(T = 2 v_{0y} / g,\;\; R = v_0^2 \sin 2\theta / g\)</div>
+      <div class="pocket-item"><b>טווח מרבי:</b> 45°. <b>אותו טווח:</b> זוויות שסכומן 90°.</div>
+      <div class="pocket-item"><b><span class="c-vel">מהירות</span> בכל רגע:</b> \(v = \sqrt{v_x^2 + v_y^2}\), <b><span class="c-acc">תאוצה</span>:</b> תמיד \(g\) למטה.</div>
+    </div>
+    <div class="pocket-quote">"x ו-y הם כמו זוג גרוש: לא מדברים אחד עם השני, וחולקים רק את הזמן."</div>
+  </div>
+</section>
+
+</main>
+
+<div data-chapter-nav></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.11/katex.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.11/contrib/auto-render.min.js"></script>
+<script src="../js/core/fmt.js"></script>
+<script src="../js/core/vec.js"></script>
+<script src="../js/core/progress.js"></script>
+<script src="../js/core/canvas.js"></script>
+<script src="../js/core/loop.js"></script>
+<script src="../js/core/mascot.js"></script>
+<script src="../js/core/ui.js"></script>
+<script src="../js/sims/ch03/ballistics.js"></script>
+<script src="../js/sims/ch03/monkey-hunter.js"></script>
+<script src="../js/sims/ch03/two-balls.js"></script>
+<script src="../js/sims/ch03/shadows-xy.js"></script>
+<script src="../js/sims/ch03/cannon-playground.js"></script>
+<script src="../js/sims/ch03/cannon-3d.js"></script>
+<script src="../js/sims/ch03/angry-newton.js"></script>
+<script src="../js/sims/ch03/flight-demo.js"></script>
+<script>
+(function () {
+  'use strict';
+  const CH = '03';
+  const U = PHY.ui;
+  const $ = (id) => document.getElementById(id);
+
+  /* ---------- 1. Hook ---------- */
+  const hookSim = PHY.sims.monkeyHunter($('c-hook'), $('ctl-hook'), { locked: true });
+  hookSim.start();
+  U.PredictCard($('pc-hook'), {
+    chapter: CH, id: 'hook', section: 'hook',
+    question: `התותח מכוון בדיוק אל ניוטון. ברגע הירייה הוא עוזב את הענף. מה יקרה לתפוח?`,
+    options: [
+      { text: `יחטיא מלמעלה. התפוח יטוס ישר לענף, וניוטון כבר ירד משם.`, why: `ככה זה היה נראה בלי כבידה. אבל הכבידה לא עובדת רק על החתול, וגם התפוח ירד מקו הכיוון.` },
+      { text: `יחטיא מלמטה. התפוח נופל בדרך, ולכן יעבור מתחת לענף.`, why: `נכון שהוא עובר מתחת לענף. אבל ניוטון כבר לא על הענף: גם הוא ירד, בדיוק באותה כמות.` },
+      { text: `יפגע. שניהם נופלים בדיוק באותו קצב.`, correct: true },
+      { text: `תלוי במשקל. תפוח קל, חתול כבד, אז החתול נופל מהר יותר.`, why: `פרק 2 כבר סגר את זה: בלי אוויר, הכל נופל באותה תאוצה של 10 מ/ש². המשקל לא משתתף בסיפור.` },
+    ],
+    onRun: async () => {
+      hookSim.setParam('locked', true);
+      hookSim.setParam('speed', 20);
+      hookSim.setParam('height', 15);
+      hookSim.setParam('gravity', true);
+      await hookSim.play({ gravity: true });
+      hookSim.setParam('locked', false);
+    },
+    explanation: `
+      <p>ראית את שני החיצים הסגולים? התפוח ירד מקו הכיוון 7.8 מ', וניוטון ירד מהענף 7.8 מ'. אותה נפילה, באותו זמן, ולכן הם נפגשים.</p>
+      <p>כדי לראות למה, סמן <b>כבידה כבויה</b> וירה שוב: התפוח טס בקו ישר ישר אל ניוטון. הכבידה רק מורידה את שניהם יחד, כאילו כל התמונה יורדת במעלית.</p>
+      <p><b>עכשיו תורך:</b> שנה את גובה הענף ואת המהירות. נסה גם 10 מ/ש, ותגלה את המקרה היחיד שבו הוא ניצל: כשהרצפה מגיעה לפני התפוח.</p>`,
+    sayRight: 'ידעת?! ואני עוד הייתי בטוח שאני גאון של התחמקות.',
+    sayWrong: 'גם אני ניחשתי שיחטיא. לכן עזבתי את הענף.',
+  });
+
+  /* ---------- 2. Dropped vs fired ---------- */
+  const dropSim = PHY.sims.twoBalls($('c-drop'), $('ctl-drop'), { speed: 10 });
+  dropSim.start();
+  U.PredictCard($('pc-drop'), {
+    chapter: CH, id: 'drop', section: 'drop',
+    question: `האדום נורה אופקית ב-10 מ/ש, והזהוב פשוט נשמט. מי נוחת קודם?`,
+    options: [
+      { text: `הזהוב. הדרך שלו ישרה וקצרה יותר.`, why: `הדרך של הזהוב באמת קצרה יותר. אבל מה שקובע מתי נוחתים הוא רק כמה מהר יורדים, ושניהם יורדים אותו דבר.` },
+      { text: `האדום. יש לו יותר מהירות.`, why: `יש לו יותר מהירות, אבל כולה אופקית. שום חלק ממנה לא עוזר לו להגיע לרצפה.` },
+      { text: `נוחתים יחד, בדיוק באותו רגע.`, correct: true },
+      { text: `הזהוב, כי האדום "טס" ולכן נשאר באוויר.`, why: `זו התחושה של כולם, ומטוס אכן נשאר באוויר. אבל מטוס נשען על האוויר בכנפיים, ולתפוח אין כנפיים.` },
+    ],
+    onRun: async () => {
+      dropSim.setParam('locked', true);
+      dropSim.setParam('speed', 10);
+      await dropSim.play({ speeds: [10] });
+      dropSim.setParam('locked', false);
+    },
+    explanation: `
+      <p>הקווים המקווקווים עוברים בכל רגע דרך שני התפוחים: הם תמיד באותו גובה, ושניהם נוחתים אחרי 2 ש'. התנועה האופקית לא הפריעה לנפילה בכלל.</p>
+      <p>זה הרעיון של כל הפרק: <b>אופקי ואנכי בלתי תלויים</b>. זה כמו שתי רכבות על פסים נפרדים, שרק יוצאות באותו רגע.</p>
+      <p><b>עכשיו תורך:</b> שנה את מהירות הירי וירה שוב. שים לב לזמן.</p>`,
+    sayRight: 'רוב האנשים נותנים לאדום עוד כמה שניות באוויר. אתה לא.',
+    sayWrong: 'גם אני הייתי בטוח. ואני אחד שנופל הרבה.',
+  });
+
+  /* ---------- 3. Twice as fast ---------- */
+  const fastSim = PHY.sims.twoBalls($('c-fast'), $('ctl-fast'), { speed: 20, compare: true });
+  fastSim.start();
+  U.PredictCard($('pc-fast'), {
+    chapter: CH, id: 'fast', section: 'faster',
+    question: `מאותו גובה, 20 מ', תפוח נורה ב-20 מ/ש, כפול מ-10 מ/ש. מתי ואיפה הוא נוחת?`,
+    options: [
+      { text: `אחרי 4 ש', 80 מ'. כפול מהירות, יותר טיסה, הרבה יותר רחוק.`, why: `זה נשמע כמו משהו שעובד בתותחים. אבל הזמן נקבע רק על ידי הגובה, ו-20 מ' נפילה הם תמיד 2 ש'.` },
+      { text: `אחרי 2 ש', 40 מ'. אותו זמן, כפול מרחק.`, correct: true },
+      { text: `אחרי 1 ש', 20 מ'. מהר יותר, אז מגיע מהר יותר.`, why: `מגיע מהר יותר לאן? הוא לא נורה לכיוון הרצפה. כל המהירות שלו הלכה קדימה.` },
+    ],
+    onRun: async () => {
+      fastSim.setParam('locked', true);
+      fastSim.setParam('speed', 20);
+      await fastSim.play({ speeds: [10, 20] });
+      fastSim.setParam('locked', false);
+    },
+    explanation: `
+      <p>שלושה תפוחים, אותם קווים מקווקווים, אותו רגע נחיתה. רק המרחק האופקי השתנה: 20 מ' ב-10 מ/ש ו-40 מ' ב-20 מ/ש.</p>
+      <p>הגובה קובע את <b>הזמן</b>, והמהירות האופקית קובעת <b>כמה רחוק מגיעים בזמן הזה</b>. אלה שתי שאלות נפרדות, ותמיד כדאי לענות עליהן בסדר הזה.</p>`,
+    sayRight: 'פעם שנייה שאתה צודק. אני מתחיל לחשוד.',
+    sayWrong: 'זה בסדר. התותח גם לא ציפה לזה, והוא זה שירה.',
+  });
+
+  /* ---------- 4. Shadows ---------- */
+  const shadowSim = PHY.sims.shadowsXy($('c-shadow'), $('ctl-shadow'), { speed: 20, angle: 45 });
+  shadowSim.start();
+  U.PredictCard($('pc-shadow'), {
+    chapter: CH, id: 'shadow', section: 'shadows',
+    question: `מה עושה הצל של ניוטון על הרצפה בזמן הטיסה?`,
+    options: [
+      { text: `מאט בעלייה ומאיץ בירידה, כמו ניוטון עצמו.`, why: `הגיוני, כי ניוטון באמת מאט ומאיץ. אבל כל השינוי הזה קורה רק במהירות האנכית, והצל על הרצפה לא מרגיש אותה.` },
+      { text: `עוצר לרגע בשיא, כשניוטון עוצר.`, why: `ניוטון לא עוצר בשיא: רק התנועה האנכית שלו נעצרת. הצל על הרצפה ממשיך בלי להתרגש.` },
+      { text: `נע בקצב קבוע לאורך כל הדרך.`, correct: true },
+      { text: `מאט כל הזמן, כי הדחיפה מהתותח נגמרת.`, why: `זו אינטואיציה עתיקה מאוד, ואריסטו החזיק בה. אבל אין שום דבר שמושך אופקית, אז אין שום דבר שיאט.` },
+    ],
+    onRun: async () => {
+      shadowSim.setParam('locked', true);
+      shadowSim.setParam('speed', 20);
+      shadowSim.setParam('angle', 45);
+      await shadowSim.play();
+      shadowSim.setParam('locked', false);
+    },
+    explanation: `
+      <p>הסתכל על הנקודות הסגולות: על הרצפה יש צעדים שווים, בכל 0.25 ש' בדיוק אותו מרחק של 3.5 מ'. על הקיר הן צפופות ליד השיא ומרווחות למטה, בדיוק כמו אבן שנזרקה למעלה בפרק 2.</p>
+      <p>המהירות האופקית נשארת 14.1 מ/ש לכל אורך הטיסה, כי <span class="c-acc">התאוצה</span> של הכבידה פועלת רק למטה. קליע הוא נסיעה רגילה על הרצפה וזריקה למעלה על הקיר, באותו זמן.</p>`,
+    sayRight: 'בדיוק. אני מאבד גובה, הצל שלי לא מאבד כלום.',
+    sayWrong: 'גם אני חשבתי ככה. בינתיים, הצל שלי כבר הגיע.',
+  });
+
+  /* ---------- 5. Twin apple ---------- */
+  const twinSim = PHY.sims.shadowsXy($('c-twin'), $('ctl-twin'), { speed: 20, angle: 30, twin: true });
+  twinSim.start();
+  U.PredictCard($('pc-twin'), {
+    chapter: CH, id: 'twin', section: 'twin',
+    question: `ניוטון נורה ב-20 מ/ש בזווית 30°. התפוח נזרק ישר למעלה ב-10 מ/ש. מי נשאר באוויר יותר זמן?`,
+    options: [
+      { text: `ניוטון. הוא מהיר פי 2, אז נשאר באוויר פי 2.`, why: `הוא מהיר פי 2 בסך הכול, אבל רק חצי מהמהירות הזאת הולכת למעלה. וזה מה שקובע את הזמן באוויר.` },
+      { text: `התפוח. כל המהירות שלו למעלה, ושל ניוטון רק חלק.`, why: `זה רעיון טוב, והוא היה נכון אם שניהם היו נורים באותה מהירות. כאן בדקנו את החלק האנכי, ויוצא שהם שווים.` },
+      { text: `אף אחד. הם נוחתים יחד, אחרי 2 ש'.`, correct: true },
+    ],
+    onRun: async () => {
+      twinSim.setParam('locked', true);
+      twinSim.setParam('speed', 20);
+      twinSim.setParam('angle', 30);
+      await twinSim.play();
+      twinSim.setParam('locked', false);
+    },
+    explanation: `
+      <p>הקו האדום המקווקו נשאר אופקי לאורך כל הטיסה: התפוח וניוטון תמיד באותו גובה. התפוח הוא פשוט הצל של ניוטון על הקיר.</p>
+      <p>הסיבה היא החלק האנכי של הירייה: \\(v_{0y} = 20 \\cdot \\sin 30^\\circ = 10\\) מ/ש. זה כל מה שהקיר יודע, והחלק האופקי, 17.3 מ/ש, רק קובע לאן הוא יגיע.</p>
+      <p><b>עכשיו תורך:</b> שנה זווית ומהירות. התפוח התאום תמיד יעבוד, כי הוא מקבל בדיוק את \\(v_{0y}\\).</p>`,
+    sayRight: 'התפוח הזה מחקה אותי. ואתה ידעת.',
+    sayWrong: 'שים לב: מי שקובע הוא רק החלק האנכי. אני קראתי את זה על הקיר.',
+  });
+
+  /* ---------- 7. Playground and 3D ---------- */
+  const play = PHY.sims.cannonPlayground($('c-play'), $('ctl-play'), { chapter: CH, section: 'playground', angle: 30, speed: 20 });
+  play.start();
+
+  const view3d = PHY.sims.cannon3d($('c3d-host'), $('ctl-3d'), { angle: 45, speed: 20 });
+  view3d.start();
+
+  /* ---------- 8. Game ---------- */
+  const game = PHY.sims.angryNewton($('c-game'), $('ctl-game'), { chapter: CH, section: 'game' });
+  game.start();
+
+  /* ---------- 9. Traps ---------- */
+  const trapDone = {};
+  const trapFinished = (name) => {
+    trapDone[name] = true;
+    if (trapDone.a && trapDone.b && trapDone.c) PHY.progress.markSection(CH, 'traps');
+  };
+
+  const trap1 = PHY.sims.flightDemo($('c-trap1'), $('ctl-trap1'));
+  trap1.start();
+  U.PredictCard($('pc-trap1'), {
+    chapter: CH, id: 'trap1', tag: 'מלכודת 1: הקליע מאיץ אופקית',
+    question: `ניוטון נורה ב-20 מ/ש בזווית 60°, כלומר 10 מ/ש אופקית. מה קורה למהירות האופקית שלו באוויר?`,
+    options: [
+      { text: `גדלה. הוא נופל ומאיץ, אז גם קדימה הוא מאיץ.`, why: `הוא באמת מאיץ, אבל רק למטה. ואין שום כוח שמושך אותו קדימה.` },
+      { text: `נשארת 10 מ/ש, כל הדרך.`, correct: true },
+      { text: `קטנה לאט. הדחיפה מהתותח מתפוגגת.`, why: `במציאות, האוויר באמת מאט. אבל במודל שלנו אין אוויר, ובלעדיו אין מה שיגנוב מהירות אופקית.` },
+    ],
+    onRun: () => trap1.play([{ v: 20, a: 60, every: 0.5, caption: 'החיצים האופקיים: שים לב לאורך שלהם', endCaption: 'כל החיצים האופקיים באותו אורך' }]),
+    explanation: `<p>החיצים האופקיים החזקים זהים בכל הנקודות, ורק החיצים האנכיים השתנו. הכבידה מושכת רק למטה, ולכן <span class="c-acc">התאוצה</span> משנה רק את המהירות האנכית.</p>`,
+    onDone: () => trapFinished('a'),
+  });
+
+  const trap2 = PHY.sims.flightDemo($('c-trap2'), $('ctl-trap2'));
+  trap2.start();
+  U.PredictCard($('pc-trap2'), {
+    chapter: CH, id: 'trap2', tag: 'מלכודת 2: בשיא הכל נעצר',
+    question: `ניוטון נורה ב-20 מ/ש בזווית 45°. מה גודל המהירות שלו בנקודה הגבוהה ביותר?`,
+    options: [
+      { text: `0 מ/ש. הוא עוצר לרגע לפני שהוא נופל.`, why: `זו המלכודת הכי נפוצה בפרק. רק \\(v_y\\) מתאפס. אם גם \\(v_x\\) היה מתאפס, הוא היה נופל ישר למטה מהשיא.` },
+      { text: `14.1 מ/ש, אופקית.`, correct: true },
+      { text: `20 מ/ש. המהירות לא משתנה.`, why: `המהירות האופקית לא משתנה, אבל 20 מ/ש הוא הגודל של כל הירייה. בשיא נשאר רק החלק האופקי.` },
+    ],
+    onRun: () => trap2.play([{ v: 20, a: 45, freezeTop: 2.4, caption: 'עולה...', topCaption: 'בשיא: v אנכית 0, אבל ניוטון עדיין זז', endCaption: 'ולא נעצר אף פעם באוויר' }]),
+    explanation: `<p>בשיא \\(v_y = 0\\), אבל \\(v_x = 20 \\cos 45^\\circ \\approx 14.1\\) מ/ש נשאר בדיוק כמו בהתחלה. לכן זה גם הרגע שבו ניוטון הכי איטי, ולא הרגע שבו הוא עוצר.</p><p>ושים לב לחץ האדום: <span class="c-acc">התאוצה</span> גם בשיא היא 10 מ/ש² למטה. היא לא נעלמת לרגע, כמו שראית בפרק 2.</p>`,
+    onDone: () => trapFinished('b'),
+  });
+
+  const trap3 = PHY.sims.flightDemo($('c-trap3'), $('ctl-trap3'));
+  trap3.start();
+  U.PredictCard($('pc-trap3'), {
+    chapter: CH, id: 'trap3', tag: 'מלכודת 3: זווית גדולה יותר, טווח גדול יותר',
+    question: `ב-20 מ/ש וב-45° ניוטון נוחת אחרי 40 מ'. אתה מרים את התותח ל-70° כדי שיגיע רחוק יותר. לאן הוא יגיע?`,
+    options: [
+      { text: `רחוק יותר מ-40 מ'. יותר גובה, יותר זמן, יותר מרחק.`, why: `הזמן באמת גדל, מ-2.8 ש' ל-3.8 ש'. אבל המהירות האופקית ירדה מ-14.1 מ/ש ל-6.8 מ/ש, וזה הפסד גדול יותר.` },
+      { text: `בערך 26 מ'. קרוב יותר.`, correct: true },
+      { text: `בדיוק 40 מ'. אותה מהירות, אותו טווח.`, why: `מהירות שווה לא מבטיחה טווח שווה. הטווח תלוי גם בזווית: רק 45° נותן 40 מ' ב-20 מ/ש.` },
+    ],
+    onRun: () => trap3.play([
+      { v: 20, a: 45, caption: '45°' },
+      { v: 20, a: 70, caption: '70°', endCaption: 'גבוה יותר, ארוך יותר בזמן, אבל קרוב יותר' },
+    ]),
+    explanation: `<p>הטווח הוא \\(v_{0x}\\) כפול \\(T\\). ב-70°: \\(6.84 \\cdot 3.76 \\approx 25.7\\) מ', וזה נוחת במרחק של הזווית המשלימה, 20°.</p><p>במילים אחרות: מעל 45°, הרמת התותח <b>מקצרת</b> את הטווח. זה בדיוק מה שמפיל אנשים בשלב 2 של המשחק.</p>`,
+    onDone: () => trapFinished('c'),
+  });
+
+  /* ---------- 10. Problems ---------- */
+  const probs = $('problems-host');
+  U.Problem(probs, {
+    chapter: CH, section: 'problems', tag: 'שאלה 1: זריקה אופקית מצוק',
+    text: `אבן נזרקת אופקית במהירות של 20 מ/ש מראש צוק בגובה 45 מ'. מצא: את זמן הנפילה, את המרחק האופקי מבסיס הצוק, את גודל המהירות ברגע הפגיעה בקרקע, ואת הזווית של המהירות מתחת לאופק.`,
+    fields: [
+      { label: 'זמן הנפילה', answer: 3, unit: "ש'" },
+      { label: 'המרחק האופקי', answer: 60, unit: "מ'" },
+      { label: 'גודל מהירות הפגיעה', answer: 36.06, unit: 'מ/ש' },
+      { label: 'הזווית מתחת לאופק', answer: 56.31, unit: 'מעלות' },
+    ],
+    steps: [
+      `תמיד מתחילים בזמן, והזמן נקבע רק על ידי הציר האנכי. אין מהירות התחלתית אנכית, אז \\(45 = \\tfrac12 \\cdot 10 \\cdot t^2\\).`,
+      `\\(t = 3\\) ש'. עכשיו הציר האופקי: \\(x = 20 \\cdot 3\\) מ'. למהירות הפגיעה צריך את שני הרכיבים: \\(v_x = 20\\) מ/ש ו-\\(v_y = 10 \\cdot 3 = 30\\) מ/ש.`,
+      `\\[x = 60\\ \\text{m}\\] \\[v = \\sqrt{20^2 + 30^2} \\approx 36.1\\ \\text{m/s}\\] \\[\\tan\\alpha = \\frac{30}{20} = 1.5 \\Rightarrow \\alpha \\approx 56.3^\\circ\\] כלומר 60 מ', 36.1 מ/ש, ו-56.3° מתחת לאופק.`,
+    ],
+  });
+  U.Problem(probs, {
+    chapter: CH, section: 'problems', tag: 'שאלה 2: זריקה משופעת',
+    text: `כדור נבעט מהקרקע במהירות של 40 מ/ש בזווית של 30° מעל האופק. מצא את הגובה המרבי, את זמן הטיסה ואת הטווח.`,
+    fields: [
+      { label: 'הגובה המרבי', answer: 20, unit: "מ'" },
+      { label: 'זמן הטיסה', answer: 4, unit: "ש'" },
+      { label: 'הטווח', answer: 138.56, unit: "מ'" },
+    ],
+    steps: [
+      `קודם מפרקים: \\(v_{0x} = 40\\cos 30^\\circ \\approx 34.64\\) מ/ש ו-\\(v_{0y} = 40\\sin 30^\\circ = 20\\) מ/ש.`,
+      `בשיא \\(v_y = 0\\), אז \\(t_H = 20/10 = 2\\) ש'. זמן הטיסה הוא פעמיים זה, כי נוחתים באותו גובה.`,
+      `\\[H = \\frac{20^2}{2 \\cdot 10} = 20\\ \\text{m}\\] \\[T = 4\\ \\text{s}\\] \\[R = 34.64 \\cdot 4 \\approx 138.6\\ \\text{m}\\] בדיקה עם \\(R = v_0^2 \\sin 2\\theta / g = 1600 \\cdot 0.866 / 10 \\approx 138.6\\) מ'.`,
+    ],
+  });
+  U.Problem(probs, {
+    chapter: CH, section: 'problems', tag: 'שאלה 3: פגיעה בנקודה נתונה',
+    text: `תותח יורה במהירות של 20 מ/ש ומטרה נמצאת על הקרקע במרחק 20 מ' ממנו. באילו שתי זוויות צריך לירות כדי לפגוע בה?`,
+    fields: [
+      { label: 'הזווית הקטנה', answer: 15, unit: 'מעלות' },
+      { label: 'הזווית הגדולה', answer: 75, unit: 'מעלות' },
+    ],
+    steps: [
+      `זו שאלה על טווח באותו גובה, אז מתאימה הנוסחה \\(R = v_0^2 \\sin 2\\theta / g\\). כאן \\(\\theta\\) הוא הנעלם.`,
+      `\\(20 = 400 \\cdot \\sin 2\\theta / 10\\), ולכן \\(\\sin 2\\theta = 0.5\\). לסינוס יש שתי זוויות שנותנות 0.5: 30° ו-150°.`,
+      `\\(2\\theta = 30^\\circ\\) נותן \\(\\theta = 15^\\circ\\), ו-\\(2\\theta = 150^\\circ\\) נותן \\(\\theta = 75^\\circ\\). שתיהן משלימות ל-90°, בדיוק כמו שגילית במגרש התותחים.`,
+    ],
+  });
+
+  /* ---------- 11. Quiz ---------- */
+  U.Quiz($('quiz-host'), {
+    chapter: CH, section: 'quiz',
+    questions: [
+      {
+        type: 'mc',
+        q: `ניוטון נמצא בנקודה הגבוהה ביותר של המסלול. מה נכון?`,
+        options: [`המהירות 0 והתאוצה 0`, `המהירות 0 והתאוצה 10 מ/ש² למטה`, `המהירות האופקית נשמרת והתאוצה 10 מ/ש² למטה`, `המהירות האופקית נשמרת והתאוצה 0`],
+        answer: 2,
+        why: `בשיא רק \\(v_y = 0\\). \\(v_x\\) לא השתנה מעולם, והכבידה לא מפסיקה לעבוד לרגע.`,
+      },
+      {
+        type: 'num',
+        q: `כדור נזרק אופקית מגג בגובה 45 מ'. כמה שניות עד שהוא מגיע לקרקע? (המהירות האופקית לא נתונה, כי היא לא צריכה להיות.)`,
+        answer: 3, unit: "ש'",
+        why: `\\(45 = \\tfrac12 \\cdot 10 \\cdot t^2\\), אז \\(t = 3\\) ש'. בלי קשר למהירות האופקית.`,
+      },
+      {
+        type: 'num',
+        q: `אבן נזרקת אופקית ב-15 מ/ש מגובה 20 מ'. כמה מטרים מבסיס הגובה היא תנחת?`,
+        answer: 30, unit: "מ'",
+        why: `זמן: \\(20 = 5t^2\\), אז \\(t = 2\\) ש'. מרחק: \\(x = 15 \\cdot 2 = 30\\) מ'.`,
+      },
+      {
+        type: 'mc',
+        q: `באותה מהירות ועל קרקע ישרה, איזו זווית נותנת בדיוק את אותו טווח כמו 25°?`,
+        options: [`50°`, `45°`, `65°`, `75°`],
+        answer: 2,
+        why: `זוויות משלימות, שסכומן 90°, נותנות אותו טווח: \\(90^\\circ - 25^\\circ = 65^\\circ\\).`,
+      },
+      {
+        type: 'num',
+        q: `ניוטון נורה ב-30 מ/ש בזווית 30° ונוחת באותו גובה. כמה שניות הוא באוויר?`,
+        answer: 3, unit: "ש'",
+        why: `\\(v_{0y} = 30 \\cdot 0.5 = 15\\) מ/ש, ו-\\(T = 2 \\cdot 15 / 10 = 3\\) ש'.`,
+      },
+      {
+        type: 'num',
+        q: `<span class="chip">חזרה מפרק 1</span> מהירות של 10 מ/ש פונה בזווית 60° מעל ציר x. מה הרכיב האופקי שלה?`,
+        answer: 5, unit: 'מ/ש',
+        why: `\\(v_x = 10\\cos 60^\\circ = 10 \\cdot 0.5 = 5\\) מ/ש.`,
+      },
+      {
+        type: 'num',
+        q: `<span class="chip">חזרה מפרק 2</span> אבן נזרקת ישר למעלה ב-20 מ/ש. כמה שניות עד שהיא מגיעה לשיא?`,
+        answer: 2, unit: "ש'",
+        why: `\\(v = v_0 - gt\\). בשיא \\(0 = 20 - 10t\\), אז \\(t = 2\\) ש'.`,
+      },
+    ],
+  });
+
+  /* ---------- Easter egg: click the cat ---------- */
+  /* The last step fires a cat across the screen at 45°: range = screen width, as it should be. */
+  function launchCat() {
+    if (U.reduced()) return;
+    const cat = U.h('div', { class: 'egg-cat', 'aria-hidden': 'true', html: PHY.mascot.svg('flying', 'width="84" height="84"') });
+    document.body.appendChild(cat);
+    const W = window.innerWidth - 84;
+    const H0 = window.innerHeight - 90;
+    const T = 1.9;
+    const t0 = performance.now();
+    const R = W, vx = R / T, vy = (0.5 * 900 * T);
+    setTimeout(function () { cat.remove(); }, (T + 0.3) * 1000); /* even if frames stop, he leaves */
+    (function frame(now) {
+      const t = (now - t0) / 1000;
+      if (t >= T) { cat.remove(); return; }
+      const x = vx * t;
+      const y = H0 - vy * t + 0.5 * 900 * t * t;
+      const ang = -(Math.atan2(vy - 900 * t, vx) * 180) / Math.PI;
+      cat.style.transform = `translate(${x}px, ${y}px) rotate(${ang}deg)`;
+      requestAnimationFrame(frame);
+    })(t0);
+  }
+  PHY.mascot.easterEgg([
+    { text: 'מיאו. בקו ישר, אבל רק אם הכבידה כבויה.', pose: 'standing' },
+    { text: 'הקשה שנייה. הרכיב האופקי של האצבע שלך נשאר קבוע, ראיתי.', pose: 'thinking' },
+    { text: 'בשיא הרוגז שלי המהירות האנכית 0 מ/ש. אני עדיין זז.', pose: 'dizzy' },
+    { text: 'עוד פעם אחת, ואני מחשב לאצבע שלך טווח.', pose: 'thinking' },
+    { text: '45 מעלות! טווח מרבי! מישהו יסביר לי למה הסכמתי!', pose: 'flying', spin: true, rain: true, action: launchCat },
+  ]);
+
+  U.initChapter({ id: CH });
+})();
+</script>
+</body>
+</html>
